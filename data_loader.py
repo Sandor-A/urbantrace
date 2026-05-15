@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from pathlib import Path
-from datetime import datetime, date
 import csv
+from dataclasses import dataclass
+from datetime import date, datetime
+from pathlib import Path
 from typing import Any
 
 
@@ -100,6 +100,14 @@ def load_data(data_dir: str | Path = "data") -> PropertyDataStore:
         row["propkey"] = parse_int(row.get("propkey"))
         row["sale_date"] = parse_date(row.get("sale_date"))
         row["sale_price"] = parse_int(row.get("sale_price"))
+
+    # Enrich properties with real geocoded lat/lng and neighborhood from OSM.
+    # Reads from cache instantly; new addresses are geocoded in a background thread.
+    try:
+        from geocoder import enrich_with_geocoding
+        enrich_with_geocoding(properties)
+    except Exception:
+        pass  # geocoder is optional — app works without it
 
     properties_by_propkey = {row["propkey"]: row for row in properties}
     ownership_by_propkey = {row["propkey"]: row for row in ownership}

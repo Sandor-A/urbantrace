@@ -3,395 +3,942 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UrbanTrace AI</title>
+  <title>UrbanTrace — Cluj-Napoca Property Search</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --navy:   #0c2340;
+      --blue:   #1a3c5e;
+      --accent: #2563eb;
+      --green:  #10b981;
+      --g50:    #f8fafc;
+      --g100:   #f1f5f9;
+      --g200:   #e2e8f0;
+      --g300:   #cbd5e1;
+      --g400:   #94a3b8;
+      --g600:   #475569;
+      --g700:   #334155;
+      --g900:   #0f172a;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f1f5f9;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      color: #0f172a;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--g100);
+      color: var(--g900);
+      min-height: 100vh;
     }
 
-    /* ── Header ────────────────────────────────────── */
+    /* ── Header ─────────────────────────────────── */
     header {
-      background: linear-gradient(135deg, #0c2340 0%, #1a3c5e 60%, #1e4d78 100%);
+      background: rgba(10,26,56,0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
       color: #fff;
-      padding: 0 28px;
+      padding: 0 40px;
       height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      box-shadow: 0 2px 16px rgba(0,0,0,.3);
-      position: relative;
-      z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 24px rgba(0,0,0,.35);
+      position: sticky; top: 0; z-index: 100;
     }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .header-icon {
-      width: 36px; height: 36px;
+    .logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; letter-spacing: -.01em; text-decoration: none; color: #fff; }
+    .logo-icon {
+      width: 34px; height: 34px;
       background: rgba(255,255,255,.15);
-      border-radius: 10px;
+      border-radius: 9px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
+      font-size: 17px;
     }
-    .header-title { font-size: 15px; font-weight: 700; letter-spacing: .01em; }
-    .header-sub {
-      font-size: 11px;
-      opacity: .6;
-      margin-top: 1px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .status-dot {
-      width: 6px; height: 6px;
-      background: #4ade80;
-      border-radius: 50%;
-      box-shadow: 0 0 0 2px rgba(74,222,128,.35);
-    }
+    nav { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
+    nav a { color: rgba(255,255,255,.7); text-decoration: none; transition: color .15s; }
+    nav a:hover { color: #fff; }
+    nav a.active { color: #fff; }
+    nav a.nav-about { cursor: pointer; }
 
-    #reset-btn {
-      background: rgba(255,255,255,.1);
-      border: 1px solid rgba(255,255,255,.22);
-      color: #fff;
-      padding: 7px 16px;
+    /* ── Language switcher ───────────────────────── */
+    .lang-switcher { display: flex; align-items: center; gap: 4px; margin-left: 20px; }
+    .lang-btn {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,.22);
+      color: rgba(255,255,255,.6);
       border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: inherit;
       cursor: pointer;
-      font-size: 13px;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .lang-btn:hover { border-color: rgba(255,255,255,.5); color: rgba(255,255,255,.85); }
+    .lang-btn.active {
+      background: #fff;
+      border-color: #fff;
+      color: var(--navy);
+    }
+
+    /* ── About modal ────────────────────────────── */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.5);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s ease;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: #fff; border-radius: 20px; padding: 36px 40px;
+      max-width: 480px; width: calc(100% - 48px);
+      box-shadow: 0 24px 64px rgba(0,0,0,.25);
+      transform: translateY(16px) scale(.97);
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+      position: relative;
+    }
+    .modal-backdrop.open .modal { transform: translateY(0) scale(1); }
+    .modal-close {
+      position: absolute; top: 16px; right: 18px;
+      background: var(--g100); border: none; border-radius: 8px;
+      width: 28px; height: 28px; cursor: pointer;
+      font-size: 15px; color: var(--g600);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .modal-close:hover { background: var(--g200); }
+    .modal-logo { font-size: 36px; margin-bottom: 14px; }
+    .modal-title { font-size: 22px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 6px; }
+    .modal-tagline { font-size: 14px; color: var(--g400); margin-bottom: 22px; line-height: 1.5; }
+    .modal-divider { border: none; border-top: 1px solid var(--g200); margin: 18px 0; }
+    .modal-author { font-size: 14px; color: var(--g700); margin-bottom: 4px; }
+    .modal-author strong { color: var(--g900); }
+    .modal-copy { font-size: 12.5px; color: var(--g400); }
+    .modal-stack { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+    .modal-tag {
+      padding: 4px 11px; border-radius: 20px;
+      background: var(--g100); border: 1px solid var(--g200);
+      font-size: 12px; font-weight: 500; color: var(--g600);
+    }
+
+    /* ── Building images in cards ───────────────── */
+    .prop-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .prop-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,.04) 0%, rgba(0,0,0,.18) 100%);
+    }
+
+    /* ── Hero ───────────────────────────────────── */
+    .hero {
+      background: linear-gradient(160deg, var(--navy) 0%, var(--blue) 100%);
+      color: #fff;
+      padding: 64px 40px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-mesh {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .hero-mesh::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(37,99,235,.22) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-mesh::after {
+      content: '';
+      position: absolute;
+      bottom: -120px; right: -80px;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(16,185,129,.14) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-mesh-mid {
+      position: absolute;
+      top: 20px; right: 30%;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(124,58,237,.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero h1 { font-size: 40px; font-weight: 800; letter-spacing: -.025em; margin-bottom: 12px; line-height: 1.15; }
+    .hero h1 span { color: #60a5fa; }
+    .hero p { font-size: 16px; color: rgba(255,255,255,.62); margin-bottom: 32px; font-weight: 400; }
+    .search-box {
+      max-width: 680px; margin: 0 auto;
+      background: #fff; border-radius: 18px;
+      display: flex; overflow: hidden;
+      box-shadow: 0 12px 48px rgba(0,0,0,.32);
+    }
+    .search-box input {
+      flex: 1; border: none; padding: 16px 22px;
+      font-size: 15px; font-family: inherit; color: var(--g900); outline: none;
+      font-weight: 400;
+    }
+    .search-box input::placeholder { color: var(--g400); }
+    .search-box button {
+      background: var(--accent); color: #fff; border: none;
+      padding: 0 30px; font-size: 14px; font-weight: 600;
+      font-family: inherit;
+      cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background .15s;
+    }
+    .search-box button:hover { background: #1d4ed8; }
+
+    /* ── Filters bar ────────────────────────────── */
+    .filters-bar {
+      background: #fff; border-bottom: 1px solid var(--g200);
+      padding: 12px 40px;
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      position: sticky; top: 64px; z-index: 50;
+    }
+    .filter-label {
+      font-size: 11px; font-weight: 700; color: var(--g400);
+      text-transform: uppercase; letter-spacing: .07em;
+      margin-right: 2px; white-space: nowrap;
+    }
+    .chip {
+      padding: 5px 14px; border-radius: 20px;
+      border: 1.5px solid var(--g200); background: var(--g50);
+      font-size: 12.5px; font-weight: 500; color: var(--g700);
+      cursor: pointer; transition: all .15s; user-select: none; white-space: nowrap;
+      font-family: inherit;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--accent); background: #eff6ff; }
+    .chip.active {
+      background: var(--accent); border-color: var(--accent); color: #fff;
+      box-shadow: 0 2px 8px rgba(37,99,235,.3);
+    }
+    .chip-sep { width: 1px; height: 20px; background: var(--g200); margin: 0 4px; }
+
+    /* ── Main ───────────────────────────────────── */
+    .main { max-width: 1280px; margin: 0 auto; padding: 32px 40px 100px; }
+    .results-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .results-title { font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
+    .results-count { font-size: 13px; color: var(--g400); margin-top: 3px; }
+    .sort-select {
+      border: 1.5px solid var(--g200); border-radius: 10px;
+      padding: 8px 14px; font-size: 13px; font-family: inherit;
+      color: var(--g700); background: #fff; cursor: pointer; outline: none;
       font-weight: 500;
-      transition: background .15s, transform .1s;
-      display: flex; align-items: center; gap: 6px;
     }
-    #reset-btn:hover  { background: rgba(255,255,255,.2); transform: translateY(-1px); }
-    #reset-btn:active { transform: translateY(0); }
 
-    /* ── Chat area ─────────────────────────────────── */
-    #chat {
-      flex: 1;
-      overflow-y: auto;
-      padding: 28px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      scroll-behavior: smooth;
+    /* ── Property grid ──────────────────────────── */
+    .prop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .prop-card {
+      background: #fff; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,.06), 0 4px 20px rgba(0,0,0,.04);
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s;
+      cursor: pointer;
     }
-    #chat::-webkit-scrollbar       { width: 5px; }
-    #chat::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-
-    /* ── Message rows ──────────────────────────────── */
-    .msg-row {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-      animation: slideUp .22s cubic-bezier(.25,.8,.25,1) both;
+    .prop-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px rgba(37,99,235,.15), 0 4px 16px rgba(0,0,0,.08);
     }
-    .msg-row.user { flex-direction: row-reverse; }
+    .prop-img { height: 178px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 52px; }
+    .prop-badge {
+      position: absolute; top: 12px; left: 12px;
+      padding: 3px 10px; border-radius: 7px;
+      font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+    }
+    .badge-srl        { background: #fef3c7; color: #92400e; }
+    .badge-individual { background: #d1fae5; color: #065f46; }
+    .prop-body { padding: 17px 20px 20px; }
+    .prop-price { font-size: 22px; font-weight: 800; margin-bottom: 3px; letter-spacing: -.02em; }
+    .prop-psqm  { font-size: 12px; color: var(--g400); margin-bottom: 10px; }
+    .prop-addr  { font-size: 14.5px; font-weight: 600; color: var(--g700); margin-bottom: 4px; }
+    .prop-hood  {
+      font-size: 12.5px; color: var(--g400); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .prop-stats { display: flex; gap: 10px; }
+    .prop-stat  {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; color: var(--g600);
+      background: var(--g50); padding: 5px 10px; border-radius: 8px;
+      font-weight: 500;
+    }
+    .prop-stat svg { width: 12px; height: 12px; flex-shrink: 0; }
+    .empty-state {
+      grid-column: 1 / -1; text-align: center; padding: 72px 20px; color: var(--g400);
+    }
+    .empty-state svg { width: 52px; height: 52px; margin-bottom: 16px; opacity: .35; }
+    .empty-state p { font-size: 15px; line-height: 1.6; }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(10px); }
+
+    /* ════════════════════════════════════════════ */
+    /*  BRICK ASSISTANT WIDGET                      */
+    /* ════════════════════════════════════════════ */
+
+    #brick-widget {
+      position: fixed; bottom: 28px; right: 28px; z-index: 1000;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+    }
+
+    /* Chat panel */
+    #chat-panel {
+      width: 355px; height: 490px;
+      background: #fff; border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.22), 0 6px 20px rgba(0,0,0,.1);
+      display: flex; flex-direction: column; overflow: hidden;
+      transform-origin: bottom right;
+      transform: scale(.85) translateY(18px);
+      opacity: 0; pointer-events: none;
+      transition: transform .28s cubic-bezier(.34,1.56,.64,1), opacity .2s ease;
+    }
+    #chat-panel.open {
+      transform: scale(1) translateY(0);
+      opacity: 1; pointer-events: all;
+    }
+
+    .cp-header {
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: #fff; padding: 13px 16px;
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    }
+    .cp-avatar {
+      width: 34px; height: 34px; background: rgba(255,255,255,.15);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .cp-info { flex: 1; }
+    .cp-name  { font-size: 14px; font-weight: 700; }
+    .cp-sub   { font-size: 11px; opacity: .6; display: flex; align-items: center; gap: 4px; margin-top: 1px; }
+    .cp-dot   { width: 5px; height: 5px; background: #4ade80; border-radius: 50%; }
+    .cp-close {
+      background: rgba(255,255,255,.1); border: none; color: #fff;
+      width: 26px; height: 26px; border-radius: 8px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+      transition: background .15s;
+    }
+    .cp-close:hover { background: rgba(255,255,255,.22); }
+
+    .cp-msgs {
+      flex: 1; overflow-y: auto;
+      padding: 14px 12px; display: flex; flex-direction: column; gap: 12px;
+      background: var(--g50);
+    }
+    .cp-msgs::-webkit-scrollbar { width: 4px; }
+    .cp-msgs::-webkit-scrollbar-thumb { background: var(--g200); border-radius: 2px; }
+
+    .cm-row { display: flex; gap: 7px; align-items: flex-end; animation: msgIn .18s ease both; }
+    .cm-row.user { flex-direction: row-reverse; }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(6px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── Avatars ───────────────────────────────────── */
-    .avatar {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      flex-shrink: 0;
+    .cm-av {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 700;
-      letter-spacing: .02em;
     }
-    .avatar.assistant {
-      background: linear-gradient(135deg, #1a3c5e, #2563eb);
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(26,60,94,.35);
+    .cm-av.assistant { background: linear-gradient(135deg, var(--navy), var(--accent)); color: #fff; font-size: 14px; }
+    .cm-av.user      { background: var(--g300); color: var(--g700); }
+
+    .cm-bub {
+      padding: 9px 12px; border-radius: 14px;
+      font-size: 13px; line-height: 1.55;
+      max-width: 80%; word-wrap: break-word;
     }
-    .avatar.user {
-      background: linear-gradient(135deg, #475569, #64748b);
-      color: #fff;
+    .cm-bub.assistant {
+      background: #fff; color: var(--g900);
+      border-bottom-left-radius: 3px;
+      box-shadow: 0 1px 5px rgba(0,0,0,.07);
+    }
+    .cm-bub.user {
+      background: linear-gradient(135deg, var(--navy), var(--accent));
+      color: #fff; border-bottom-right-radius: 3px;
+    }
+    .cm-bub.error {
+      background: #fef2f2; color: #b91c1c;
+      border: 1px solid #fecaca; border-bottom-left-radius: 3px;
+    }
+    .cm-bub.assistant p            { margin-bottom: .4em; }
+    .cm-bub.assistant p:last-child { margin-bottom: 0; }
+    .cm-bub.assistant ul,
+    .cm-bub.assistant ol           { padding-left: 1.2em; margin-bottom: .4em; }
+    .cm-bub.assistant li           { margin-bottom: .2em; }
+    .cm-bub.assistant strong       { font-weight: 600; }
+    .cm-bub.assistant em           { font-style: italic; color: #4f6c8a; }
+    .cm-bub.assistant table        { border-collapse: collapse; font-size: 12px; margin: .4em 0; width: 100%; }
+    .cm-bub.assistant th,
+    .cm-bub.assistant td           { border: 1px solid #e2e8f0; padding: 4px 8px; }
+    .cm-bub.assistant th           { background: #f8fafc; font-weight: 600; }
+    .cm-bub.assistant code         { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: .84em; }
+
+    .cm-thinking { display: flex; align-items: center; gap: 4px; padding: 10px 12px; }
+    .cm-dot      { width: 6px; height: 6px; background: var(--g300); border-radius: 50%; animation: dotPop 1.2s infinite ease-in-out; }
+    .cm-dot:nth-child(2) { animation-delay: .16s; }
+    .cm-dot:nth-child(3) { animation-delay: .32s; }
+    @keyframes dotPop {
+      0%, 80%, 100% { transform: scale(.6); opacity: .35; }
+      40%           { transform: scale(1);  opacity: 1; }
     }
 
-    /* ── Message content ───────────────────────────── */
-    .msg-content { display: flex; flex-direction: column; gap: 4px; max-width: 72%; }
-    .msg-row.user .msg-content { align-items: flex-end; }
+    .cp-input-area {
+      padding: 9px 11px; background: #fff;
+      border-top: 1px solid var(--g200); flex-shrink: 0;
+    }
+    .cp-input-wrap {
+      display: flex; align-items: flex-end; gap: 0;
+      background: var(--g50); border: 1.5px solid var(--g200);
+      border-radius: 12px; padding: 5px 5px 5px 11px; transition: border-color .15s;
+    }
+    .cp-input-wrap:focus-within { border-color: var(--accent); background: #fff; }
+    #cm-input {
+      flex: 1; border: none; background: transparent;
+      font-size: 13px; font-family: inherit; line-height: 1.5;
+      resize: none; outline: none; max-height: 90px; overflow-y: auto;
+      color: var(--g900); padding: 2px 6px 2px 0;
+    }
+    #cm-input::placeholder { color: var(--g400); }
+    #cm-send {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, var(--navy), var(--accent));
+      border: none; border-radius: 8px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: opacity .15s; box-shadow: 0 2px 6px rgba(37,99,235,.3);
+    }
+    #cm-send:hover    { opacity: .88; }
+    #cm-send:disabled { opacity: .35; cursor: not-allowed; }
+    #cm-send svg      { width: 13px; height: 13px; fill: #fff; }
 
-    .msg-meta {
-      font-size: 11px;
-      color: #94a3b8;
-      padding: 0 6px;
-      font-weight: 500;
+    /* ── The Brick Button ─────────────────────── */
+    #brick-btn {
+      width: 64px; height: 74px;
+      position: relative; cursor: pointer;
+      filter: drop-shadow(0 6px 18px rgba(232,93,38,.45));
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1), filter .2s;
+      user-select: none; flex-shrink: 0;
     }
+    #brick-btn:hover {
+      transform: scale(1.09) translateY(-2px);
+      filter: drop-shadow(0 10px 26px rgba(232,93,38,.55));
+    }
+    #brick-btn:active { transform: scale(.95); }
+    #brick-btn.open   { transform: scale(1.04) translateY(-2px); }
 
-    /* ── Bubbles ───────────────────────────────────── */
-    .bubble {
-      padding: 12px 16px;
-      border-radius: 18px;
-      font-size: 14px;
-      line-height: 1.6;
-      word-wrap: break-word;
-      overflow-x: auto;
+    @keyframes hop {
+      0%   { transform: translateY(0) scaleY(1) scaleX(1); }
+      12%  { transform: translateY(0) scaleY(.82) scaleX(1.18); }
+      35%  { transform: translateY(-28px) scaleY(1.1) scaleX(.94) rotate(-5deg); }
+      58%  { transform: translateY(-14px) scaleY(1.02) scaleX(.99) rotate(3deg); }
+      78%  { transform: translateY(0) scaleY(.88) scaleX(1.12); }
+      100% { transform: translateY(0) scaleY(1) scaleX(1); }
     }
-    .bubble.assistant {
-      background: #fff;
-      color: #1e293b;
-      border-bottom-left-radius: 4px;
-      box-shadow: 0 1px 10px rgba(0,0,0,.07), 0 4px 24px rgba(0,0,0,.04);
-    }
-    .bubble.user {
-      background: linear-gradient(135deg, #1a3c5e 0%, #2563eb 100%);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-      box-shadow: 0 4px 16px rgba(37,99,235,.3);
-    }
-    .bubble.error {
-      background: #fef2f2;
-      color: #b91c1c;
-      border: 1px solid #fecaca;
-      border-bottom-left-radius: 4px;
-    }
+    #brick-btn.hopping { animation: hop .7s cubic-bezier(.36,.07,.19,.97) both; }
 
-    /* markdown inside assistant bubbles */
-    .bubble.assistant p           { margin-bottom: .55em; }
-    .bubble.assistant p:last-child{ margin-bottom: 0; }
-    .bubble.assistant ul,
-    .bubble.assistant ol          { padding-left: 1.4em; margin-bottom: .5em; }
-    .bubble.assistant li          { margin-bottom: .25em; }
-    .bubble.assistant h1,.bubble.assistant h2,
-    .bubble.assistant h3          { font-size: .95em; font-weight: 700; margin: .6em 0 .3em; }
-    .bubble.assistant strong      { font-weight: 600; }
-    .bubble.assistant em          { font-style: italic; color: #4f6c8a; }
-    .bubble.assistant table       { border-collapse: collapse; font-size: 13px; margin: .6em 0; width: 100%; }
-    .bubble.assistant th,
-    .bubble.assistant td          { border: 1px solid #e2e8f0; padding: 6px 11px; text-align: left; }
-    .bubble.assistant th          { background: #f8fafc; font-weight: 600; }
-    .bubble.assistant tr:hover td { background: #f8fafc; }
-    .bubble.assistant code        { background: #f1f5f9; padding: 2px 6px; border-radius: 5px; font-size: .86em; }
-    .bubble.assistant pre         { background: #f1f5f9; padding: 12px; border-radius: 8px; overflow-x: auto; margin: .6em 0; }
-    .bubble.assistant pre code    { background: none; padding: 0; }
-
-    /* ── Thinking indicator ────────────────────────── */
-    .thinking-dots {
-      display: flex; align-items: center; gap: 5px;
-      padding: 14px 18px;
-    }
-    .dot {
-      width: 7px; height: 7px;
-      background: #94a3b8;
-      border-radius: 50%;
-      animation: dotBounce 1.3s infinite ease-in-out;
-    }
-    .dot:nth-child(2) { animation-delay: .18s; }
-    .dot:nth-child(3) { animation-delay: .36s; }
-
-    @keyframes dotBounce {
-      0%, 80%, 100% { transform: scale(.65); opacity: .4; }
-      40%           { transform: scale(1);   opacity: 1;  }
-    }
-
-    /* ── Input area ────────────────────────────────── */
-    #input-area {
-      background: #fff;
-      border-top: 1px solid #e2e8f0;
-      padding: 16px 24px;
-      flex-shrink: 0;
-    }
-    .input-wrap {
-      display: flex;
-      align-items: flex-end;
-      gap: 0;
-      background: #f8fafc;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 8px 8px 8px 16px;
-      transition: border-color .15s, box-shadow .15s;
-    }
-    .input-wrap:focus-within {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37,99,235,.1);
-      background: #fff;
-    }
-    #msg-input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      padding: 4px 8px 4px 0;
-      font-size: 14px;
-      font-family: inherit;
-      line-height: 1.5;
-      resize: none;
-      outline: none;
-      max-height: 130px;
-      overflow-y: auto;
-      color: #0f172a;
-    }
-    #msg-input::placeholder { color: #94a3b8; }
-    #send-btn {
-      width: 38px; height: 38px;
-      background: linear-gradient(135deg, #1a3c5e, #2563eb);
-      border: none;
-      border-radius: 11px;
-      cursor: pointer;
+    .brick-badge {
+      position: absolute; top: -5px; right: -5px;
+      width: 18px; height: 18px;
+      background: #ef4444; border-radius: 50%; border: 2px solid var(--g100);
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: opacity .15s, transform .1s, box-shadow .15s;
-      box-shadow: 0 2px 8px rgba(37,99,235,.3);
+      font-size: 9px; font-weight: 800; color: #fff;
+      opacity: 0; transform: scale(0);
+      transition: opacity .18s, transform .25s cubic-bezier(.34,1.56,.64,1);
     }
-    #send-btn:hover   { opacity: .9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,.4); }
-    #send-btn:active  { transform: translateY(0); }
-    #send-btn:disabled{ opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
-    #send-btn svg     { width: 16px; height: 16px; fill: #fff; }
+    .brick-badge.on { opacity: 1; transform: scale(1); }
 
-    .input-hint {
-      text-align: center;
-      font-size: 11px;
-      color: #94a3b8;
-      margin-top: 8px;
+    .brick-tip {
+      position: absolute; bottom: calc(100% + 10px); right: 0;
+      background: var(--g900); color: #fff;
+      padding: 6px 11px; border-radius: 8px;
+      font-size: 11.5px; font-weight: 500; white-space: nowrap;
+      pointer-events: none; opacity: 0; transform: translateY(4px);
+      transition: opacity .15s, transform .15s;
     }
+    .brick-tip::after {
+      content: ''; position: absolute; top: 100%; right: 18px;
+      border: 5px solid transparent; border-top-color: var(--g900);
+    }
+    #brick-btn:hover .brick-tip { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
+<!-- Header -->
 <header>
-  <div class="header-left">
-    <div class="header-icon">🏙️</div>
+  <a href="/" class="logo">
+    <div class="logo-icon">🏙️</div>
+    UrbanTrace
+  </a>
+  <nav>
+    <a href="/" class="active" data-i18n="nav_search">Search</a>
+    <a href="/stats" data-i18n="nav_stats">Market Stats</a>
+    <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
+    <a href="#" class="nav-about" onclick="openAbout();return false;" data-i18n="nav_about">About</a>
+  </nav>
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧 EN</button>
+    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴 RO</button>
+    <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺 HU</button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-mesh-mid"></div>
+  <div class="hero-content">
+    <h1 data-i18n="hero_title">Explore Properties in <span>Cluj-Napoca</span></h1>
+    <p data-i18n="hero_sub">Search, filter, and analyze real estate data across all neighborhoods</p>
+    <div class="search-box">
+      <input type="text" id="main-search" data-i18n-ph="search_ph" placeholder="Search by address, neighborhood, owner…" autocomplete="off" />
+      <button onclick="applyFilters()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <span data-i18n="search_btn">Search</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Filters -->
+<div class="filters-bar">
+  <span class="filter-label" data-i18n="lbl_hood">Neighborhood</span>
+  <div class="chip active" data-group="hood" data-val="All"        onclick="pickChip(this)" data-i18n="opt_all">All</div>
+  <div class="chip"        data-group="hood" data-val="Centru"     onclick="pickChip(this)">Centru</div>
+  <div class="chip"        data-group="hood" data-val="Grigorescu"  onclick="pickChip(this)">Grigorescu</div>
+  <div class="chip"        data-group="hood" data-val="Mănăștur"   onclick="pickChip(this)">Mănăștur</div>
+  <div class="chip"        data-group="hood" data-val="Zorilor"    onclick="pickChip(this)">Zorilor</div>
+  <div class="chip"        data-group="hood" data-val="Europa"     onclick="pickChip(this)">Europa</div>
+  <div class="chip-sep"></div>
+  <span class="filter-label" data-i18n="lbl_own">Ownership</span>
+  <div class="chip active" data-group="own" data-val="All"         onclick="pickChip(this)" data-i18n="opt_all">All</div>
+  <div class="chip"        data-group="own" data-val="SRL"         onclick="pickChip(this)">SRL</div>
+  <div class="chip"        data-group="own" data-val="Individual"  onclick="pickChip(this)" data-i18n="opt_individual">Individual</div>
+  <div class="chip-sep"></div>
+  <span class="filter-label" data-i18n="lbl_price">Price</span>
+  <div class="chip active" data-group="price" data-val="Any"   onclick="pickChip(this)" data-i18n="opt_any">Any</div>
+  <div class="chip"        data-group="price" data-val="low"   onclick="pickChip(this)" data-i18n="price_low">&lt; 500k RON</div>
+  <div class="chip"        data-group="price" data-val="mid"   onclick="pickChip(this)" data-i18n="price_mid">500k – 1M</div>
+  <div class="chip"        data-group="price" data-val="high"  onclick="pickChip(this)" data-i18n="price_high">&gt; 1M RON</div>
+</div>
+
+<!-- Main content -->
+<main class="main">
+  <div class="results-header">
     <div>
-      <div class="header-title">UrbanTrace AI</div>
-      <div class="header-sub">
-        <span class="status-dot"></span>
-        Cluj-Napoca Property Research
+      <div class="results-title" data-i18n="res_title">Property Listings</div>
+      <div class="results-count" id="results-count"></div>
+    </div>
+    <select class="sort-select" onchange="renderCards()">
+      <option value="price-desc" data-i18n-opt="sort_phd">Price: High → Low</option>
+      <option value="price-asc"  data-i18n-opt="sort_pal">Price: Low → High</option>
+      <option value="sqm-desc"   data-i18n-opt="sort_sqm">Area: Large → Small</option>
+      <option value="recent"     data-i18n-opt="sort_rec">Most Recent</option>
+    </select>
+  </div>
+  <div class="prop-grid" id="prop-grid"></div>
+</main>
+
+
+<!-- About modal -->
+<div class="modal-backdrop" id="about-modal" onclick="if(event.target===this)closeAbout()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAbout()">✕</button>
+    <div class="modal-logo">🧱</div>
+    <div class="modal-title">Urbantrace</div>
+    <div class="modal-tagline" data-i18n="about_tag">
+      An AI-powered research assistant for exploring structured Cluj-Napoca
+      property data through natural language.
+    </div>
+    <hr class="modal-divider" />
+    <div class="modal-author"><span data-i18n="about_by">Designed and built by</span> <strong>Sándor Attila Nagy</strong></div>
+    <div class="modal-copy" data-i18n="about_copy">© 2025 Sándor Attila Nagy. All rights reserved.</div>
+    <div class="modal-stack">
+      <span class="modal-tag">Python</span>
+      <span class="modal-tag">FastAPI</span>
+      <span class="modal-tag">OpenAI</span>
+      <span class="modal-tag">Chart.js</span>
+      <span class="modal-tag">Nominatim / OSM</span>
+      <span class="modal-tag">Cluj-Napoca data</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  BRICK ASSISTANT WIDGET                      -->
+<!-- ════════════════════════════════════════════ -->
+<div id="brick-widget">
+
+  <!-- Chat panel -->
+  <div id="chat-panel">
+    <div class="cp-header">
+      <div class="cp-avatar">🧱</div>
+      <div class="cp-info">
+        <div class="cp-name">Brick — UrbanTrace AI</div>
+        <div class="cp-sub"><div class="cp-dot"></div>Cluj-Napoca Property Expert</div>
+      </div>
+      <button class="cp-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="cp-msgs" id="cp-msgs"></div>
+    <div class="cp-input-area">
+      <div class="cp-input-wrap">
+        <textarea id="cm-input" rows="1" data-i18n-ph="ask_ph" placeholder="Ask about properties…"></textarea>
+        <button id="cm-send">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
       </div>
     </div>
   </div>
-  <button id="reset-btn">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-      <path d="M3 3v5h5"/>
+
+  <!-- The brick mascot button -->
+  <div id="brick-btn" onclick="toggleChat()">
+    <div class="brick-badge" id="brick-badge">1</div>
+    <div class="brick-tip">Ask me anything! 😊</div>
+    <svg width="64" height="74" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Studs (back ellipses for depth) -->
+      <ellipse cx="20" cy="12" rx="9" ry="5.5" fill="#c94e1e"/>
+      <ellipse cx="44" cy="12" rx="9" ry="5.5" fill="#c94e1e"/>
+      <!-- Studs (front) -->
+      <ellipse cx="20" cy="10" rx="9" ry="5.5" fill="#f07040"/>
+      <ellipse cx="44" cy="10" rx="9" ry="5.5" fill="#f07040"/>
+      <!-- Stud rims -->
+      <ellipse cx="20" cy="10" rx="9" ry="5.5" fill="none" stroke="#c94e1e" stroke-width="1"/>
+      <ellipse cx="44" cy="10" rx="9" ry="5.5" fill="none" stroke="#c94e1e" stroke-width="1"/>
+      <!-- Brick body -->
+      <rect x="3" y="15" width="58" height="54" rx="6" fill="#e85d26"/>
+      <!-- Highlight gradient overlay -->
+      <rect x="3" y="15" width="58" height="54" rx="6" fill="url(#bg)"/>
+      <!-- Mortar lines -->
+      <line x1="3"  y1="42" x2="61" y2="42" stroke="#c94e1e" stroke-width="1.5" opacity=".45"/>
+      <line x1="32" y1="15" x2="32" y2="42" stroke="#c94e1e" stroke-width="1.5" opacity=".35"/>
+      <line x1="17" y1="42" x2="17" y2="69" stroke="#c94e1e" stroke-width="1.5" opacity=".35"/>
+      <line x1="47" y1="42" x2="47" y2="69" stroke="#c94e1e" stroke-width="1.5" opacity=".35"/>
+      <!-- Eyes whites -->
+      <circle cx="22" cy="32" r="5.5" fill="#fff" opacity=".95"/>
+      <circle cx="42" cy="32" r="5.5" fill="#fff" opacity=".95"/>
+      <!-- Pupils -->
+      <circle cx="23" cy="33" r="2.8" fill="#1a1a2e"/>
+      <circle cx="43" cy="33" r="2.8" fill="#1a1a2e"/>
+      <!-- Eye shine -->
+      <circle cx="24.2" cy="31.5" r="1.1" fill="#fff"/>
+      <circle cx="44.2" cy="31.5" r="1.1" fill="#fff"/>
+      <!-- Smile -->
+      <path d="M19 48 Q32 60 45 48" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity=".95"/>
+      <!-- Cheeks -->
+      <ellipse cx="14" cy="46" rx="5" ry="3" fill="#ff7043" opacity=".3"/>
+      <ellipse cx="50" cy="46" rx="5" ry="3" fill="#ff7043" opacity=".3"/>
+      <defs>
+        <linearGradient id="bg" x1="3" y1="15" x2="61" y2="69" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#fff" stop-opacity=".1"/>
+          <stop offset="100%" stop-color="#000" stop-opacity=".07"/>
+        </linearGradient>
+      </defs>
     </svg>
-    New Chat
-  </button>
-</header>
-
-<div id="chat"></div>
-
-<div id="input-area">
-  <div class="input-wrap">
-    <textarea id="msg-input" rows="1"
-      placeholder="Ask about Cluj-Napoca properties, sales, ownership, market stats…"></textarea>
-    <button id="send-btn" title="Send (Enter)">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-      </svg>
-    </button>
   </div>
-  <div class="input-hint">Enter to send &nbsp;·&nbsp; Shift+Enter for new line</div>
-</div>
+
+</div><!-- #brick-widget -->
+
 
 <script>
-  const chat    = document.getElementById('chat');
-  const input   = document.getElementById('msg-input');
-  const sendBtn = document.getElementById('send-btn');
+  /* ── Translations ───────────────────────────── */
+  const T = {
+    en: {
+      nav_search:'Search', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About',
+      hero_title:'Explore Properties in Cluj-Napoca', hero_sub:'Search, filter, and analyze real estate data across all neighborhoods',
+      search_ph:'Search by address, neighborhood, owner…', search_btn:'Search',
+      lbl_hood:'Neighborhood', lbl_own:'Ownership', lbl_price:'Price',
+      opt_all:'All', opt_any:'Any', opt_individual:'Individual',
+      price_low:'< 500k RON', price_mid:'500k – 1M', price_high:'> 1M RON',
+      sort_phd:'Price: High → Low', sort_pal:'Price: Low → High',
+      sort_sqm:'Area: Large → Small', sort_rec:'Most Recent',
+      res_title:'Property Listings',
+      brick_hi:"Hi! I'm **Brick** 🧱 — your Cluj-Napoca property assistant!\n\nClick any property card and I'll pull up details. Or ask me:\n- *\"What's the median price in Grigorescu?\"*\n- *\"Show SRL-owned properties over 1M RON\"*\n- *\"Who owns Bd. Eroilor 42?\"*",
+      about_by:'Designed and built by', about_copy:'© 2025 Sándor Attila Nagy. All rights reserved.',
+      about_tag:'An AI-powered research assistant for exploring structured Cluj-Napoca property data through natural language.',
+      empty:'No properties match your filters.<br>Try asking <strong>Brick</strong> for help 🧱',
+      ask_ph:'Ask about properties…'
+    },
+    ro: {
+      nav_search:'Căutare', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre',
+      hero_title:'Explorați Proprietăți în Cluj-Napoca', hero_sub:'Căutați, filtrați și analizați date imobiliare din toate cartierele',
+      search_ph:'Căutați după adresă, cartier, proprietar…', search_btn:'Căutare',
+      lbl_hood:'Cartier', lbl_own:'Proprietar', lbl_price:'Preț',
+      opt_all:'Toate', opt_any:'Orice', opt_individual:'Persoană fizică',
+      price_low:'< 500k RON', price_mid:'500k – 1M', price_high:'> 1M RON',
+      sort_phd:'Preț: Mare → Mic', sort_pal:'Preț: Mic → Mare',
+      sort_sqm:'Suprafață: Mare → Mică', sort_rec:'Cele mai recente',
+      res_title:'Anunțuri Imobiliare',
+      brick_hi:"Salut! Sunt **Brick** 🧱 — asistentul tău imobiliar!\n\nApasă pe orice proprietate pentru detalii. Sau întreabă-mă:\n- *\"Care e prețul median în Grigorescu?\"*\n- *\"Proprietăți SRL peste 1M RON\"*\n- *\"Cine deține Bd. Eroilor 42?\"*",
+      about_by:'Conceput și realizat de', about_copy:'© 2025 Sándor Attila Nagy. Toate drepturile rezervate.',
+      about_tag:'Asistent de cercetare AI pentru date imobiliare structurate din Cluj-Napoca prin limbaj natural.',
+      empty:'Nicio proprietate nu corespunde filtrelor.<br>Întreabă-l pe <strong>Brick</strong> 🧱',
+      ask_ph:'Întreabă despre proprietăți…'
+    },
+    hu: {
+      nav_search:'Keresés', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk',
+      hero_title:'Fedezze fel Kolozsvár ingatlanait', hero_sub:'Keresse, szűrje és elemezze az ingatlanadatokat az összes városnegyedben',
+      search_ph:'Keresés cím, negyed vagy tulajdonos alapján…', search_btn:'Keresés',
+      lbl_hood:'Negyed', lbl_own:'Tulajdonos', lbl_price:'Ár',
+      opt_all:'Összes', opt_any:'Bármely', opt_individual:'Magánszemély',
+      price_low:'< 500e RON', price_mid:'500e – 1M', price_high:'> 1M RON',
+      sort_phd:'Ár: Magas → Alacsony', sort_pal:'Ár: Alacsony → Magas',
+      sort_sqm:'Terület: Nagy → Kis', sort_rec:'Legújabb',
+      res_title:'Ingatlanhirdetések',
+      brick_hi:"Szia! **Brick** vagyok 🧱 — kolozsvári ingatlan asszisztensed!\n\nKattints bármelyik ingatlanra a részletekért. Vagy kérdezz:\n- *\"Mi a medián ár Grigorescu-ban?\"*\n- *\"KFT-tulajdonú ingatlanok 1M RON felett\"*\n- *\"Kié a Bd. Eroilor 42?\"*",
+      about_by:'Tervezte és fejlesztette', about_copy:'© 2025 Sándor Attila Nagy. Minden jog fenntartva.',
+      about_tag:'Mesterséges intelligencia alapú kutatási asszisztens Kolozsvár ingatlanadatainak természetes nyelvű lekérdezéséhez.',
+      empty:'Nem találhatók ingatlanok a szűrési feltételek alapján.<br>Kérdezd <strong>Brick</strong>-et 🧱',
+      ask_ph:'Kérdezz az ingatlanokról…'
+    },
+  };
 
-  marked.setOptions({ breaks: true, gfm: true });
+  let currentLang = 'en';
 
-  function scrollBottom() {
-    chat.scrollTop = chat.scrollHeight;
+  function setLang(lang) {
+    if (!T[lang]) lang = 'en';
+    currentLang = lang;
+    localStorage.setItem('ut_lang', lang);
+
+    // Update lang buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    // Update text content
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (T[lang][key] !== undefined) el.textContent = T[lang][key];
+    });
+
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const key = el.dataset.i18nPh;
+      if (T[lang][key] !== undefined) el.placeholder = T[lang][key];
+    });
+
+    // Update select options
+    document.querySelectorAll('[data-i18n-opt]').forEach(el => {
+      const key = el.dataset.i18nOpt;
+      if (T[lang][key] !== undefined) el.textContent = T[lang][key];
+    });
+
+    // Re-render cards for empty state text update
+    renderCards();
   }
 
-  function createRow(role) {
+  /* ── Building SVG illustrations ─────────────── */
+  function buildingImg(type) {
+    const s = {
+      apartment: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#bfdbfe'/><stop offset='100%' stop-color='#eff6ff'/></linearGradient></defs><rect width='400' height='200' fill='url(#s)'/><rect y='172' width='400' height='28' fill='#bbf7d0'/><rect y='170' width='400' height='4' fill='#86efac'/><rect x='55' y='35' width='290' height='140' fill='#94a3b8'/><rect x='55' y='35' width='290' height='70' fill='#b0bec5'/><rect x='50' y='28' width='300' height='9' fill='#64748b' rx='1'/><rect x='75' y='46' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='113' y='46' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='151' y='46' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='189' y='46' width='26' height='19' fill='#dbeafe' rx='1'/><rect x='227' y='46' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='265' y='46' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='303' y='46' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='75' y='76' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='113' y='76' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='151' y='76' width='26' height='19' fill='#dbeafe' rx='1'/><rect x='189' y='76' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='227' y='76' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='265' y='76' width='26' height='19' fill='#dbeafe' rx='1'/><rect x='303' y='76' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='75' y='108' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='113' y='108' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='151' y='108' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='189' y='108' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='227' y='108' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='265' y='108' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='303' y='108' width='26' height='19' fill='#dbeafe' rx='1'/><rect x='75' y='140' width='26' height='35' fill='#bfdbfe' rx='1'/><rect x='113' y='140' width='26' height='35' fill='#bfdbfe' rx='1'/><rect x='175' y='138' width='50' height='37' fill='#475569' rx='2'/><circle cx='222' cy='158' r='3' fill='#94a3b8'/><rect x='265' y='140' width='26' height='35' fill='#bfdbfe' rx='1'/><rect x='303' y='140' width='26' height='35' fill='#bfdbfe' rx='1'/><circle cx='30' cy='174' r='22' fill='#4ade80'/><rect x='28' y='166' width='5' height='12' fill='#6b7280'/><circle cx='372' cy='176' r='18' fill='#86efac'/></svg>`,
+
+      house: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#fef9c3'/><stop offset='100%' stop-color='#fefce8'/></linearGradient></defs><rect width='400' height='200' fill='url(#s)'/><rect y='168' width='400' height='32' fill='#d9f99d'/><rect y='166' width='400' height='4' fill='#a3e635'/><rect x='100' y='92' width='200' height='82' fill='#fde68a'/><polygon points='88,92 200,24 312,92' fill='#ef4444'/><rect x='244' y='36' width='20' height='36' fill='#b91c1c'/><rect x='240' y='28' width='28' height='10' fill='#991b1b' rx='1'/><rect x='118' y='108' width='48' height='38' fill='#93c5fd' rx='2'/><line x1='142' y1='108' x2='142' y2='146' stroke='#bfdbfe' stroke-width='2'/><line x1='118' y1='127' x2='166' y2='127' stroke='#bfdbfe' stroke-width='2'/><rect x='234' y='108' width='48' height='38' fill='#93c5fd' rx='2'/><line x1='258' y1='108' x2='258' y2='146' stroke='#bfdbfe' stroke-width='2'/><line x1='234' y1='127' x2='282' y2='127' stroke='#bfdbfe' stroke-width='2'/><rect x='178' y='132' width='44' height='42' fill='#92400e' rx='3'/><circle cx='218' cy='155' r='3.5' fill='#fbbf24'/><circle cx='45' cy='170' r='26' fill='#4ade80'/><circle cx='355' cy='173' r='20' fill='#86efac'/><circle cx='80' cy='50' r='14' fill='#fff' opacity='.8'/><circle cx='110' cy='42' r='20' fill='#fff' opacity='.7'/></svg>`,
+
+      villa: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#f3e8ff'/><stop offset='100%' stop-color='#faf5ff'/></linearGradient></defs><rect width='400' height='200' fill='url(#s)'/><rect y='170' width='400' height='30' fill='#bbf7d0'/><rect y='168' width='400' height='4' fill='#86efac'/><rect x='28' y='85' width='70' height='90' fill='#e2e8f0'/><rect x='302' y='85' width='70' height='90' fill='#e2e8f0'/><rect x='78' y='55' width='244' height='120' fill='#f1f5f9'/><rect x='78' y='55' width='244' height='55' fill='#e9d5ff'/><polygon points='68,55 200,12 332,55' fill='#7c3aed'/><polygon points='18,85 63,62 108,85' fill='#6d28d9'/><polygon points='292,85 337,62 382,85' fill='#6d28d9'/><rect x='88' y='62' width='30' height='22' fill='#ddd6fe' rx='2'/><rect x='128' y='62' width='30' height='22' fill='#c4b5fd' rx='2'/><rect x='242' y='62' width='30' height='22' fill='#ddd6fe' rx='2'/><rect x='282' y='62' width='30' height='22' fill='#c4b5fd' rx='2'/><rect x='100' y='118' width='8' height='57' fill='#f8fafc' rx='2'/><rect x='135' y='118' width='8' height='57' fill='#f8fafc' rx='2'/><rect x='257' y='118' width='8' height='57' fill='#f8fafc' rx='2'/><rect x='292' y='118' width='8' height='57' fill='#f8fafc' rx='2'/><rect x='38' y='92' width='32' height='24' fill='#ddd6fe' rx='2'/><rect x='330' y='92' width='32' height='24' fill='#ddd6fe' rx='2'/><rect x='38' y='124' width='32' height='24' fill='#ddd6fe' rx='2'/><rect x='330' y='124' width='32' height='24' fill='#ddd6fe' rx='2'/><rect x='168' y='128' width='64' height='47' fill='#4c1d95' rx='3'/><circle cx='198' cy='153' r='3.5' fill='#a78bfa'/></svg>`,
+
+      modern: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#e0f2fe'/><stop offset='100%' stop-color='#f0f9ff'/></linearGradient></defs><rect width='400' height='200' fill='url(#s)'/><rect y='172' width='400' height='28' fill='#d1fae5'/><rect y='170' width='400' height='4' fill='#6ee7b7'/><rect x='38' y='80' width='88' height='95' fill='#1e3a5f'/><rect x='274' y='92' width='88' height='83' fill='#1e293b'/><rect x='130' y='18' width='140' height='157' fill='#334155'/><rect x='125' y='12' width='150' height='8' fill='#0f172a' rx='1'/><rect x='138' y='24' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='176' y='24' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='214' y='24' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='138' y='40' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='176' y='40' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='214' y='40' width='30' height='10' fill='#38bdf8' rx='1'/><rect x='138' y='56' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='176' y='56' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='214' y='56' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='138' y='72' width='30' height='10' fill='#38bdf8' rx='1'/><rect x='176' y='72' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='214' y='72' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='138' y='88' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='176' y='88' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='214' y='88' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='138' y='104' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='176' y='104' width='30' height='10' fill='#38bdf8' rx='1'/><rect x='214' y='104' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='138' y='120' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='176' y='120' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='214' y='120' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='150' y='152' width='100' height='8' fill='#475569' rx='1'/><rect x='168' y='158' width='64' height='7' fill='#0ea5e9' rx='1'/><rect x='48' y='88' width='24' height='10' fill='#7dd3fc' rx='1'/><rect x='80' y='88' width='24' height='10' fill='#bae6fd' rx='1'/><rect x='48' y='106' width='24' height='10' fill='#38bdf8' rx='1'/><rect x='80' y='106' width='24' height='10' fill='#7dd3fc' rx='1'/><rect x='284' y='100' width='24' height='10' fill='#7dd3fc' rx='1'/><rect x='316' y='100' width='24' height='10' fill='#bae6fd' rx='1'/><rect x='284' y='118' width='24' height='10' fill='#38bdf8' rx='1'/><rect x='316' y='118' width='24' height='10' fill='#7dd3fc' rx='1'/></svg>`,
+
+      townhouse: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#fce7f3'/><stop offset='100%' stop-color='#fdf2f8'/></linearGradient></defs><rect width='400' height='200' fill='url(#s)'/><rect y='170' width='400' height='30' fill='#d1fae5'/><rect y='168' width='400' height='4' fill='#6ee7b7'/><rect x='18' y='75' width='108' height='100' fill='#f8fafc'/><polygon points='10,75 72,30 134,75' fill='#dc2626'/><rect x='30' y='90' width='30' height='24' fill='#bfdbfe' rx='1'/><rect x='70' y='90' width='30' height='24' fill='#bfdbfe' rx='1'/><rect x='30' y='125' width='30' height='24' fill='#dbeafe' rx='1'/><rect x='70' y='125' width='30' height='24' fill='#dbeafe' rx='1'/><rect x='54' y='140' width='38' height='35' fill='#92400e' rx='2'/><rect x='146' y='65' width='108' height='110' fill='#f1f5f9'/><polygon points='138,65 200,18 262,65' fill='#b91c1c'/><rect x='158' y='80' width='30' height='24' fill='#c4b5fd' rx='1'/><rect x='198' y='80' width='30' height='24' fill='#c4b5fd' rx='1'/><rect x='158' y='115' width='30' height='24' fill='#ddd6fe' rx='1'/><rect x='198' y='115' width='30' height='24' fill='#ddd6fe' rx='1'/><rect x='182' y='130' width='38' height='45' fill='#4c1d95' rx='2'/><rect x='274' y='75' width='108' height='100' fill='#fafafa'/><polygon points='266,75 328,30 390,75' fill='#ef4444'/><rect x='286' y='90' width='30' height='24' fill='#bbf7d0' rx='1'/><rect x='326' y='90' width='30' height='24' fill='#bbf7d0' rx='1'/><rect x='286' y='125' width='30' height='24' fill='#d1fae5' rx='1'/><rect x='326' y='125' width='30' height='24' fill='#d1fae5' rx='1'/><rect x='310' y='140' width='38' height='35' fill='#065f46' rx='2'/><circle cx='15' cy='172' r='18' fill='#4ade80'/><circle cx='385' cy='172' r='18' fill='#4ade80'/></svg>`
+    };
+    return `data:image/svg+xml,${encodeURIComponent(s[type] || s.apartment)}`;
+  }
+
+  /* ── Mock data ──────────────────────────────── */
+  const PROPERTIES = [
+    { id:1, addr:'Str. Horea 15',           hood:'Centru',     price:875000,  sqm:65,  owner:'SRL',        date:'2024-03', type:'apartment' },
+    { id:2, addr:'Bd. Eroilor 42',          hood:'Centru',     price:1580000, sqm:110, owner:'Individual', date:'2024-01', type:'villa' },
+    { id:3, addr:'Str. Fabricii 8',         hood:'Grigorescu', price:720000,  sqm:72,  owner:'SRL',        date:'2023-11', type:'house' },
+    { id:4, addr:'Calea Mănăștur 55',       hood:'Mănăștur',   price:475000,  sqm:58,  owner:'Individual', date:'2023-09', type:'house' },
+    { id:5, addr:'Str. Donath 12',          hood:'Grigorescu', price:1050000, sqm:85,  owner:'Individual', date:'2024-02', type:'townhouse' },
+    { id:6, addr:'Bd. 21 Decembrie 1989 78',hood:'Centru',     price:2180000, sqm:130, owner:'SRL',        date:'2024-04', type:'modern' },
+    { id:7, addr:'Str. Piezișă 3',          hood:'Zorilor',    price:650000,  sqm:55,  owner:'Individual', date:'2023-12', type:'villa' },
+    { id:8, addr:'Calea Turzii 88',         hood:'Europa',     price:890000,  sqm:70,  owner:'SRL',        date:'2024-01', type:'apartment' },
+  ];
+
+  const filters = { hood:'All', own:'All', price:'Any' };
+  let visible = [...PROPERTIES];
+
+  const fmt  = n => new Intl.NumberFormat('ro-RO').format(n);
+  const psqm = (p, s) => fmt(Math.round(p/s)) + ' RON/mp';
+
+  function pickChip(el) {
+    const g = el.dataset.group;
+    document.querySelectorAll(`.chip[data-group="${g}"]`).forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    filters[g] = el.dataset.val;
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const q = document.getElementById('main-search').value.toLowerCase();
+    visible = PROPERTIES.filter(p => {
+      if (filters.hood !== 'All' && p.hood !== filters.hood) return false;
+      if (filters.own  !== 'All' && p.owner !== filters.own)  return false;
+      if (filters.price === 'low'  && p.price >= 500000)                     return false;
+      if (filters.price === 'mid'  && (p.price < 500000 || p.price > 1e6))   return false;
+      if (filters.price === 'high' && p.price <= 1e6)                         return false;
+      if (q && !p.addr.toLowerCase().includes(q) &&
+               !p.hood.toLowerCase().includes(q) &&
+               !p.owner.toLowerCase().includes(q)) return false;
+      return true;
+    });
+    renderCards();
+  }
+
+  document.getElementById('main-search').addEventListener('keydown', e => {
+    if (e.key === 'Enter') applyFilters();
+  });
+
+  function renderCards() {
+    const sort = document.querySelector('.sort-select').value;
+    const list = [...visible];
+    if (sort === 'price-desc') list.sort((a,b) => b.price - a.price);
+    if (sort === 'price-asc')  list.sort((a,b) => a.price - b.price);
+    if (sort === 'sqm-desc')   list.sort((a,b) => b.sqm - a.sqm);
+    if (sort === 'recent')     list.sort((a,b) => b.date.localeCompare(a.date));
+
+    document.getElementById('results-count').textContent =
+      `Showing ${list.length} propert${list.length === 1 ? 'y' : 'ies'}`;
+
+    const grid = document.getElementById('prop-grid');
+    const lang = currentLang;
+
+    if (!list.length) {
+      grid.innerHTML = `<div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+          <path d="M9 21V12h6v9"/>
+        </svg>
+        <p>${T[lang].empty}</p>
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = list.map(p => `
+      <div class="prop-card" onclick="cardClick(${JSON.stringify(p.addr)}, ${JSON.stringify(p.hood)})">
+        <div class="prop-img">
+          <img src="${buildingImg(p.type)}" alt="${p.type}" loading="lazy" />
+          <div class="prop-img-overlay"></div>
+          <div class="prop-badge ${p.owner === 'SRL' ? 'badge-srl' : 'badge-individual'}">${p.owner}</div>
+        </div>
+        <div class="prop-body">
+          <div class="prop-price">${fmt(p.price)} RON</div>
+          <div class="prop-psqm">${psqm(p.price,p.sqm)} &nbsp;·&nbsp; ${p.date}</div>
+          <div class="prop-addr">${p.addr}</div>
+          <div class="prop-hood">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+            ${p.hood}, Cluj-Napoca
+          </div>
+          <div class="prop-stats">
+            <div class="prop-stat">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+              </svg>
+              ${p.sqm} mp
+            </div>
+            <div class="prop-stat">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              ${psqm(p.price,p.sqm)}
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function brickHop() {
+    const btn = document.getElementById('brick-btn');
+    btn.classList.add('hopping');
+    btn.addEventListener('animationend', () => btn.classList.remove('hopping'), { once: true });
+  }
+
+  function cardClick(addr, hood) {
+    brickHop();
+    if (!chatOpen) toggleChat();
+    setTimeout(() => {
+      const inp = document.getElementById('cm-input');
+      inp.value = `Tell me more about ${addr} in ${hood}`;
+      inp.focus();
+    }, 320);
+  }
+
+  /* ── Brick chat ─────────────────────────────── */
+  marked.setOptions({ breaks: true, gfm: true });
+  let chatOpen = false;
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chat-panel').classList.toggle('open', chatOpen);
+    document.getElementById('brick-btn').classList.toggle('open', chatOpen);
+    if (chatOpen) {
+      hideBadge();
+      document.getElementById('cm-input').focus();
+    }
+  }
+
+  function showBadge() { document.getElementById('brick-badge').classList.add('on'); }
+  function hideBadge() { document.getElementById('brick-badge').classList.remove('on'); }
+
+  function cpScroll() {
+    const m = document.getElementById('cp-msgs');
+    m.scrollTop = m.scrollHeight;
+  }
+
+  function makeRow(role) {
     const row = document.createElement('div');
-    row.className = `msg-row ${role}`;
+    row.className = `cm-row ${role}`;
+    const av = document.createElement('div');
+    av.className = `cm-av ${role}`;
+    av.textContent = role === 'assistant' ? '🧱' : 'You';
+    row.appendChild(av);
     return row;
   }
 
-  function createAvatar(role) {
-    const av = document.createElement('div');
-    av.className = `avatar ${role}`;
-    av.textContent = role === 'assistant' ? 'UT' : 'You';
-    return av;
-  }
-
-  function addMessage(role, text, isMarkdown = false) {
-    const row     = createRow(role);
-    const av      = createAvatar(role);
-    const content = document.createElement('div');
-    content.className = 'msg-content';
-
-    const meta   = document.createElement('div');
-    meta.className = 'msg-meta';
-    meta.textContent = role === 'user' ? 'You' : 'Assistant';
-
-    const bubble = document.createElement('div');
-    bubble.className = `bubble ${role}`;
-
-    if (isMarkdown) {
-      bubble.innerHTML = marked.parse(text);
-    } else {
-      bubble.textContent = text;
-    }
-
-    content.appendChild(meta);
-    content.appendChild(bubble);
-    row.appendChild(av);
-    row.appendChild(content);
-    chat.appendChild(row);
-    scrollBottom();
-    return bubble;
+  function addMsg(role, text, markdown = false) {
+    const row = makeRow(role);
+    const bub = document.createElement('div');
+    bub.className = `cm-bub ${role}`;
+    if (markdown) bub.innerHTML = marked.parse(text);
+    else bub.textContent = text;
+    row.appendChild(bub);
+    document.getElementById('cp-msgs').appendChild(row);
+    cpScroll();
   }
 
   function addThinking() {
-    const row     = createRow('assistant');
-    const av      = createAvatar('assistant');
-    const content = document.createElement('div');
-    content.className = 'msg-content';
-
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble assistant';
-    const dots = document.createElement('div');
-    dots.className = 'thinking-dots';
-    dots.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-    bubble.appendChild(dots);
-
-    content.appendChild(bubble);
-    row.appendChild(av);
-    row.appendChild(content);
-    chat.appendChild(row);
-    scrollBottom();
+    const row = makeRow('assistant');
+    const bub = document.createElement('div');
+    bub.className = 'cm-bub assistant';
+    bub.innerHTML = '<div class="cm-thinking"><div class="cm-dot"></div><div class="cm-dot"></div><div class="cm-dot"></div></div>';
+    row.appendChild(bub);
+    document.getElementById('cp-msgs').appendChild(row);
+    cpScroll();
     return row;
   }
 
   function addError(text) {
-    const row     = createRow('assistant');
-    const av      = createAvatar('assistant');
-    const content = document.createElement('div');
-    content.className = 'msg-content';
-
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble error';
-    bubble.textContent = text;
-
-    content.appendChild(bubble);
-    row.appendChild(av);
-    row.appendChild(content);
-    chat.appendChild(row);
-    scrollBottom();
+    const row = makeRow('assistant');
+    const bub = document.createElement('div');
+    bub.className = 'cm-bub error';
+    bub.textContent = text;
+    row.appendChild(bub);
+    document.getElementById('cp-msgs').appendChild(row);
+    cpScroll();
   }
 
-  async function send() {
-    const text = input.value.trim();
-    if (!text || sendBtn.disabled) return;
+  async function cmSend() {
+    const inp = document.getElementById('cm-input');
+    const btn = document.getElementById('cm-send');
+    const text = inp.value.trim();
+    if (!text || btn.disabled) return;
 
-    input.value = '';
-    input.style.height = 'auto';
-    sendBtn.disabled = true;
-
-    addMessage('user', text);
+    inp.value = ''; inp.style.height = 'auto';
+    btn.disabled = true;
+    addMsg('user', text);
     const thinking = addThinking();
 
     try {
@@ -400,54 +947,49 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text }),
       });
-
       thinking.remove();
-
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        addError(err.detail || `Server error (${res.status}). Please try again.`);
+        addError(err.detail || `Server error (${res.status})`);
       } else {
         const data = await res.json();
-        addMessage('assistant', data.response, true);
+        addMsg('assistant', data.response, true);
+        if (!chatOpen) showBadge();
       }
     } catch {
       thinking.remove();
       addError('Could not reach the server. Is it running?');
     }
 
-    sendBtn.disabled = false;
-    input.focus();
+    btn.disabled = false;
+    inp.focus();
   }
 
-  sendBtn.addEventListener('click', send);
-
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  document.getElementById('cm-send').addEventListener('click', cmSend);
+  document.getElementById('cm-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); cmSend(); }
+  });
+  document.getElementById('cm-input').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 90) + 'px';
   });
 
-  input.addEventListener('input', () => {
-    input.style.height = 'auto';
-    input.style.height = Math.min(input.scrollHeight, 130) + 'px';
-  });
+  /* ── About modal ───────────────────────────── */
+  function openAbout()  { document.getElementById('about-modal').classList.add('open'); }
+  function closeAbout() { document.getElementById('about-modal').classList.remove('open'); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAbout(); });
 
-  document.getElementById('reset-btn').addEventListener('click', async () => {
-    await fetch('/reset', { method: 'POST' }).catch(() => {});
-    chat.innerHTML = '';
-    addMessage('assistant',
-      'Session reset. How can I help you with Cluj-Napoca property research?', true);
-  });
+  /* ── Boot ───────────────────────────────────── */
+  // Init language
+  setLang(localStorage.getItem('ut_lang') || 'en');
+  renderCards();
 
-  // Welcome message
-  addMessage('assistant',
-    'Hello! I can help you research Cluj-Napoca properties.\n\n' +
-    'Try asking:\n' +
-    '- *"Show me SRL-owned properties sold in Gheorgheni in 2023"*\n' +
-    '- *"What is the median price per sqft in Mărăști?"*\n' +
-    '- *"Who owns Strada Horea 61?"*',
-    true
-  );
+  addMsg('assistant', T[currentLang].brick_hi, true);
 
-  input.focus();
+  // First hop + badge after 4s
+  setTimeout(() => { if (!chatOpen) { brickHop(); showBadge(); } }, 4000);
+  // Periodic hops every 10s
+  setInterval(() => { if (!chatOpen) brickHop(); }, 10000);
 </script>
 </body>
 </html>

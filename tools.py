@@ -9,12 +9,8 @@ from data_loader import PropertyDataStore, parse_date
 
 MAX_ROWS_RETURNED = 12
 
-# The dataset has no true neighborhood field. These mappings are explicit and disclosed.
-KNOWN_NEIGHBORHOOD_ZIPS = {
-    "centru": ["400001", "400002", "400003"],
-    "grigorescu": ["400006", "400120"],
-    "europa": ["400130"],
-}
+# ZIP→neighborhood was removed: the ZIP codes in this dataset are not reliably
+# mapped to neighborhoods. Use the `borough` field (or geocoded `geo_neighborhood`).
 
 BOROUGH_ALIASES = {
     "marasti": "Mărăști",
@@ -82,13 +78,19 @@ def _passes_property_filters(
     notes: list[str] = []
 
     if neighborhood and not zip:
-        zips = KNOWN_NEIGHBORHOOD_ZIPS.get(neighborhood.lower().strip())
-        if zips:
-            if row.get("zip") not in zips:
-                return False, notes
-            notes.append(f"Neighborhood '{neighborhood}' approximated using ZIP(s): {', '.join(zips)} because the data has no neighborhood column.")
+        norm = _clean_borough(neighborhood) or neighborhood.strip()
+
+        # 1. Real geocoded neighborhood from Nominatim (most accurate)
+        geo = str(row.get("geo_neighborhood") or "").strip()
+        # 2. Borough field from the CSV (ground truth for this dataset)
+        row_borough = str(row.get("borough") or "").strip()
+
+        if geo and geo.lower() == norm.lower():
+            pass  # matched via real geocoding
+        elif row_borough.lower() == norm.lower():
+            pass  # matched via borough field
         else:
-            return False, [f"The data has no neighborhood column and no ZIP mapping is configured for '{neighborhood}'. Ask for a ZIP code."]
+            return False, notes
 
     if borough:
         cleaned = _clean_borough(borough)
@@ -323,9 +325,14 @@ def describe_schema(store: PropertyDataStore) -> dict[str, Any]:
         "ownership": ["propkey", "owner_name", "owner_type", "is_srl", "registration_date"],
         "transactions": ["id", "propkey", "sale_date", "sale_price", "buyer_name", "seller_name", "transaction_type"],
         "available_geographies": {
-            "boroughs": sorted({p["borough"] for p in store.properties}),
-            "zip_count": len({p["zip"] for p in store.properties}),
-            "note": "The dataset has borough and ZIP, but no dedicated neighborhood column.",
+            "boroughs": sorted({p["borough"] for p in store.properties if p.get("borough")}),
+            "zip_count": len({p["zip"] for p in store.properties if p.get("zip")}),
+            "geocoded_count": sum(1 for p in store.properties if p.get("lat")),
+            "note": (
+                "Use 'borough' or 'neighborhood' interchangeably — both match the borough field. "
+                "Real geocoded coordinates (lat/lng) are available for properties that have been "
+                "geocoded via OSM Nominatim. Geocoding runs in the background on first startup."
+            ),
         },
         "date_range": {
             "min_sale_date": min(sale_dates).isoformat() if sale_dates else None,

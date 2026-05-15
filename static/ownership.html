@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UrbanTrace — Ownership Registry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0c2340;
+      --blue:   #1a3c5e;
+      --accent: #2563eb;
+      --green:  #10b981;
+      --amber:  #d97706;
+      --g50:    #f8fafc;
+      --g100:   #f1f5f9;
+      --g200:   #e2e8f0;
+      --g300:   #cbd5e1;
+      --g400:   #94a3b8;
+      --g600:   #475569;
+      --g700:   #334155;
+      --g900:   #0f172a;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--g100);
+      color: var(--g900);
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────── */
+    header {
+      background: rgba(10,26,56,0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      color: #fff;
+      padding: 0 40px;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 24px rgba(0,0,0,.35);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; letter-spacing: -.01em; text-decoration: none; color: #fff; }
+    .logo-icon { width: 34px; height: 34px; background: rgba(255,255,255,.15); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+    nav { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
+    nav a { color: rgba(255,255,255,.7); text-decoration: none; transition: color .15s; }
+    nav a:hover { color: #fff; }
+    nav a.active { color: #fff; }
+    nav a.nav-about { cursor: pointer; }
+
+    /* ── Language switcher ───────────────────────── */
+    .lang-switcher { display: flex; align-items: center; gap: 4px; margin-left: 20px; }
+    .lang-btn {
+      background: transparent; border: 1.5px solid rgba(255,255,255,.22); color: rgba(255,255,255,.6);
+      border-radius: 20px; padding: 4px 10px; font-size: 11.5px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: all .15s; white-space: nowrap;
+    }
+    .lang-btn:hover { border-color: rgba(255,255,255,.5); color: rgba(255,255,255,.85); }
+    .lang-btn.active { background: #fff; border-color: #fff; color: var(--navy); }
+
+    /* ── About modal ────────────────────────────── */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.5);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s ease;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: #fff; border-radius: 20px; padding: 36px 40px;
+      max-width: 480px; width: calc(100% - 48px);
+      box-shadow: 0 24px 64px rgba(0,0,0,.25);
+      transform: translateY(16px) scale(.97);
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1); position: relative;
+    }
+    .modal-backdrop.open .modal { transform: translateY(0) scale(1); }
+    .modal-close { position: absolute; top: 16px; right: 18px; background: var(--g100); border: none; border-radius: 8px; width: 28px; height: 28px; cursor: pointer; font-size: 15px; color: var(--g600); display: flex; align-items: center; justify-content: center; transition: background .15s; }
+    .modal-close:hover { background: var(--g200); }
+    .modal-logo { font-size: 36px; margin-bottom: 14px; }
+    .modal-title { font-size: 22px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 6px; }
+    .modal-tagline { font-size: 14px; color: var(--g400); margin-bottom: 22px; line-height: 1.5; }
+    .modal-divider { border: none; border-top: 1px solid var(--g200); margin: 18px 0; }
+    .modal-author { font-size: 14px; color: var(--g700); margin-bottom: 4px; }
+    .modal-author strong { color: var(--g900); }
+    .modal-copy { font-size: 12.5px; color: var(--g400); }
+    .modal-stack { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+    .modal-tag { padding: 4px 11px; border-radius: 20px; background: var(--g100); border: 1px solid var(--g200); font-size: 12px; font-weight: 500; color: var(--g600); }
+
+    /* ── Hero ───────────────────────────────────── */
+    .hero {
+      background: linear-gradient(160deg, var(--navy) 0%, var(--blue) 100%);
+      color: #fff; padding: 56px 40px 48px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-mesh { position: absolute; inset: 0; pointer-events: none; }
+    .hero-mesh::before {
+      content: ''; position: absolute; top: -80px; left: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(37,99,235,.22) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-mesh::after {
+      content: ''; position: absolute; bottom: -120px; right: -80px;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(217,119,6,.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero h1 { font-size: 38px; font-weight: 800; letter-spacing: -.025em; margin-bottom: 10px; }
+    .hero p  { font-size: 16px; color: rgba(255,255,255,.62); margin-bottom: 30px; font-weight: 400; }
+    .search-box {
+      max-width: 660px; margin: 0 auto;
+      background: #fff; border-radius: 18px; display: flex; overflow: hidden;
+      box-shadow: 0 12px 48px rgba(0,0,0,.32);
+    }
+    .search-box input {
+      flex: 1; border: none; padding: 16px 22px; font-size: 15px; font-family: inherit; color: var(--g900); outline: none;
+    }
+    .search-box input::placeholder { color: var(--g400); }
+    .search-box button {
+      background: var(--accent); color: #fff; border: none; padding: 0 28px;
+      font-size: 14px; font-weight: 600; font-family: inherit;
+      cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background .15s;
+    }
+    .search-box button:hover { background: #1d4ed8; }
+
+    /* ── Filter tabs bar ──────────────────────── */
+    .filter-bar {
+      background: #fff; border-bottom: 1px solid var(--g200);
+      padding: 12px 40px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      position: sticky; top: 64px; z-index: 50;
+    }
+    .tab-btn {
+      padding: 7px 18px; border-radius: 24px; border: 1.5px solid var(--g200);
+      background: var(--g50); font-size: 13px; font-weight: 600; color: var(--g700);
+      cursor: pointer; transition: all .15s; font-family: inherit; user-select: none;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .tab-btn:hover { border-color: var(--accent); color: var(--accent); background: #eff6ff; }
+    .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,.3); }
+    .tab-count {
+      background: rgba(255,255,255,.25); border-radius: 12px; padding: 1px 7px;
+      font-size: 11px; font-weight: 700;
+    }
+    .tab-btn:not(.active) .tab-count { background: var(--g200); color: var(--g600); }
+
+    /* ── Stats bar ────────────────────────────── */
+    .stats-bar {
+      background: var(--g50); border-bottom: 1px solid var(--g200);
+      padding: 10px 40px; font-size: 12.5px; color: var(--g600);
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+    .stats-sep { color: var(--g300); }
+    .stats-badge {
+      padding: 2px 8px; border-radius: 12px; font-size: 11.5px; font-weight: 600;
+    }
+    .stats-badge.srl { background: #fef3c7; color: #92400e; }
+    .stats-badge.ind { background: #d1fae5; color: #065f46; }
+
+    /* ── Main ───────────────────────────────────── */
+    .main { max-width: 1280px; margin: 0 auto; padding: 28px 40px 100px; }
+
+    /* ── Ownership card grid ─────────────────── */
+    .own-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+
+    .own-card {
+      background: #fff; border-radius: 20px; padding: 20px 22px;
+      box-shadow: 0 1px 6px rgba(0,0,0,.06), 0 4px 20px rgba(0,0,0,.04);
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .own-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 40px rgba(37,99,235,.12), 0 4px 16px rgba(0,0,0,.07);
+    }
+
+    .own-card-top { display: flex; align-items: flex-start; gap: 14px; }
+    .own-icon {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .own-icon.srl { background: #fef3c7; }
+    .own-icon.ind { background: #d1fae5; }
+
+    .own-card-info { flex: 1; min-width: 0; }
+    .own-addr { font-size: 14.5px; font-weight: 700; color: var(--g900); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .own-borough { font-size: 12px; color: var(--g400); display: flex; align-items: center; gap: 3px; }
+
+    .own-owner-name {
+      font-size: 16px; font-weight: 700; color: var(--navy); letter-spacing: -.01em;
+      line-height: 1.3; word-break: break-word;
+    }
+
+    .own-badges { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .own-type-badge {
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+    }
+    .own-type-badge.srl { background: #fef3c7; color: #92400e; }
+    .own-type-badge.ind { background: #d1fae5; color: #065f46; }
+
+    .own-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .own-meta-item { font-size: 12px; color: var(--g600); display: flex; align-items: center; gap: 4px; }
+    .own-meta-item svg { width: 12px; height: 12px; flex-shrink: 0; opacity: .7; }
+    .own-meta-label { font-weight: 500; color: var(--g400); margin-right: 2px; }
+
+    .own-ask-btn {
+      width: 100%; padding: 9px; border-radius: 12px;
+      background: var(--g50); border: 1.5px solid var(--g200);
+      font-size: 13px; font-weight: 600; color: var(--accent); font-family: inherit;
+      cursor: pointer; transition: all .15s; text-align: center;
+    }
+    .own-ask-btn:hover { background: #eff6ff; border-color: var(--accent); }
+
+    /* ── Load more ───────────────────────────── */
+    .load-more-wrap { text-align: center; margin-top: 28px; }
+    .load-more-btn {
+      padding: 11px 32px; border-radius: 12px;
+      background: #fff; border: 1.5px solid var(--g200);
+      font-size: 14px; font-weight: 600; color: var(--g700); font-family: inherit;
+      cursor: pointer; transition: all .15s;
+    }
+    .load-more-btn:hover { border-color: var(--accent); color: var(--accent); background: #eff6ff; }
+    .load-more-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ── Empty / loading ──────────────────────── */
+    .state-box {
+      grid-column: 1 / -1; text-align: center; padding: 64px 20px; color: var(--g400);
+    }
+    .state-box svg { width: 48px; height: 48px; margin-bottom: 14px; opacity: .35; }
+    .state-box p { font-size: 15px; line-height: 1.6; }
+    .spinner {
+      width: 36px; height: 36px; border: 3px solid var(--g200);
+      border-top-color: var(--accent); border-radius: 50%;
+      animation: spin .7s linear infinite; margin: 0 auto 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ════════════════════════════════════════════ */
+    /*  BRICK WIDGET                                */
+    /* ════════════════════════════════════════════ */
+    #brick-widget { position: fixed; bottom: 28px; right: 28px; z-index: 1000; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+    #chat-panel {
+      width: 355px; height: 490px; background: #fff; border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.22), 0 6px 20px rgba(0,0,0,.1);
+      display: flex; flex-direction: column; overflow: hidden;
+      transform-origin: bottom right; transform: scale(.85) translateY(18px);
+      opacity: 0; pointer-events: none;
+      transition: transform .28s cubic-bezier(.34,1.56,.64,1), opacity .2s ease;
+    }
+    #chat-panel.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+    .cp-header { background: linear-gradient(135deg, var(--navy), var(--blue)); color: #fff; padding: 13px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .cp-avatar { width: 34px; height: 34px; background: rgba(255,255,255,.15); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .cp-info { flex: 1; }
+    .cp-name { font-size: 14px; font-weight: 700; }
+    .cp-sub  { font-size: 11px; opacity: .6; display: flex; align-items: center; gap: 4px; margin-top: 1px; }
+    .cp-dot  { width: 5px; height: 5px; background: #4ade80; border-radius: 50%; }
+    .cp-close { background: rgba(255,255,255,.1); border: none; color: #fff; width: 26px; height: 26px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: background .15s; }
+    .cp-close:hover { background: rgba(255,255,255,.22); }
+    .cp-msgs { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 12px; background: var(--g50); }
+    .cp-msgs::-webkit-scrollbar { width: 4px; }
+    .cp-msgs::-webkit-scrollbar-thumb { background: var(--g200); border-radius: 2px; }
+    .cm-row { display: flex; gap: 7px; align-items: flex-end; animation: msgIn .18s ease both; }
+    .cm-row.user { flex-direction: row-reverse; }
+    @keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .cm-av { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+    .cm-av.assistant { background: linear-gradient(135deg, var(--navy), var(--accent)); color: #fff; font-size: 14px; }
+    .cm-av.user { background: var(--g300); color: var(--g700); }
+    .cm-bub { padding: 9px 12px; border-radius: 14px; font-size: 13px; line-height: 1.55; max-width: 80%; word-wrap: break-word; }
+    .cm-bub.assistant { background: #fff; color: var(--g900); border-bottom-left-radius: 3px; box-shadow: 0 1px 5px rgba(0,0,0,.07); }
+    .cm-bub.user { background: linear-gradient(135deg, var(--navy), var(--accent)); color: #fff; border-bottom-right-radius: 3px; }
+    .cm-bub.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; border-bottom-left-radius: 3px; }
+    .cm-bub.assistant p { margin-bottom: .4em; }
+    .cm-bub.assistant p:last-child { margin-bottom: 0; }
+    .cm-bub.assistant ul, .cm-bub.assistant ol { padding-left: 1.2em; margin-bottom: .4em; }
+    .cm-bub.assistant li { margin-bottom: .2em; }
+    .cm-bub.assistant strong { font-weight: 600; }
+    .cm-bub.assistant em { font-style: italic; color: #4f6c8a; }
+    .cm-bub.assistant table { border-collapse: collapse; font-size: 12px; margin: .4em 0; width: 100%; }
+    .cm-bub.assistant th, .cm-bub.assistant td { border: 1px solid #e2e8f0; padding: 4px 8px; }
+    .cm-bub.assistant th { background: #f8fafc; font-weight: 600; }
+    .cm-bub.assistant code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: .84em; }
+    .cm-thinking { display: flex; align-items: center; gap: 4px; padding: 10px 12px; }
+    .cm-dot { width: 6px; height: 6px; background: var(--g300); border-radius: 50%; animation: dotPop 1.2s infinite ease-in-out; }
+    .cm-dot:nth-child(2) { animation-delay: .16s; }
+    .cm-dot:nth-child(3) { animation-delay: .32s; }
+    @keyframes dotPop { 0%,80%,100% { transform: scale(.6); opacity: .35; } 40% { transform: scale(1); opacity: 1; } }
+    .cp-input-area { padding: 9px 11px; background: #fff; border-top: 1px solid var(--g200); flex-shrink: 0; }
+    .cp-input-wrap { display: flex; align-items: flex-end; background: var(--g50); border: 1.5px solid var(--g200); border-radius: 12px; padding: 5px 5px 5px 11px; transition: border-color .15s; }
+    .cp-input-wrap:focus-within { border-color: var(--accent); background: #fff; }
+    #cm-input { flex: 1; border: none; background: transparent; font-size: 13px; font-family: inherit; line-height: 1.5; resize: none; outline: none; max-height: 90px; overflow-y: auto; color: var(--g900); padding: 2px 6px 2px 0; }
+    #cm-input::placeholder { color: var(--g400); }
+    #cm-send { width: 30px; height: 30px; background: linear-gradient(135deg, var(--navy), var(--accent)); border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity .15s; box-shadow: 0 2px 6px rgba(37,99,235,.3); }
+    #cm-send:hover { opacity: .88; }
+    #cm-send:disabled { opacity: .35; cursor: not-allowed; }
+    #cm-send svg { width: 13px; height: 13px; fill: #fff; }
+    #brick-btn { width: 64px; height: 74px; position: relative; cursor: pointer; filter: drop-shadow(0 6px 18px rgba(232,93,38,.45)); transition: transform .22s cubic-bezier(.34,1.56,.64,1), filter .2s; user-select: none; flex-shrink: 0; }
+    #brick-btn:hover { transform: scale(1.09) translateY(-2px); filter: drop-shadow(0 10px 26px rgba(232,93,38,.55)); }
+    #brick-btn:active { transform: scale(.95); }
+    #brick-btn.open { transform: scale(1.04) translateY(-2px); }
+    @keyframes hop {
+      0%   { transform: translateY(0) scaleY(1) scaleX(1); }
+      12%  { transform: translateY(0) scaleY(.82) scaleX(1.18); }
+      35%  { transform: translateY(-28px) scaleY(1.1) scaleX(.94) rotate(-5deg); }
+      58%  { transform: translateY(-14px) scaleY(1.02) scaleX(.99) rotate(3deg); }
+      78%  { transform: translateY(0) scaleY(.88) scaleX(1.12); }
+      100% { transform: translateY(0) scaleY(1) scaleX(1); }
+    }
+    #brick-btn.hopping { animation: hop .7s cubic-bezier(.36,.07,.19,.97) both; }
+    .brick-badge { position: absolute; top: -5px; right: -5px; width: 18px; height: 18px; background: #ef4444; border-radius: 50%; border: 2px solid var(--g100); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: #fff; opacity: 0; transform: scale(0); transition: opacity .18s, transform .25s cubic-bezier(.34,1.56,.64,1); }
+    .brick-badge.on { opacity: 1; transform: scale(1); }
+    .brick-tip { position: absolute; bottom: calc(100% + 10px); right: 0; background: var(--g900); color: #fff; padding: 6px 11px; border-radius: 8px; font-size: 11.5px; font-weight: 500; white-space: nowrap; pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s; }
+    .brick-tip::after { content: ''; position: absolute; top: 100%; right: 18px; border: 5px solid transparent; border-top-color: var(--g900); }
+    #brick-btn:hover .brick-tip { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <a href="/" class="logo">
+    <div class="logo-icon">🏙️</div>
+    UrbanTrace
+  </a>
+  <nav>
+    <a href="/" data-i18n="nav_search">Search</a>
+    <a href="/stats" data-i18n="nav_stats">Market Stats</a>
+    <a href="/ownership" class="active" data-i18n="nav_ownership">Ownership</a>
+    <a href="#" class="nav-about" onclick="openAbout();return false;" data-i18n="nav_about">About</a>
+  </nav>
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧 EN</button>
+    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴 RO</button>
+    <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺 HU</button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-content">
+    <h1 data-i18n="own_title">Ownership Registry</h1>
+    <p data-i18n="own_sub">Search who owns any property in Cluj-Napoca</p>
+    <div class="search-box">
+      <input type="text" id="own-search" data-i18n-ph="own_search_ph" placeholder="Search by address, owner name, property key…" autocomplete="off" />
+      <button onclick="doSearch()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <span data-i18n="own_search_btn">Search</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Filter tabs -->
+<div class="filter-bar">
+  <button class="tab-btn active" data-type="all" onclick="pickTab(this)">
+    <span data-i18n="own_all">All</span>
+    <span class="tab-count" id="cnt-all">—</span>
+  </button>
+  <button class="tab-btn" data-type="srl" onclick="pickTab(this)">
+    <span data-i18n="own_srl">SRL</span>
+    <span class="tab-count" id="cnt-srl">—</span>
+  </button>
+  <button class="tab-btn" data-type="individual" onclick="pickTab(this)">
+    <span data-i18n="own_individual">Individual</span>
+    <span class="tab-count" id="cnt-ind">—</span>
+  </button>
+</div>
+
+<!-- Stats bar -->
+<div class="stats-bar" id="stats-bar" style="display:none;">
+  <span id="stats-text">—</span>
+</div>
+
+<!-- Main -->
+<main class="main">
+  <div class="own-grid" id="own-grid">
+    <div class="state-box">
+      <div class="spinner"></div>
+      <p>Loading ownership data…</p>
+    </div>
+  </div>
+  <div class="load-more-wrap" id="load-more-wrap" style="display:none;">
+    <button class="load-more-btn" id="load-more-btn" onclick="loadMore()">Load more</button>
+  </div>
+</main>
+
+<!-- About modal -->
+<div class="modal-backdrop" id="about-modal" onclick="if(event.target===this)closeAbout()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAbout()">✕</button>
+    <div class="modal-logo">🧱</div>
+    <div class="modal-title">Urbantrace</div>
+    <div class="modal-tagline" data-i18n="about_tag">
+      An AI-powered research assistant for exploring structured Cluj-Napoca property data through natural language.
+    </div>
+    <hr class="modal-divider" />
+    <div class="modal-author"><span data-i18n="about_by">Designed and built by</span> <strong>Sándor Attila Nagy</strong></div>
+    <div class="modal-copy" data-i18n="about_copy">© 2025 Sándor Attila Nagy. All rights reserved.</div>
+    <div class="modal-stack">
+      <span class="modal-tag">Python</span>
+      <span class="modal-tag">FastAPI</span>
+      <span class="modal-tag">OpenAI</span>
+      <span class="modal-tag">Chart.js</span>
+      <span class="modal-tag">Nominatim / OSM</span>
+      <span class="modal-tag">Cluj-Napoca data</span>
+    </div>
+  </div>
+</div>
+
+<!-- BRICK WIDGET -->
+<div id="brick-widget">
+  <div id="chat-panel">
+    <div class="cp-header">
+      <div class="cp-avatar">🧱</div>
+      <div class="cp-info">
+        <div class="cp-name">Brick — UrbanTrace AI</div>
+        <div class="cp-sub"><div class="cp-dot"></div>Cluj-Napoca Property Expert</div>
+      </div>
+      <button class="cp-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="cp-msgs" id="cp-msgs"></div>
+    <div class="cp-input-area">
+      <div class="cp-input-wrap">
+        <textarea id="cm-input" rows="1" data-i18n-ph="ask_ph" placeholder="Ask about properties…"></textarea>
+        <button id="cm-send">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="brick-btn" onclick="toggleChat()">
+    <div class="brick-badge" id="brick-badge">1</div>
+    <div class="brick-tip">Ask me anything! 😊</div>
+    <svg width="64" height="74" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="20" cy="12" rx="9" ry="5.5" fill="#c94e1e"/>
+      <ellipse cx="44" cy="12" rx="9" ry="5.5" fill="#c94e1e"/>
+      <ellipse cx="20" cy="10" rx="9" ry="5.5" fill="#f07040"/>
+      <ellipse cx="44" cy="10" rx="9" ry="5.5" fill="#f07040"/>
+      <ellipse cx="20" cy="10" rx="9" ry="5.5" fill="none" stroke="#c94e1e" stroke-width="1"/>
+      <ellipse cx="44" cy="10" rx="9" ry="5.5" fill="none" stroke="#c94e1e" stroke-width="1"/>
+      <rect x="3" y="15" width="58" height="54" rx="6" fill="#e85d26"/>
+      <rect x="3" y="15" width="58" height="54" rx="6" fill="url(#bgown)"/>
+      <line x1="3"  y1="42" x2="61" y2="42" stroke="#c94e1e" stroke-width="1.5" opacity=".45"/>
+      <line x1="32" y1="15" x2="32" y2="42" stroke="#c94e1e" stroke-width="1.5" opacity=".35"/>
+      <line x1="17" y1="42" x2="17" y2="69" stroke="#c94e1e" stroke-width="1.5" opacity=".35"/>
+      <line x1="47" y1="42" x2="47" y2="69" stroke="#c94e1e" stroke-width="1.5" opacity=".35"/>
+      <circle cx="22" cy="32" r="5.5" fill="#fff" opacity=".95"/>
+      <circle cx="42" cy="32" r="5.5" fill="#fff" opacity=".95"/>
+      <circle cx="23" cy="33" r="2.8" fill="#1a1a2e"/>
+      <circle cx="43" cy="33" r="2.8" fill="#1a1a2e"/>
+      <circle cx="24.2" cy="31.5" r="1.1" fill="#fff"/>
+      <circle cx="44.2" cy="31.5" r="1.1" fill="#fff"/>
+      <path d="M19 48 Q32 60 45 48" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity=".95"/>
+      <ellipse cx="14" cy="46" rx="5" ry="3" fill="#ff7043" opacity=".3"/>
+      <ellipse cx="50" cy="46" rx="5" ry="3" fill="#ff7043" opacity=".3"/>
+      <defs>
+        <linearGradient id="bgown" x1="3" y1="15" x2="61" y2="69" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#fff" stop-opacity=".1"/>
+          <stop offset="100%" stop-color="#000" stop-opacity=".07"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+<script>
+  /* ── Translations ───────────────────────────── */
+  const T = {
+    en: {
+      nav_search:'Search', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About',
+      own_title:'Ownership Registry', own_sub:'Search who owns any property in Cluj-Napoca',
+      own_search_ph:'Search by address, owner name, property key…', own_search_btn:'Search',
+      own_all:'All', own_srl:'SRL', own_individual:'Individual',
+      own_ask_brick:'Ask Brick →', own_reg_date:'Registered', own_assessed:'Assessed value',
+      about_by:'Designed and built by', about_copy:'© 2025 Sándor Attila Nagy. All rights reserved.',
+      about_tag:'An AI-powered research assistant for exploring structured Cluj-Napoca property data through natural language.',
+      ask_ph:'Ask about properties…',
+      brick_hi:"Hi! I'm **Brick** 🧱 — your Cluj-Napoca property assistant!\n\nBrowse the ownership registry or ask me:\n- *\"Who owns SRL properties in Centru?\"*\n- *\"Show me high-value SRL holdings\"*\n- *\"Lookup owner at Str. Horea 15\"*",
+      stats_showing:'Showing', stats_of:'of', stats_total:'total',
+      stats_srl:'SRL', stats_ind:'Individual',
+      empty_title:'No results found', empty_sub:'Try a different search query or filter.',
+      load_more:'Load more',
+    },
+    ro: {
+      nav_search:'Căutare', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre',
+      own_title:'Registru Proprietăți', own_sub:'Caută cine deține orice proprietate din Cluj-Napoca',
+      own_search_ph:'Căutare după adresă, proprietar, cod proprietate…', own_search_btn:'Căutare',
+      own_all:'Toate', own_srl:'SRL', own_individual:'Persoană fizică',
+      own_ask_brick:'Întreabă Brick →', own_reg_date:'Înregistrat', own_assessed:'Valoare impozabilă',
+      about_by:'Conceput și realizat de', about_copy:'© 2025 Sándor Attila Nagy. Toate drepturile rezervate.',
+      about_tag:'Asistent de cercetare AI pentru date imobiliare structurate din Cluj-Napoca prin limbaj natural.',
+      ask_ph:'Întreabă despre proprietăți…',
+      brick_hi:"Salut! Sunt **Brick** 🧱 — asistentul tău imobiliar!\n\nNavighează registrul sau întreabă-mă:\n- *\"Cine deține proprietăți SRL în Centru?\"*\n- *\"Proprietăți SRL de mare valoare\"*\n- *\"Proprietarul de la Str. Horea 15\"*",
+      stats_showing:'Afișate', stats_of:'din', stats_total:'total',
+      stats_srl:'SRL', stats_ind:'Persoană fizică',
+      empty_title:'Niciun rezultat', empty_sub:'Încearcă o altă căutare sau filtru.',
+      load_more:'Încarcă mai multe',
+    },
+    hu: {
+      nav_search:'Keresés', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk',
+      own_title:'Tulajdonjog Nyilvántartó', own_sub:'Keresd meg, ki tulajdonol bármely kolozsvári ingatlant',
+      own_search_ph:'Keresés cím, tulajdonos vagy ingatlan kód alapján…', own_search_btn:'Keresés',
+      own_all:'Összes', own_srl:'KFT', own_individual:'Magánszemély',
+      own_ask_brick:'Kérdezd Brick-et →', own_reg_date:'Bejegyezve', own_assessed:'Becsült érték',
+      about_by:'Tervezte és fejlesztette', about_copy:'© 2025 Sándor Attila Nagy. Minden jog fenntartva.',
+      about_tag:'Mesterséges intelligencia alapú kutatási asszisztens Kolozsvár ingatlanadatainak természetes nyelvű lekérdezéséhez.',
+      ask_ph:'Kérdezz az ingatlanokról…',
+      brick_hi:"Szia! **Brick** vagyok 🧱 — kolozsvári ingatlan asszisztensed!\n\nBöngészd a nyilvántartót vagy kérdezz:\n- *\"Ki tulajdonol KFT ingatlanokat Centrumban?\"*\n- *\"Magas értékű KFT ingatlanok\"*\n- *\"Str. Horea 15 tulajdonosa\"*",
+      stats_showing:'Megjelenítve', stats_of:'/', stats_total:'összesen',
+      stats_srl:'KFT', stats_ind:'Magánszemély',
+      empty_title:'Nincs találat', empty_sub:'Próbálj más keresési feltételt.',
+      load_more:'Továbbiak betöltése',
+    },
+  };
+
+  let currentLang = 'en';
+  let currentType = 'all';
+  let currentQuery = '';
+  let currentOffset = 0;
+  const PAGE_SIZE = 24;
+  let totalCount = 0;
+  let statsData = { srl: 0, individual: 0 };
+
+  function setLang(lang) {
+    if (!T[lang]) lang = 'en';
+    currentLang = lang;
+    localStorage.setItem('ut_lang', lang);
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (T[lang][key] !== undefined) el.textContent = T[lang][key];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const key = el.dataset.i18nPh;
+      if (T[lang][key] !== undefined) el.placeholder = T[lang][key];
+    });
+
+    updateStatsBar();
+    document.getElementById('load-more-btn').textContent = T[lang].load_more;
+  }
+
+  /* ── API calls ──────────────────────────────── */
+  async function fetchOwnership(q, type, limit, offset = 0) {
+    const params = new URLSearchParams({ q, type, limit, offset });
+    const res = await fetch(`/api/ownership-search?${params}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  /* ── Render ─────────────────────────────────── */
+  function fmtNum(n) { return new Intl.NumberFormat('ro-RO').format(n); }
+
+  function renderCard(item) {
+    const isSrl = item.is_srl;
+    const icon = isSrl ? '🏢' : '👤';
+    const iconCls = isSrl ? 'srl' : 'ind';
+    const badgeCls = isSrl ? 'srl' : 'ind';
+    const lang = currentLang;
+
+    const regDate = item.registration_date
+      ? `<div class="own-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span class="own-meta-label">${T[lang].own_reg_date}:</span> ${item.registration_date}
+         </div>`
+      : '';
+
+    const assessed = item.assessed_value
+      ? `<div class="own-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+          </svg>
+          <span class="own-meta-label">${T[lang].own_assessed}:</span> ${fmtNum(item.assessed_value)} RON
+         </div>`
+      : '';
+
+    const addrEncoded = JSON.stringify(item.address || '');
+
+    return `
+      <div class="own-card">
+        <div class="own-card-top">
+          <div class="own-icon ${iconCls}">${icon}</div>
+          <div class="own-card-info">
+            <div class="own-addr" title="${item.address || ''}">${item.address || '—'}</div>
+            <div class="own-borough">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+              ${item.borough || '—'}, Cluj-Napoca
+            </div>
+          </div>
+        </div>
+        <div class="own-owner-name">${item.owner_name || '—'}</div>
+        <div class="own-badges">
+          <span class="own-type-badge ${badgeCls}">${item.owner_type || (isSrl ? 'SRL' : 'Individual')}</span>
+        </div>
+        <div class="own-meta">
+          ${regDate}
+          ${assessed}
+        </div>
+        <button class="own-ask-btn" onclick="askBrick(${addrEncoded})">${T[lang].own_ask_brick}</button>
+      </div>
+    `;
+  }
+
+  function updateStatsBar() {
+    const lang = currentLang;
+    const bar = document.getElementById('stats-bar');
+    if (totalCount === 0 && statsData.srl === 0 && statsData.individual === 0) {
+      bar.style.display = 'none';
+      return;
+    }
+    bar.style.display = 'flex';
+    const shown = document.querySelectorAll('.own-card').length;
+    document.getElementById('stats-text').innerHTML =
+      `${T[lang].stats_showing} <strong>${shown}</strong> ${T[lang].stats_of} <strong>${fmtNum(totalCount)}</strong> ${T[lang].stats_total}
+       &nbsp;<span class="stats-sep">·</span>&nbsp;
+       <span class="stats-badge srl">${statsData.srl} ${T[lang].stats_srl}</span>
+       <span class="stats-badge ind">${statsData.individual} ${T[lang].stats_ind}</span>`;
+  }
+
+  function updateTabCounts() {
+    const total = statsData.srl + statsData.individual;
+    document.getElementById('cnt-all').textContent = fmtNum(total);
+    document.getElementById('cnt-srl').textContent = fmtNum(statsData.srl);
+    document.getElementById('cnt-ind').textContent = fmtNum(statsData.individual);
+  }
+
+  /* ── Search / Load ──────────────────────────── */
+  let allCards = [];
+
+  async function doSearch(reset = true) {
+    if (reset) {
+      currentOffset = 0;
+      allCards = [];
+    }
+    const grid = document.getElementById('own-grid');
+    if (reset) {
+      grid.innerHTML = '<div class="state-box"><div class="spinner"></div><p>Loading…</p></div>';
+      document.getElementById('stats-bar').style.display = 'none';
+      document.getElementById('load-more-wrap').style.display = 'none';
+    }
+
+    currentQuery = document.getElementById('own-search').value.trim();
+
+    try {
+      const data = await fetchOwnership(currentQuery, currentType, PAGE_SIZE, currentOffset);
+      totalCount = data.total;
+      statsData = data.stats;
+
+      updateTabCounts();
+
+      if (reset) {
+        allCards = data.results;
+      } else {
+        allCards = allCards.concat(data.results);
+      }
+
+      if (allCards.length === 0) {
+        const lang = currentLang;
+        grid.innerHTML = `
+          <div class="state-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <p><strong>${T[lang].empty_title}</strong><br>${T[lang].empty_sub}</p>
+          </div>`;
+        document.getElementById('load-more-wrap').style.display = 'none';
+      } else {
+        grid.innerHTML = allCards.map(renderCard).join('');
+        const hasMore = allCards.length < totalCount;
+        document.getElementById('load-more-wrap').style.display = hasMore ? 'block' : 'none';
+        document.getElementById('load-more-btn').textContent = T[currentLang].load_more;
+      }
+
+      updateStatsBar();
+    } catch (e) {
+      grid.innerHTML = `<div class="state-box"><p>⚠️ Could not load data. Is the server running? (${e.message})</p></div>`;
+    }
+  }
+
+  async function loadMore() {
+    currentOffset += PAGE_SIZE;
+    const btn = document.getElementById('load-more-btn');
+    btn.disabled = true;
+    await doSearch(false);
+    btn.disabled = false;
+  }
+
+  function pickTab(el) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    currentType = el.dataset.type;
+    doSearch(true);
+  }
+
+  document.getElementById('own-search').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch(true);
+  });
+
+  /* ── Brick chat ─────────────────────────────── */
+  marked.setOptions({ breaks: true, gfm: true });
+  let chatOpen = false;
+
+  function askBrick(addr) {
+    brickHop();
+    if (!chatOpen) toggleChat();
+    setTimeout(() => {
+      const inp = document.getElementById('cm-input');
+      inp.value = `Tell me about ${addr}`;
+      inp.focus();
+    }, 320);
+  }
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chat-panel').classList.toggle('open', chatOpen);
+    document.getElementById('brick-btn').classList.toggle('open', chatOpen);
+    if (chatOpen) { hideBadge(); document.getElementById('cm-input').focus(); }
+  }
+  function showBadge() { document.getElementById('brick-badge').classList.add('on'); }
+  function hideBadge() { document.getElementById('brick-badge').classList.remove('on'); }
+  function brickHop() {
+    const btn = document.getElementById('brick-btn');
+    btn.classList.add('hopping');
+    btn.addEventListener('animationend', () => btn.classList.remove('hopping'), { once: true });
+  }
+  function cpScroll() { const m = document.getElementById('cp-msgs'); m.scrollTop = m.scrollHeight; }
+  function makeRow(role) {
+    const row = document.createElement('div'); row.className = `cm-row ${role}`;
+    const av = document.createElement('div'); av.className = `cm-av ${role}`;
+    av.textContent = role === 'assistant' ? '🧱' : 'You';
+    row.appendChild(av); return row;
+  }
+  function addMsg(role, text, markdown = false) {
+    const row = makeRow(role);
+    const bub = document.createElement('div'); bub.className = `cm-bub ${role}`;
+    if (markdown) bub.innerHTML = marked.parse(text); else bub.textContent = text;
+    row.appendChild(bub); document.getElementById('cp-msgs').appendChild(row); cpScroll();
+  }
+  function addThinking() {
+    const row = makeRow('assistant');
+    const bub = document.createElement('div'); bub.className = 'cm-bub assistant';
+    bub.innerHTML = '<div class="cm-thinking"><div class="cm-dot"></div><div class="cm-dot"></div><div class="cm-dot"></div></div>';
+    row.appendChild(bub); document.getElementById('cp-msgs').appendChild(row); cpScroll(); return row;
+  }
+  async function cmSend() {
+    const inp = document.getElementById('cm-input'), btn = document.getElementById('cm-send');
+    const text = inp.value.trim();
+    if (!text || btn.disabled) return;
+    inp.value = ''; inp.style.height = 'auto'; btn.disabled = true;
+    addMsg('user', text);
+    const thinking = addThinking();
+    try {
+      const res = await fetch('/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text }) });
+      thinking.remove();
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({}));
+        const r = makeRow('assistant'); const b = document.createElement('div'); b.className = 'cm-bub error'; b.textContent = e.detail || `Error ${res.status}`; r.appendChild(b); document.getElementById('cp-msgs').appendChild(r); cpScroll();
+      } else {
+        const data = await res.json(); addMsg('assistant', data.response, true);
+        if (!chatOpen) showBadge();
+      }
+    } catch {
+      thinking.remove();
+      const r = makeRow('assistant'); const b = document.createElement('div'); b.className = 'cm-bub error'; b.textContent = 'Could not reach the server.'; r.appendChild(b); document.getElementById('cp-msgs').appendChild(r); cpScroll();
+    }
+    btn.disabled = false; inp.focus();
+  }
+  document.getElementById('cm-send').addEventListener('click', cmSend);
+  document.getElementById('cm-input').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); cmSend(); } });
+  document.getElementById('cm-input').addEventListener('input', function() { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 90) + 'px'; });
+
+  /* ── About modal ───────────────────────────── */
+  function openAbout()  { document.getElementById('about-modal').classList.add('open'); }
+  function closeAbout() { document.getElementById('about-modal').classList.remove('open'); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAbout(); });
+
+  /* ── Boot ───────────────────────────────────── */
+  setLang(localStorage.getItem('ut_lang') || 'en');
+  doSearch(true);
+  addMsg('assistant', T[currentLang].brick_hi, true);
+  setTimeout(() => { if (!chatOpen) { brickHop(); showBadge(); } }, 4000);
+  setInterval(() => { if (!chatOpen) brickHop(); }, 10000);
+</script>
+</body>
+</html>

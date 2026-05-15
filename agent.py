@@ -20,7 +20,7 @@ Core rules:
 4. If the user asks for data that is not available, explain the limitation instead of guessing.
 5. For ambiguous requests, ask one concise clarification question unless a safe assumption is obvious.
 6. Preserve multi-turn context. If the user says “what about Gheorgheni?” reuse relevant prior filters and only change the requested field.
-7. The dataset uses neighborhood (cartier) and ZIP as geographic fields. Some sub-area names are approximated with explicit ZIP mappings; disclose that caveat.
+7. Neighborhoods (cartiere) are matched directly from the dataset's borough field. Use `neighborhood` or `borough` interchangeably — both resolve via name matching. Real geocoded coordinates (lat/lng) are also available when the geocache is populated. Available neighborhoods: Centru, Grigorescu, Mărăști, Mănăștur, Gheorgheni, Zorilor, Europa, Iris, Bună Ziua, Sopor, Florești, Borhanci, Dâmbul Rotund, Între Lacuri, Someșeni.
 8. When showing property rows, show at most 8 rows in Markdown. Always include sample size and filters/caveats when relevant.
 9. Area is measured in square meters (mp) and prices are in RON (Romanian Leu). 1 EUR ≈ 5 RON.
 “””.strip()
