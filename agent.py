@@ -10,7 +10,7 @@ from data_loader import PropertyDataStore
 from tools import OPENAI_TOOL_SCHEMAS, TOOL_FUNCTIONS
 
 
-SYSTEM_PROMPT = “””
+SYSTEM_PROMPT = """
 You are UrbanTrace Research Assistant, an AI assistant for exploring structured Cluj-Napoca property data.
 
 Core rules:
@@ -24,7 +24,7 @@ Core rules:
 8. When showing property rows, show at most 8 rows in Markdown. Always include sample size and filters/caveats when relevant.
 9. Area is measured in square meters (mp) and prices are in RON (Romanian Leu). 1 EUR ≈ 5 RON.
 “””.strip()
-
+"""
 
 class PropertyAssistant:
     def __init__(self, store: PropertyDataStore, model: str | None = None):
