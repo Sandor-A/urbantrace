@@ -1,0 +1,501 @@
+propkey,address,borough,zip,property_class,building_sf,lot_sf,year_built,units,assessed_value
+93810,Calea Turzii 12,Între Lacuri,400007,A - Locuință Unifamilială,346,701,2017,1,1227034
+24592,Strada Aurel Vlaicu 51,Zorilor,400007,B - Locuință Bifamilială,249,788,1970,2,763277
+13278,Strada Horea 130,Grigorescu,400120,G - Depozit / Industrial,11188,14185,2014,1,20022165
+46048,Bulevardul Nicolae Titulescu 171,Bună Ziua,400120,C - Bloc Fără Lift,10584,2631,2011,42,24389019
+42098,Strada Horea 54,Bună Ziua,400205,F - Spațiu de Birouri,4009,2009,2023,15,6101520
+39256,Strada Pavlov 44,Dâmbul Rotund,400002,E - Clădire Comercială,4422,2919,2019,21,8787037
+28289,Strada Donath 61,Dâmbul Rotund,400005,D - Bloc Cu Lift,13714,1115,1963,22,13232727
+23434,Bulevardul Gheorghe Marinescu 197,Gheorgheni,400008,G - Depozit / Industrial,19363,7371,2015,1,54090591
+98696,Bulevardul Muncii 38,Dâmbul Rotund,400130,A - Locuință Unifamilială,134,585,1958,1,453499
+81482,Strada Fabricii 119,Mărăști,400009,D - Bloc Cu Lift,14399,797,1977,62,42968637
+21395,Calea Baciului 153,Zorilor,400205,H - Teren Neamenajat,0,4335,0,0,2005986
+87397,Strada Traian 41,Între Lacuri,400315,H - Teren Neamenajat,0,3886,0,0,772909
+65302,Strada Alexandru Vaida Voevod 71,Iris,400205,H - Teren Neamenajat,0,2159,0,0,282814
+14165,Strada Horea 61,Grigorescu,400006,F - Spațiu de Birouri,7515,2412,1988,3,9683181
+13905,Bulevardul 21 Decembrie 1989 181,Florești,400002,G - Depozit / Industrial,13856,11842,2004,1,29994727
+22280,Bulevardul Nicolae Titulescu 100,Baciu,400205,A - Locuință Unifamilială,274,638,1930,1,1056646
+38657,Strada Piezișă 108,Europa,400130,D - Bloc Cu Lift,8499,1198,2015,38,18249512
+40495,Strada Aurel Vlaicu 174,Iris,400007,C - Bloc Fără Lift,14270,2214,1963,20,47104642
+76237,Strada Aurel Vlaicu 7,Gheorgheni,400120,G - Depozit / Industrial,4946,29404,1999,1,12383900
+88907,Strada Avram Iancu 55,Sopor,400006,F - Spațiu de Birouri,6435,1752,2006,9,9763691
+13478,Strada Memorandumului 192,Europa,400001,F - Spațiu de Birouri,2036,2862,2021,3,2171830
+83563,Bulevardul Muncii 52,Someșeni,400001,C - Bloc Fără Lift,4408,817,1974,64,10391471
+36062,Strada Constantin Brâncuși 66,Iris,400006,C - Bloc Fără Lift,10426,2787,1974,99,30697063
+95181,Strada Horea 28,Borhanci,400001,E - Clădire Comercială,4916,2974,2004,30,10345655
+81426,Calea Dorobanților 152,Între Lacuri,400315,D - Bloc Cu Lift,2169,3155,1998,102,7787991
+64987,Strada Republicii 145,Iris,400001,F - Spațiu de Birouri,4564,1954,2003,22,5202459
+38893,Strada Memorandumului 108,Someșeni,400008,B - Locuință Bifamilială,301,520,2011,2,1113008
+68878,Bulevardul 21 Decembrie 1989 112,Mănăștur,400130,E - Clădire Comercială,5245,2404,2010,25,11813736
+87236,Strada Tăietura Turcului 69,Zorilor,400315,D - Bloc Cu Lift,14110,654,2017,39,20765433
+46463,Bulevardul Gheorghe Marinescu 172,Bună Ziua,400006,A - Locuință Unifamilială,333,482,1953,1,821366
+10851,Calea Turzii 88,Grigorescu,400394,E - Clădire Comercială,4753,241,1992,17,4994594
+30926,Strada Cloșca 143,Iris,400004,H - Teren Neamenajat,0,4220,0,0,451106
+65392,Strada Horea 57,Bună Ziua,400130,D - Bloc Cu Lift,5516,3019,2007,78,12404204
+54597,Bulevardul Nicolae Titulescu 191,Europa,400006,F - Spațiu de Birouri,5957,2058,1999,9,9114275
+46421,Strada Observatorului 81,Gheorgheni,400130,C - Bloc Fără Lift,3638,1186,2021,98,6024645
+30379,Strada Donath 135,Borhanci,400005,B - Locuință Bifamilială,179,453,1959,2,417684
+38221,Strada Constantin Brâncuși 137,Mănăștur,400005,A - Locuință Unifamilială,107,716,1967,1,394850
+54118,Strada Donath 126,Gheorgheni,400315,A - Locuință Unifamilială,225,630,1991,1,557044
+23396,Bulevardul Eroilor 65,Someșeni,400008,B - Locuință Bifamilială,113,560,1992,2,309998
+22156,Bulevardul Eroilor 39,Mănăștur,400205,E - Clădire Comercială,897,1216,2015,4,2985518
+59797,Bulevardul Gheorghe Marinescu 58,Iris,400009,G - Depozit / Industrial,15262,15507,1989,1,55346497
+22676,Strada Horea 146,Borhanci,400001,B - Locuință Bifamilială,186,790,1957,2,386360
+57052,Bulevardul Muncii 45,Europa,400002,C - Bloc Fără Lift,543,1973,2020,61,1241396
+55082,Strada Constantin Brâncuși 73,Între Lacuri,400315,H - Teren Neamenajat,0,783,0,0,367668
+89131,Strada Alexandru Vaida Voevod 151,Dâmbul Rotund,400205,D - Bloc Cu Lift,7465,770,1988,73,19382192
+44671,Bulevardul 21 Decembrie 1989 19,Mărăști,400003,E - Clădire Comercială,5074,2531,1998,30,10803124
+15695,Strada Horea 180,Bună Ziua,400005,H - Teren Neamenajat,0,3786,0,0,438965
+70217,Bulevardul Nicolae Titulescu 189,Zorilor,400010,E - Clădire Comercială,411,574,2023,8,1445928
+80284,Strada Memorandumului 196,Dâmbul Rotund,400315,E - Clădire Comercială,4920,364,1991,25,10317392
+26361,Calea Turzii 47,Borhanci,400007,H - Teren Neamenajat,0,947,0,0,249382
+59615,Strada Avram Iancu 172,Gheorgheni,400315,C - Bloc Fără Lift,5903,1986,2023,92,10265505
+20328,Strada Donath 141,Mărăști,400008,B - Locuință Bifamilială,241,408,1971,2,435110
+82357,Strada Fabricii 1,Dâmbul Rotund,400315,H - Teren Neamenajat,0,3585,0,0,1101942
+48427,Bulevardul Gheorghe Marinescu 194,Sopor,400120,H - Teren Neamenajat,0,622,0,0,198845
+92397,Strada Horea 113,Baciu,400130,H - Teren Neamenajat,0,1194,0,0,420298
+91070,Bulevardul Muncii 182,Mănăștur,400005,A - Locuință Unifamilială,288,245,1958,1,1115946
+57400,Strada Traian 31,Dâmbul Rotund,400315,C - Bloc Fără Lift,8665,3235,1994,41,17600458
+85674,Strada Cloșca 63,Sopor,400009,C - Bloc Fără Lift,6784,1080,1977,80,21480747
+35203,Bulevardul Nicolae Titulescu 88,Baciu,400205,E - Clădire Comercială,6921,210,1999,10,21256174
+19116,Strada Aurel Vlaicu 126,Someșeni,400003,H - Teren Neamenajat,0,4612,0,0,1074485
+16006,Strada Donath 140,Bună Ziua,400008,F - Spațiu de Birouri,7323,972,1995,23,17352049
+96673,Strada Donath 106,Mărăști,400006,H - Teren Neamenajat,0,3323,0,0,1214475
+39871,Strada Alexandru Vaida Voevod 39,Sopor,400001,C - Bloc Fără Lift,8729,2717,1972,46,28336605
+47930,Strada Fabricii 117,Mărăști,400130,C - Bloc Fără Lift,7217,3867,1979,87,8827259
+20458,Calea Turzii 87,Borhanci,400130,G - Depozit / Industrial,3131,28910,1991,1,22538670
+40512,Strada Piezișă 82,Dâmbul Rotund,400130,H - Teren Neamenajat,0,4632,0,0,589969
+23238,Strada Alexandru Vaida Voevod 176,Baciu,400005,D - Bloc Cu Lift,12735,670,1972,59,36588574
+59823,Strada Republicii 114,Mănăștur,400130,E - Clădire Comercială,7600,318,2000,2,22485980
+46434,Calea Mănăștur 111,Mănăștur,400004,G - Depozit / Industrial,19044,23341,2020,1,28462126
+69429,Bulevardul Gheorghe Marinescu 98,Borhanci,400120,D - Bloc Cu Lift,8653,2688,1989,22,18238167
+93320,Calea Turzii 171,Mărăști,400394,H - Teren Neamenajat,0,2556,0,0,417114
+57819,Strada Traian 89,Borhanci,400005,G - Depozit / Industrial,8695,15969,1989,1,15687084
+31319,Strada Cloșca 28,Florești,400007,F - Spațiu de Birouri,4908,1411,1998,23,4826707
+58520,Strada Piezișă 71,Mărăști,400010,A - Locuință Unifamilială,334,443,1959,1,921382
+56566,Strada Alexandru Vaida Voevod 49,Borhanci,400005,C - Bloc Fără Lift,10793,697,1965,119,17829645
+37460,Strada Tăietura Turcului 94,Între Lacuri,400003,B - Locuință Bifamilială,231,484,1983,2,368332
+97841,Calea Baciului 94,Europa,400009,E - Clădire Comercială,7003,873,2010,9,24084158
+44993,Strada Avram Iancu 30,Sopor,400002,C - Bloc Fără Lift,12856,1224,2010,114,44376219
+99593,Calea Mănăștur 24,Iris,400007,A - Locuință Unifamilială,215,699,1945,1,694026
+94939,Strada Aurel Vlaicu 68,Borhanci,400007,F - Spațiu de Birouri,1087,2964,2010,8,2287793
+19358,Calea Baciului 84,Baciu,400010,D - Bloc Cu Lift,11111,558,2019,85,36293405
+89840,Bulevardul Nicolae Titulescu 30,Mănăștur,400001,A - Locuință Unifamilială,235,654,1944,1,547175
+93227,Bulevardul 21 Decembrie 1989 100,Sopor,400006,G - Depozit / Industrial,19745,25322,2016,1,30768330
+32431,Strada Republicii 126,Borhanci,400007,E - Clădire Comercială,468,1717,2008,7,1270179
+80010,Calea Mănăștur 26,Dâmbul Rotund,400006,F - Spațiu de Birouri,696,1830,1992,9,3253930
+42087,Strada Traian 24,Dâmbul Rotund,400004,A - Locuință Unifamilială,105,491,1961,1,567993
+31417,Strada Observatorului 18,Someșeni,400205,D - Bloc Cu Lift,10107,1184,1989,108,17239910
+70589,Bulevardul Gheorghe Marinescu 1,Grigorescu,400315,C - Bloc Fără Lift,2629,2512,1982,36,4005297
+59735,Bulevardul 21 Decembrie 1989 4,Zorilor,400205,D - Bloc Cu Lift,10147,1626,1982,6,15632890
+45382,Bulevardul Nicolae Titulescu 135,Gheorgheni,400130,B - Locuință Bifamilială,323,609,1976,2,793460
+93886,Strada Fabricii 57,Borhanci,400001,E - Clădire Comercială,3952,2835,1983,1,15061256
+83000,Bulevardul Nicolae Titulescu 176,Gheorgheni,400008,H - Teren Neamenajat,0,802,0,0,183533
+38785,Bulevardul 21 Decembrie 1989 17,Mănăștur,400005,F - Spațiu de Birouri,3320,2646,1998,17,7628488
+99733,Strada Republicii 180,Gheorgheni,400315,D - Bloc Cu Lift,7546,2149,1989,117,15394070
+52504,Strada Piezișă 107,Între Lacuri,400002,F - Spațiu de Birouri,3696,1480,1996,22,6930387
+17331,Strada Cloșca 18,Gheorgheni,400315,B - Locuință Bifamilială,127,592,1942,2,504362
+40021,Bulevardul 21 Decembrie 1989 143,Mărăști,400010,F - Spațiu de Birouri,5688,700,2002,14,18300428
+14207,Bulevardul Nicolae Titulescu 185,Mărăști,400005,E - Clădire Comercială,3080,624,2012,19,4459457
+51347,Bulevardul Muncii 28,Zorilor,400315,F - Spațiu de Birouri,1141,1341,1994,19,3987048
+62581,Strada Donath 160,Borhanci,400120,A - Locuință Unifamilială,216,179,1953,1,404659
+45093,Strada Avram Iancu 90,Mărăști,400003,C - Bloc Fără Lift,9778,2992,1968,55,12624956
+18675,Strada Memorandumului 24,Între Lacuri,400009,D - Bloc Cu Lift,6663,2019,2003,62,8615786
+37653,Strada Avram Iancu 199,Borhanci,400010,B - Locuință Bifamilială,106,309,1950,2,337770
+84341,Calea Dorobanților 70,Sopor,400120,G - Depozit / Industrial,16414,20892,1998,1,35377578
+51245,Strada Fabricii 30,Zorilor,400007,B - Locuință Bifamilială,225,757,1992,2,669201
+37869,Bulevardul Muncii 102,Borhanci,400001,A - Locuință Unifamilială,184,458,1957,1,714213
+95909,Strada Horea 84,Gheorgheni,400001,H - Teren Neamenajat,0,3727,0,0,939513
+75435,Strada Constantin Brâncuși 59,Europa,400009,F - Spațiu de Birouri,790,1826,1982,28,2080860
+61856,Calea Dorobanților 81,Borhanci,400007,G - Depozit / Industrial,14186,10486,1977,1,31963656
+94259,Calea Florești 159,Sopor,400315,F - Spațiu de Birouri,921,1988,1986,28,2008925
+70142,Strada Fabricii 21,Bună Ziua,400315,E - Clădire Comercială,6309,1590,2001,8,18526504
+28726,Strada Alexandru Vaida Voevod 30,Europa,400009,D - Bloc Cu Lift,13217,1731,1978,48,19279564
+44718,Strada Observatorului 45,Borhanci,400003,B - Locuință Bifamilială,170,793,1993,2,607071
+28301,Strada Tăietura Turcului 115,Dâmbul Rotund,400394,F - Spațiu de Birouri,7279,2769,1989,11,15262267
+42325,Strada Alexandru Vaida Voevod 78,Iris,400005,A - Locuință Unifamilială,260,669,1939,1,613738
+83579,Bulevardul Eroilor 95,Someșeni,400005,B - Locuință Bifamilială,126,779,2006,2,495385
+80644,Calea Baciului 190,Baciu,400001,H - Teren Neamenajat,0,4883,0,0,1116306
+44438,Strada Cloșca 129,Mănăștur,400001,H - Teren Neamenajat,0,1047,0,0,455393
+86622,Strada Constantin Brâncuși 22,Europa,400120,C - Bloc Fără Lift,1141,1314,2016,94,4372581
+66155,Bulevardul Gheorghe Marinescu 41,Zorilor,400006,E - Clădire Comercială,3373,1874,2001,25,9107842
+86484,Strada Alexandru Vaida Voevod 166,Zorilor,400002,F - Spațiu de Birouri,974,2485,2004,22,2494340
+62350,Strada Aurel Vlaicu 155,Someșeni,400003,F - Spațiu de Birouri,867,2586,1989,22,3419115
+57447,Strada Alexandru Vaida Voevod 179,Dâmbul Rotund,400007,C - Bloc Fără Lift,10249,3203,1999,14,24810602
+38746,Strada Avram Iancu 33,Dâmbul Rotund,400130,B - Locuință Bifamilială,296,670,1976,2,401145
+28131,Strada Observatorului 88,Iris,400008,D - Bloc Cu Lift,4211,863,1969,23,7090226
+76784,Strada Fabricii 198,Europa,400315,A - Locuință Unifamilială,252,782,1946,1,734416
+74686,Calea Florești 178,Iris,400010,C - Bloc Fără Lift,12315,2092,2012,9,22776486
+21915,Strada Traian 157,Grigorescu,400205,H - Teren Neamenajat,0,2116,0,0,473533
+16175,Strada Cloșca 50,Zorilor,400120,H - Teren Neamenajat,0,3982,0,0,1637595
+24371,Strada Fabricii 136,Bună Ziua,400003,D - Bloc Cu Lift,13627,2776,1992,21,13632694
+30033,Calea Mănăștur 142,Baciu,400002,B - Locuință Bifamilială,225,235,1950,2,454319
+92240,Bulevardul 21 Decembrie 1989 112,Gheorgheni,400394,D - Bloc Cu Lift,13880,2147,2004,117,46545379
+30969,Strada Piezișă 129,Zorilor,400004,G - Depozit / Industrial,3174,13285,1984,1,9055670
+99192,Strada Constantin Brâncuși 167,Zorilor,400205,C - Bloc Fără Lift,2754,456,2020,40,7449967
+65333,Strada Constantin Brâncuși 121,Sopor,400010,A - Locuință Unifamilială,120,169,1962,1,192879
+88172,Strada Pavlov 156,Europa,400007,B - Locuință Bifamilială,227,393,1968,2,333063
+18326,Strada Alexandru Vaida Voevod 160,Sopor,400002,B - Locuință Bifamilială,335,761,1998,2,515846
+60432,Bulevardul Muncii 184,Mănăștur,400005,G - Depozit / Industrial,551,21146,1992,1,6436782
+60019,Strada Aurel Vlaicu 172,Gheorgheni,400009,F - Spațiu de Birouri,754,2354,2012,18,2917555
+88104,Strada Memorandumului 100,Someșeni,400008,A - Locuință Unifamilială,278,532,1962,1,912525
+71348,Calea Dorobanților 89,Florești,400130,B - Locuință Bifamilială,250,286,1935,2,505131
+79352,Strada Alexandru Vaida Voevod 45,Someșeni,400205,H - Teren Neamenajat,0,4120,0,0,1749348
+42953,Calea Dorobanților 184,Iris,400008,A - Locuință Unifamilială,230,356,1935,1,837015
+82512,Strada Avram Iancu 80,Europa,400007,H - Teren Neamenajat,0,2275,0,0,816179
+11504,Strada Horea 92,Someșeni,400205,A - Locuință Unifamilială,249,429,1945,1,854478
+99166,Strada Piezișă 191,Sopor,400394,G - Depozit / Industrial,11609,7121,2001,1,32738053
+25014,Strada Fabricii 69,Iris,400002,G - Depozit / Industrial,3086,15110,2008,1,13361835
+99353,Strada Horea 83,Gheorgheni,400002,F - Spațiu de Birouri,5614,1410,2008,10,14006947
+80381,Strada Constantin Brâncuși 114,Zorilor,400008,A - Locuință Unifamilială,260,779,1985,1,784014
+44973,Bulevardul Eroilor 20,Dâmbul Rotund,400120,G - Depozit / Industrial,12404,17812,2017,1,41246838
+94012,Bulevardul 21 Decembrie 1989 156,Dâmbul Rotund,400205,H - Teren Neamenajat,0,485,0,0,94283
+54587,Strada Alexandru Vaida Voevod 94,Zorilor,400007,A - Locuință Unifamilială,158,610,1977,1,532293
+24621,Strada Tăietura Turcului 36,Europa,400006,G - Depozit / Industrial,10801,22284,1987,1,19159785
+48469,Strada Pavlov 48,Sopor,400009,G - Depozit / Industrial,18904,4858,1986,1,56531893
+66985,Strada Observatorului 157,Grigorescu,400130,H - Teren Neamenajat,0,1839,0,0,811239
+30730,Strada Traian 45,Baciu,400130,H - Teren Neamenajat,0,919,0,0,447575
+69470,Strada Avram Iancu 171,Zorilor,400130,B - Locuință Bifamilială,228,457,1950,2,835804
+10425,Strada Alexandru Vaida Voevod 45,Iris,400006,D - Bloc Cu Lift,2488,1123,1977,105,3914913
+44522,Calea Mănăștur 142,Borhanci,400006,H - Teren Neamenajat,0,4719,0,0,2141003
+75612,Calea Dorobanților 80,Bună Ziua,400130,H - Teren Neamenajat,0,4506,0,0,1188562
+33416,Strada Tăietura Turcului 19,Mănăștur,400006,B - Locuință Bifamilială,310,627,2017,2,775916
+76542,Strada Donath 142,Dâmbul Rotund,400010,C - Bloc Fără Lift,13079,828,1967,59,40076748
+23947,Strada Horea 43,Mănăștur,400006,D - Bloc Cu Lift,6169,2425,1996,118,19510912
+91959,Strada Alexandru Vaida Voevod 142,Grigorescu,400003,E - Clădire Comercială,5233,2385,2012,3,14046060
+49117,Strada Tăietura Turcului 40,Mănăștur,400120,F - Spațiu de Birouri,7102,2508,1981,2,8441462
+93748,Strada Donath 148,Grigorescu,400120,D - Bloc Cu Lift,13065,2643,1963,57,28947879
+76540,Strada Horea 165,Grigorescu,400008,D - Bloc Cu Lift,13684,3606,2011,91,22402286
+89818,Bulevardul Eroilor 41,Sopor,400007,H - Teren Neamenajat,0,4004,0,0,1372027
+36071,Strada Avram Iancu 184,Zorilor,400130,F - Spațiu de Birouri,3466,735,2003,25,7696805
+30032,Bulevardul Muncii 120,Gheorgheni,400005,H - Teren Neamenajat,0,2230,0,0,268139
+59009,Strada Piezișă 158,Bună Ziua,400004,C - Bloc Fără Lift,13828,1641,2000,77,18418662
+31174,Strada Fabricii 120,Sopor,400394,E - Clădire Comercială,4274,294,2005,3,9395010
+80697,Strada Observatorului 150,Zorilor,400001,A - Locuință Unifamilială,224,656,2006,1,950116
+79514,Strada Cloșca 74,Europa,400001,B - Locuință Bifamilială,300,287,1963,2,945672
+10074,Calea Mănăștur 12,Bună Ziua,400001,D - Bloc Cu Lift,6439,2566,1969,40,12586833
+88504,Calea Baciului 72,Someșeni,400010,B - Locuință Bifamilială,145,249,1980,2,385291
+52487,Calea Baciului 94,Iris,400003,D - Bloc Cu Lift,10370,2385,1965,55,9933681
+74042,Strada Avram Iancu 122,Europa,400008,C - Bloc Fără Lift,10432,3958,1977,69,18949626
+12552,Calea Florești 101,Borhanci,400130,E - Clădire Comercială,5063,1577,2012,17,11932311
+24662,Strada Horea 122,Someșeni,400001,F - Spațiu de Birouri,2913,2959,2006,4,8160214
+57576,Strada Pavlov 177,Dâmbul Rotund,400001,H - Teren Neamenajat,0,2375,0,0,981258
+50306,Strada Donath 149,Borhanci,400004,A - Locuință Unifamilială,325,324,1997,1,924687
+41385,Strada Piezișă 38,Someșeni,400120,D - Bloc Cu Lift,1017,2645,1974,93,2068593
+17592,Bulevardul Nicolae Titulescu 39,Bună Ziua,400130,D - Bloc Cu Lift,7223,2355,2020,103,23728836
+41571,Bulevardul Eroilor 181,Mănăștur,400009,D - Bloc Cu Lift,9689,1631,2021,88,21865632
+84364,Calea Florești 118,Baciu,400009,F - Spațiu de Birouri,4675,1651,2023,22,12483133
+20322,Bulevardul Gheorghe Marinescu 124,Florești,400004,E - Clădire Comercială,4771,1422,1999,8,14293983
+21226,Strada Constantin Brâncuși 181,Sopor,400006,H - Teren Neamenajat,0,3057,0,0,1448388
+73699,Strada Pavlov 71,Grigorescu,400002,G - Depozit / Industrial,13428,27816,1992,1,57086394
+19071,Strada Horea 11,Grigorescu,400130,B - Locuință Bifamilială,257,602,2013,2,559108
+79822,Strada Observatorului 138,Grigorescu,400394,E - Clădire Comercială,1324,647,2017,20,1992423
+26483,Strada Fabricii 58,Dâmbul Rotund,400004,A - Locuință Unifamilială,131,573,1972,1,438874
+26828,Strada Donath 36,Mărăști,400009,C - Bloc Fără Lift,7166,2974,2020,116,15505242
+96474,Strada Horea 83,Grigorescu,400120,A - Locuință Unifamilială,125,737,1959,1,567488
+72296,Bulevardul Eroilor 45,Bună Ziua,400394,C - Bloc Fără Lift,1095,3725,2023,54,2915345
+82063,Strada Horea 10,Mărăști,400005,B - Locuință Bifamilială,251,441,1988,2,1011050
+31643,Strada Cloșca 35,Someșeni,400009,H - Teren Neamenajat,0,2435,0,0,353217
+44741,Calea Florești 188,Sopor,400120,E - Clădire Comercială,6086,962,2001,1,18177534
+79163,Strada Donath 50,Mănăștur,400010,G - Depozit / Industrial,14514,17884,1990,1,21586251
+89507,Calea Florești 36,Sopor,400006,D - Bloc Cu Lift,611,1368,1990,53,1508678
+65461,Strada Avram Iancu 78,Borhanci,400130,A - Locuință Unifamilială,213,518,2018,1,496462
+37760,Strada Traian 79,Mănăștur,400007,E - Clădire Comercială,5854,680,1998,21,10620596
+80686,Bulevardul 21 Decembrie 1989 123,Mănăștur,400008,F - Spațiu de Birouri,3606,2449,2010,30,11289050
+36365,Strada Observatorului 196,Florești,400120,B - Locuință Bifamilială,349,607,1997,2,1022022
+50857,Strada Tăietura Turcului 29,Mărăști,400315,D - Bloc Cu Lift,9883,2498,1981,23,17431649
+62296,Strada Republicii 175,Florești,400130,H - Teren Neamenajat,0,944,0,0,262614
+98039,Bulevardul Eroilor 117,Mănăștur,400009,G - Depozit / Industrial,15468,19478,1973,1,42901250
+95180,Strada Horea 186,Mărăști,400007,E - Clădire Comercială,6888,212,1993,24,16290642
+58944,Calea Mănăștur 180,Gheorgheni,400009,A - Locuință Unifamilială,115,633,1934,1,290012
+67422,Bulevardul 21 Decembrie 1989 197,Dâmbul Rotund,400130,G - Depozit / Industrial,12770,13533,1998,1,46461450
+77839,Strada Piezișă 21,Dâmbul Rotund,400120,C - Bloc Fără Lift,11207,3823,1975,48,15569891
+69177,Strada Fabricii 33,Între Lacuri,400004,A - Locuință Unifamilială,91,455,1989,1,382867
+25860,Calea Baciului 98,Someșeni,400004,D - Bloc Cu Lift,8046,1717,1995,23,11304179
+42493,Strada Donath 29,Mărăști,400205,G - Depozit / Industrial,1012,8886,1983,1,3993180
+39451,Strada Traian 154,Dâmbul Rotund,400130,A - Locuință Unifamilială,205,195,1981,1,468567
+18392,Strada Donath 199,Mărăști,400003,E - Clădire Comercială,2118,2559,2016,11,6057955
+54313,Strada Avram Iancu 61,Grigorescu,400394,C - Bloc Fără Lift,11316,2435,2012,32,18536938
+12757,Strada Tăietura Turcului 189,Baciu,400003,G - Depozit / Industrial,18714,17240,1973,1,72316066
+87110,Strada Aurel Vlaicu 98,Iris,400009,F - Spațiu de Birouri,5904,1905,1989,14,9834278
+82603,Calea Baciului 122,Florești,400315,D - Bloc Cu Lift,5427,3812,1978,94,17924554
+40161,Calea Baciului 106,Bună Ziua,400009,C - Bloc Fără Lift,6863,1294,1986,36,11780533
+87128,Strada Traian 95,Gheorgheni,400009,D - Bloc Cu Lift,1344,1399,1965,52,4490590
+38864,Strada Donath 151,Între Lacuri,400120,D - Bloc Cu Lift,8354,1155,2002,115,14057303
+10942,Strada Observatorului 49,Între Lacuri,400002,H - Teren Neamenajat,0,2187,0,0,834356
+19305,Strada Piezișă 62,Europa,400006,E - Clădire Comercială,3318,2109,2021,18,6304416
+92719,Strada Fabricii 128,Sopor,400002,H - Teren Neamenajat,0,2823,0,0,700899
+17716,Bulevardul Nicolae Titulescu 12,Borhanci,400315,D - Bloc Cu Lift,12644,897,1993,6,29303843
+40007,Strada Pavlov 107,Grigorescu,400003,D - Bloc Cu Lift,5904,1242,1991,52,13131874
+18834,Strada Aurel Vlaicu 87,Grigorescu,400205,H - Teren Neamenajat,0,4218,0,0,1658133
+14117,Calea Mănăștur 44,Mănăștur,400130,H - Teren Neamenajat,0,1707,0,0,540871
+53309,Strada Alexandru Vaida Voevod 16,Europa,400001,B - Locuință Bifamilială,104,156,1982,2,176763
+19287,Calea Dorobanților 182,Mănăștur,400001,D - Bloc Cu Lift,8785,2167,1967,51,22477385
+77391,Bulevardul Gheorghe Marinescu 124,Dâmbul Rotund,400008,A - Locuință Unifamilială,83,694,2000,1,232624
+41195,Strada Pavlov 71,Europa,400005,A - Locuință Unifamilială,337,590,1952,1,448704
+46500,Bulevardul 21 Decembrie 1989 62,Florești,400010,E - Clădire Comercială,6878,1651,2005,9,7768455
+97684,Strada Traian 145,Florești,400130,D - Bloc Cu Lift,5414,3101,1970,109,15262013
+73624,Strada Donath 9,Gheorgheni,400007,G - Depozit / Industrial,12859,19110,2000,1,14218708
+38080,Calea Florești 22,Sopor,400315,G - Depozit / Industrial,11355,19541,1976,1,45655517
+80678,Bulevardul Muncii 55,Baciu,400315,H - Teren Neamenajat,0,2420,0,0,313968
+27342,Calea Turzii 140,Borhanci,400120,A - Locuință Unifamilială,171,472,1932,1,738742
+84847,Strada Donath 183,Someșeni,400007,B - Locuință Bifamilială,233,316,2002,2,474780
+85525,Strada Piezișă 174,Baciu,400009,F - Spațiu de Birouri,3344,773,1985,26,7575319
+71953,Bulevardul Eroilor 26,Bună Ziua,400004,B - Locuință Bifamilială,254,769,2008,2,1056967
+41850,Strada Donath 84,Mărăști,400120,E - Clădire Comercială,6618,2045,1994,16,12626602
+71993,Bulevardul Nicolae Titulescu 48,Dâmbul Rotund,400010,G - Depozit / Industrial,3308,26302,2009,1,10507660
+63354,Calea Dorobanților 22,Grigorescu,400003,G - Depozit / Industrial,5555,25237,1994,1,12793008
+34957,Strada Memorandumului 79,Sopor,400006,E - Clădire Comercială,1037,742,1991,3,2275812
+22363,Strada Fabricii 105,Gheorgheni,400001,B - Locuință Bifamilială,261,717,1941,2,926129
+22704,Strada Piezișă 4,Grigorescu,400007,G - Depozit / Industrial,3275,24751,2005,1,22783702
+96374,Strada Tăietura Turcului 134,Mănăștur,400120,G - Depozit / Industrial,6054,5549,1987,1,11414869
+66498,Calea Dorobanților 43,Bună Ziua,400005,G - Depozit / Industrial,10322,16867,2020,1,13786219
+56438,Bulevardul Muncii 185,Dâmbul Rotund,400008,D - Bloc Cu Lift,8001,738,1998,21,6737601
+65519,Bulevardul Gheorghe Marinescu 98,Iris,400315,F - Spațiu de Birouri,3806,1571,2021,14,13298775
+63883,Strada Avram Iancu 155,Între Lacuri,400004,H - Teren Neamenajat,0,2773,0,0,719027
+71213,Strada Avram Iancu 75,Între Lacuri,400130,H - Teren Neamenajat,0,4917,0,0,1132653
+17100,Calea Turzii 101,Zorilor,400002,D - Bloc Cu Lift,10203,2534,1963,27,35137166
+98259,Strada Constantin Brâncuși 54,Sopor,400205,E - Clădire Comercială,7009,483,2006,27,18418020
+95649,Strada Horea 62,Grigorescu,400120,C - Bloc Fără Lift,12218,2033,2008,105,13223344
+94696,Strada Cloșca 150,Bună Ziua,400009,G - Depozit / Industrial,18314,2204,2020,1,63376796
+22899,Calea Baciului 153,Dâmbul Rotund,400394,B - Locuință Bifamilială,135,404,2014,2,417561
+17944,Bulevardul Gheorghe Marinescu 12,Borhanci,400120,G - Depozit / Industrial,11365,27090,1997,1,16120462
+62772,Bulevardul Muncii 131,Între Lacuri,400009,D - Bloc Cu Lift,7803,1832,2019,54,23128702
+54473,Strada Fabricii 39,Zorilor,400001,H - Teren Neamenajat,0,1056,0,0,494439
+24322,Calea Dorobanților 30,Someșeni,400130,C - Bloc Fără Lift,6207,1577,2018,47,18595521
+42591,Calea Mănăștur 122,Gheorgheni,400008,H - Teren Neamenajat,0,2812,0,0,331459
+35112,Strada Constantin Brâncuși 30,Mărăști,400315,F - Spațiu de Birouri,5508,647,1990,22,18492173
+34931,Strada Fabricii 45,Europa,400003,F - Spațiu de Birouri,4786,1946,1994,15,14822365
+80292,Calea Florești 164,Dâmbul Rotund,400007,G - Depozit / Industrial,1456,25162,2009,1,11677514
+68800,Bulevardul Nicolae Titulescu 100,Mărăști,400130,D - Bloc Cu Lift,3871,1440,1968,100,9735580
+28373,Calea Baciului 48,Zorilor,400006,D - Bloc Cu Lift,7996,766,2022,37,18062167
+65296,Bulevardul Gheorghe Marinescu 100,Borhanci,400007,B - Locuință Bifamilială,258,510,1988,2,853457
+34050,Strada Constantin Brâncuși 77,Baciu,400010,B - Locuință Bifamilială,148,470,1945,2,282720
+46509,Calea Mănăștur 178,Mănăștur,400009,G - Depozit / Industrial,14204,20543,1978,1,38937965
+70637,Strada Cloșca 163,Europa,400130,C - Bloc Fără Lift,9591,983,1996,66,11527869
+42742,Strada Traian 159,Mărăști,400315,F - Spațiu de Birouri,7997,239,1988,16,10671399
+19880,Calea Baciului 130,Dâmbul Rotund,400008,G - Depozit / Industrial,16612,14619,2015,1,55280382
+68082,Calea Dorobanților 145,Mărăști,400205,D - Bloc Cu Lift,5285,433,1988,39,11971839
+82132,Strada Traian 145,Între Lacuri,400205,H - Teren Neamenajat,0,4703,0,0,1547689
+22833,Calea Turzii 199,Europa,400315,F - Spațiu de Birouri,4640,370,2008,25,10740200
+16630,Strada Republicii 189,Someșeni,400120,D - Bloc Cu Lift,5377,3883,2017,8,9844593
+95477,Calea Dorobanților 113,Someșeni,400002,D - Bloc Cu Lift,3938,3620,2004,98,13551245
+80855,Bulevardul Nicolae Titulescu 43,Borhanci,400003,D - Bloc Cu Lift,13828,1147,1967,107,32705378
+11934,Bulevardul Gheorghe Marinescu 138,Mănăștur,400006,E - Clădire Comercială,2570,2545,2012,9,9840330
+22224,Strada Republicii 35,Iris,400205,G - Depozit / Industrial,2442,10087,2011,1,7293379
+40982,Bulevardul Muncii 38,Între Lacuri,400006,D - Bloc Cu Lift,12975,3755,2010,90,28769755
+31798,Calea Turzii 161,Bună Ziua,400007,H - Teren Neamenajat,0,818,0,0,369776
+63269,Calea Dorobanților 104,Europa,400130,E - Clădire Comercială,5891,1711,2011,15,10091357
+73653,Strada Donath 188,Gheorgheni,400130,H - Teren Neamenajat,0,3134,0,0,1310861
+73092,Strada Piezișă 56,Bună Ziua,400315,D - Bloc Cu Lift,8605,1399,1996,45,15194546
+38016,Strada Tăietura Turcului 125,Iris,400006,A - Locuință Unifamilială,103,251,2010,1,371641
+62565,Strada Republicii 41,Sopor,400008,A - Locuință Unifamilială,299,357,2018,1,1135035
+17685,Strada Horea 41,Someșeni,400394,E - Clădire Comercială,964,2881,1996,12,2039604
+31579,Strada Alexandru Vaida Voevod 43,Mărăști,400007,E - Clădire Comercială,6147,1159,2021,14,6591250
+59672,Strada Observatorului 123,Gheorgheni,400003,D - Bloc Cu Lift,9010,3085,1961,60,8136608
+10282,Strada Republicii 109,Între Lacuri,400003,H - Teren Neamenajat,0,780,0,0,105871
+61173,Strada Republicii 27,Zorilor,400006,E - Clădire Comercială,1323,1767,1988,25,4005474
+44760,Calea Dorobanților 136,Borhanci,400001,C - Bloc Fără Lift,7710,1738,1987,96,19521777
+69638,Bulevardul Nicolae Titulescu 158,Dâmbul Rotund,400008,D - Bloc Cu Lift,1920,3972,1977,16,6770593
+47388,Strada Piezișă 90,Bună Ziua,400006,C - Bloc Fără Lift,4559,1434,1970,86,7190095
+65444,Strada Pavlov 156,Grigorescu,400205,A - Locuință Unifamilială,234,360,1996,1,633821
+82845,Strada Piezișă 76,Dâmbul Rotund,400001,D - Bloc Cu Lift,8608,1880,1990,18,19132132
+96752,Strada Fabricii 4,Zorilor,400394,F - Spațiu de Birouri,1281,1784,2016,28,3048720
+73788,Calea Florești 196,Sopor,400205,B - Locuință Bifamilială,88,751,1938,2,213586
+30289,Bulevardul Eroilor 102,Europa,400005,G - Depozit / Industrial,14379,23996,1995,1,22253083
+34890,Bulevardul Gheorghe Marinescu 40,Grigorescu,400002,E - Clădire Comercială,847,2294,1993,30,3277731
+48890,Strada Avram Iancu 101,Borhanci,400120,B - Locuință Bifamilială,238,597,2023,2,919759
+38534,Bulevardul Muncii 23,Baciu,400007,B - Locuință Bifamilială,312,776,2007,2,580307
+17665,Strada Aurel Vlaicu 190,Mănăștur,400002,A - Locuință Unifamilială,150,161,1950,1,359475
+85914,Strada Fabricii 185,Grigorescu,400003,F - Spațiu de Birouri,1239,1300,1987,24,3717131
+81066,Bulevardul Nicolae Titulescu 70,Europa,400002,E - Clădire Comercială,6035,2561,1984,21,13691821
+17989,Bulevardul Eroilor 128,Someșeni,400010,C - Bloc Fără Lift,6524,944,1973,36,21320507
+51104,Strada Republicii 59,Între Lacuri,400009,A - Locuință Unifamilială,102,162,1961,1,134048
+17492,Bulevardul 21 Decembrie 1989 46,Baciu,400315,A - Locuință Unifamilială,294,379,1971,1,609014
+16572,Strada Avram Iancu 70,Someșeni,400002,F - Spațiu de Birouri,1178,2256,1983,22,2464257
+86569,Bulevardul Eroilor 103,Gheorgheni,400394,H - Teren Neamenajat,0,2512,0,0,563389
+72493,Calea Dorobanților 142,Sopor,400001,F - Spațiu de Birouri,1843,1394,1999,19,5429268
+75909,Calea Mănăștur 152,Sopor,400205,D - Bloc Cu Lift,12500,3988,1991,73,16967775
+79615,Strada Memorandumului 60,Europa,400006,A - Locuință Unifamilială,251,151,2014,1,515481
+30635,Strada Horea 27,Florești,400009,D - Bloc Cu Lift,7378,2315,1978,11,20396586
+17455,Bulevardul Muncii 134,Bună Ziua,400130,F - Spațiu de Birouri,3955,547,1986,19,8755333
+76562,Strada Piezișă 20,Borhanci,400010,A - Locuință Unifamilială,302,283,1960,1,604056
+20500,Strada Piezișă 180,Someșeni,400130,F - Spațiu de Birouri,2805,2054,1994,9,3181593
+34356,Strada Donath 198,Borhanci,400002,C - Bloc Fără Lift,2231,973,2019,61,3820733
+18981,Calea Mănăștur 198,Florești,400008,E - Clădire Comercială,3995,1285,1987,28,4714929
+87992,Strada Horea 181,Între Lacuri,400010,A - Locuință Unifamilială,190,485,1948,1,295446
+18907,Calea Mănăștur 102,Europa,400001,E - Clădire Comercială,2331,912,2005,1,7537416
+98501,Calea Baciului 64,Gheorgheni,400008,B - Locuință Bifamilială,151,274,1931,2,258935
+40828,Bulevardul Muncii 34,Florești,400315,G - Depozit / Industrial,12697,23488,2010,1,45437816
+62923,Strada Tăietura Turcului 67,Baciu,400315,B - Locuință Bifamilială,91,216,1955,2,354455
+25713,Bulevardul 21 Decembrie 1989 24,Baciu,400315,F - Spațiu de Birouri,1203,374,1983,15,1631298
+84668,Strada Pavlov 102,Sopor,400001,G - Depozit / Industrial,14480,6662,1992,1,21143461
+42271,Calea Turzii 115,Baciu,400003,A - Locuință Unifamilială,205,452,1993,1,536802
+85880,Bulevardul Eroilor 23,Grigorescu,400007,C - Bloc Fără Lift,7368,1116,1991,86,18912063
+87924,Strada Memorandumului 98,Iris,400130,F - Spațiu de Birouri,4129,2430,2011,26,7931408
+15209,Strada Avram Iancu 100,Grigorescu,400003,A - Locuință Unifamilială,243,761,1958,1,536499
+91183,Calea Turzii 15,Iris,400008,F - Spațiu de Birouri,6481,2592,1990,8,7877257
+20745,Calea Turzii 137,Someșeni,400205,A - Locuință Unifamilială,192,739,1979,1,659504
+64948,Calea Florești 46,Florești,400010,F - Spațiu de Birouri,6804,1669,2017,30,6595971
+96163,Strada Tăietura Turcului 145,Mănăștur,400010,D - Bloc Cu Lift,14208,3619,2023,116,32779203
+86503,Bulevardul Eroilor 24,Mărăști,400004,D - Bloc Cu Lift,826,2456,1960,65,2249559
+84085,Bulevardul 21 Decembrie 1989 88,Între Lacuri,400003,F - Spațiu de Birouri,687,289,2017,5,1902016
+78522,Strada Republicii 135,Someșeni,400006,B - Locuință Bifamilială,271,555,2005,2,413217
+51467,Bulevardul 21 Decembrie 1989 41,Între Lacuri,400007,H - Teren Neamenajat,0,2799,0,0,1364504
+44179,Strada Constantin Brâncuși 158,Iris,400006,D - Bloc Cu Lift,11404,2712,1982,108,21841387
+36772,Strada Horea 33,Mănăștur,400130,A - Locuință Unifamilială,280,731,1934,1,527800
+97782,Bulevardul Gheorghe Marinescu 57,Dâmbul Rotund,400010,B - Locuință Bifamilială,334,294,1972,2,996738
+51180,Strada Avram Iancu 43,Dâmbul Rotund,400394,B - Locuință Bifamilială,251,607,1931,2,501822
+41285,Calea Dorobanților 90,Grigorescu,400205,B - Locuință Bifamilială,80,199,1979,2,211959
+44814,Calea Florești 106,Sopor,400394,G - Depozit / Industrial,12009,18892,1994,1,18408554
+61876,Strada Tăietura Turcului 167,Iris,400120,D - Bloc Cu Lift,3164,2148,1964,13,5539186
+27154,Strada Republicii 19,Zorilor,400003,G - Depozit / Industrial,5772,24985,1974,1,24617340
+94607,Calea Dorobanților 87,Borhanci,400010,H - Teren Neamenajat,0,453,0,0,163738
+49321,Bulevardul Gheorghe Marinescu 112,Mănăștur,400001,B - Locuință Bifamilială,249,360,1954,2,590151
+69929,Strada Pavlov 139,Grigorescu,400120,E - Clădire Comercială,2636,1172,1983,4,5280045
+51441,Strada Cloșca 40,Mărăști,400006,A - Locuință Unifamilială,298,239,1967,1,984966
+19508,Strada Cloșca 52,Gheorgheni,400001,D - Bloc Cu Lift,3298,2914,1970,41,7281394
+11220,Strada Piezișă 121,Sopor,400394,E - Clădire Comercială,946,2829,2004,18,2513947
+70068,Calea Mănăștur 48,Sopor,400001,E - Clădire Comercială,3802,2104,1994,9,12319818
+91416,Bulevardul 21 Decembrie 1989 193,Între Lacuri,400120,B - Locuință Bifamilială,123,502,1999,2,437981
+83792,Bulevardul Muncii 142,Mărăști,400315,G - Depozit / Industrial,17623,14717,2004,1,53774407
+23104,Strada Tăietura Turcului 61,Sopor,400005,B - Locuință Bifamilială,282,185,1994,2,717271
+19602,Strada Tăietura Turcului 174,Borhanci,400003,B - Locuință Bifamilială,309,327,1951,2,1196723
+80468,Bulevardul 21 Decembrie 1989 11,Bună Ziua,400002,G - Depozit / Industrial,7116,27953,2010,1,17982661
+37938,Strada Avram Iancu 187,Baciu,400205,B - Locuință Bifamilială,124,547,2001,2,358290
+76307,Calea Turzii 134,Sopor,400394,A - Locuință Unifamilială,347,579,1944,1,758114
+27361,Strada Tăietura Turcului 150,Iris,400002,B - Locuință Bifamilială,131,442,1998,2,615515
+55745,Calea Turzii 99,Dâmbul Rotund,400008,H - Teren Neamenajat,0,506,0,0,132161
+19016,Bulevardul Gheorghe Marinescu 156,Dâmbul Rotund,400130,G - Depozit / Industrial,1770,13969,1991,1,6388283
+42018,Strada Cloșca 69,Baciu,400006,A - Locuință Unifamilială,252,460,1969,1,528805
+58434,Strada Constantin Brâncuși 176,Gheorgheni,400315,D - Bloc Cu Lift,2701,1530,2016,99,8154946
+47353,Strada Pavlov 107,Borhanci,400120,B - Locuință Bifamilială,176,602,1957,2,733109
+30676,Strada Cloșca 195,Europa,400315,F - Spațiu de Birouri,6925,430,1990,17,6931919
+67433,Strada Piezișă 35,Iris,400315,A - Locuință Unifamilială,168,347,1955,1,583381
+81200,Strada Traian 13,Baciu,400006,D - Bloc Cu Lift,4988,1808,2019,109,11433568
+49651,Strada Republicii 175,Mărăști,400004,F - Spațiu de Birouri,4204,2633,1991,15,15029004
+90173,Calea Baciului 90,Zorilor,400003,E - Clădire Comercială,6335,570,1981,10,11774155
+95717,Strada Tăietura Turcului 200,Florești,400315,D - Bloc Cu Lift,11106,1222,1986,90,17275961
+79329,Strada Memorandumului 200,Iris,400120,A - Locuință Unifamilială,322,285,2012,1,527979
+11025,Bulevardul Muncii 65,Borhanci,400205,E - Clădire Comercială,6038,2832,2007,9,20676977
+97538,Strada Traian 65,Florești,400008,E - Clădire Comercială,5747,2332,2019,27,11088812
+82692,Strada Fabricii 170,Someșeni,400315,F - Spațiu de Birouri,4799,2851,2018,20,8567533
+49240,Strada Cloșca 17,Zorilor,400005,F - Spațiu de Birouri,7257,1334,2021,9,20348270
+96951,Strada Horea 49,Mănăștur,400009,D - Bloc Cu Lift,1430,3599,2011,113,5034223
+23577,Strada Pavlov 7,Dâmbul Rotund,400008,E - Clădire Comercială,2325,1914,2004,13,7122598
+27601,Strada Tăietura Turcului 49,Zorilor,400130,D - Bloc Cu Lift,11744,2489,2020,85,39057879
+44664,Strada Fabricii 77,Someșeni,400003,C - Bloc Fără Lift,5313,699,1976,64,15151617
+25129,Calea Baciului 196,Baciu,400003,F - Spațiu de Birouri,5561,565,2002,8,8055445
+24029,Bulevardul Nicolae Titulescu 85,Zorilor,400005,E - Clădire Comercială,3999,682,1983,16,12781308
+30374,Bulevardul Gheorghe Marinescu 19,Sopor,400394,D - Bloc Cu Lift,8699,790,2008,115,19613217
+45697,Bulevardul 21 Decembrie 1989 36,Florești,400006,G - Depozit / Industrial,19158,15993,1979,1,37869414
+46930,Strada Donath 21,Sopor,400006,C - Bloc Fără Lift,5634,2898,1960,11,11916259
+89276,Strada Donath 44,Borhanci,400205,C - Bloc Fără Lift,8521,3516,1971,101,10755575
+37607,Bulevardul Nicolae Titulescu 104,Bună Ziua,400008,G - Depozit / Industrial,652,2236,2004,1,1429950
+54942,Strada Memorandumului 83,Iris,400315,D - Bloc Cu Lift,793,3071,1991,4,2503246
+36685,Strada Horea 34,Gheorgheni,400007,E - Clădire Comercială,1568,467,1982,27,2617895
+93130,Strada Pavlov 134,Borhanci,400009,F - Spațiu de Birouri,3752,748,2011,11,6772132
+44600,Strada Piezișă 5,Florești,400004,C - Bloc Fără Lift,3960,3306,1981,6,5755819
+76244,Bulevardul Eroilor 97,Baciu,400120,E - Clădire Comercială,6518,2390,1983,20,15951482
+74032,Strada Republicii 168,Someșeni,400001,A - Locuință Unifamilială,139,576,1986,1,437603
+42914,Strada Cloșca 180,Mănăștur,400004,A - Locuință Unifamilială,234,580,2014,1,429710
+16658,Bulevardul Gheorghe Marinescu 156,Între Lacuri,400003,G - Depozit / Industrial,3937,17763,2016,1,13500655
+22097,Strada Republicii 128,Florești,400010,D - Bloc Cu Lift,13246,1377,1985,110,23760981
+93136,Calea Florești 11,Europa,400008,D - Bloc Cu Lift,11775,2268,1990,46,10343153
+65518,Strada Republicii 147,Dâmbul Rotund,400008,C - Bloc Fără Lift,1975,3492,1969,69,5929085
+46265,Calea Turzii 165,Florești,400008,E - Clădire Comercială,2363,2101,1986,2,8023287
+15778,Strada Horea 93,Iris,400120,F - Spațiu de Birouri,3689,674,1982,4,3152250
+10464,Strada Alexandru Vaida Voevod 44,Zorilor,400006,H - Teren Neamenajat,0,2397,0,0,328821
+53719,Strada Avram Iancu 47,Gheorgheni,400007,G - Depozit / Industrial,15459,9907,1994,1,44049133
+27146,Bulevardul Nicolae Titulescu 167,Baciu,400205,C - Bloc Fără Lift,2352,842,1967,93,8483533
+93507,Strada Republicii 107,Baciu,400010,H - Teren Neamenajat,0,4860,0,0,838370
+44335,Strada Piezișă 200,Zorilor,400010,A - Locuință Unifamilială,146,644,1992,1,331666
+31178,Bulevardul Eroilor 17,Grigorescu,400120,F - Spațiu de Birouri,301,2976,2016,17,1393242
+67912,Strada Aurel Vlaicu 87,Europa,400009,B - Locuință Bifamilială,301,404,1991,2,671479
+82309,Strada Piezișă 39,Someșeni,400315,A - Locuință Unifamilială,85,310,1994,1,399442
+66057,Calea Florești 20,Iris,400008,F - Spațiu de Birouri,2173,1555,1983,9,5210513
+83519,Strada Piezișă 104,Someșeni,400004,B - Locuință Bifamilială,315,604,2003,2,900459
+11267,Strada Traian 81,Gheorgheni,400008,A - Locuință Unifamilială,132,563,1982,1,298327
+24663,Calea Dorobanților 155,Borhanci,400120,E - Clădire Comercială,7491,2282,1993,18,19877088
+19862,Strada Avram Iancu 94,Someșeni,400001,D - Bloc Cu Lift,14333,2161,2020,46,39730554
+29536,Strada Traian 30,Gheorgheni,400205,D - Bloc Cu Lift,535,1698,1997,49,1642885
+81511,Strada Republicii 12,Baciu,400003,H - Teren Neamenajat,0,1350,0,0,535955
+14722,Bulevardul Nicolae Titulescu 28,Grigorescu,400010,D - Bloc Cu Lift,3572,794,2010,113,5278109
+58393,Strada Observatorului 184,Zorilor,400002,G - Depozit / Industrial,2023,21750,2013,1,13727208
+86350,Strada Traian 118,Dâmbul Rotund,400010,C - Bloc Fără Lift,8672,317,1966,71,19977642
+82420,Strada Tăietura Turcului 124,Baciu,400009,C - Bloc Fără Lift,11834,2669,1976,26,13744805
+29410,Bulevardul Gheorghe Marinescu 83,Europa,400394,G - Depozit / Industrial,14218,20955,2014,1,45029676
+66333,Strada Avram Iancu 76,Sopor,400205,C - Bloc Fără Lift,2763,1990,1998,81,9134873
+26704,Strada Avram Iancu 183,Între Lacuri,400394,D - Bloc Cu Lift,3791,1158,1997,83,10603243
+15482,Bulevardul 21 Decembrie 1989 182,Dâmbul Rotund,400003,F - Spațiu de Birouri,6019,672,2002,25,14176842
+50404,Strada Aurel Vlaicu 182,Bună Ziua,400120,E - Clădire Comercială,7388,1930,1980,26,16550118
+57795,Bulevardul 21 Decembrie 1989 14,Dâmbul Rotund,400001,D - Bloc Cu Lift,4874,3372,1980,104,18101246
+15229,Bulevardul 21 Decembrie 1989 16,Între Lacuri,400205,E - Clădire Comercială,1871,2416,2002,2,5949652
+56898,Strada Aurel Vlaicu 190,Europa,400315,D - Bloc Cu Lift,12663,2950,2009,75,19474295
+37535,Strada Constantin Brâncuși 74,Între Lacuri,400120,A - Locuință Unifamilială,275,546,1983,1,1198070
+99399,Strada Avram Iancu 142,Mărăști,400001,E - Clădire Comercială,1863,2741,2008,28,6938753
+42706,Strada Constantin Brâncuși 182,Dâmbul Rotund,400006,D - Bloc Cu Lift,13216,3269,1997,28,28200816
+97416,Calea Dorobanților 48,Mănăștur,400130,B - Locuință Bifamilială,273,191,1984,2,463421
+23473,Calea Florești 150,Someșeni,400005,A - Locuință Unifamilială,249,627,2020,1,902194
+56357,Strada Avram Iancu 153,Mărăști,400205,E - Clădire Comercială,4218,2545,2002,18,5179330
+83385,Strada Fabricii 57,Mănăștur,400009,B - Locuință Bifamilială,338,313,1983,2,847822
+63264,Calea Mănăștur 57,Baciu,400004,F - Spațiu de Birouri,2912,1677,1993,10,10383746
+91351,Strada Cloșca 144,Someșeni,400205,A - Locuință Unifamilială,138,504,1987,1,379834
+30257,Bulevardul Gheorghe Marinescu 63,Mărăști,400120,F - Spațiu de Birouri,3324,664,1996,13,7649241
+41029,Strada Fabricii 198,Zorilor,400009,H - Teren Neamenajat,0,4187,0,0,1923142
+31299,Strada Observatorului 83,Europa,400002,B - Locuință Bifamilială,165,700,1998,2,223597
+33206,Strada Aurel Vlaicu 162,Iris,400004,G - Depozit / Industrial,3905,7736,2004,1,15354366
+64040,Strada Pavlov 199,Bună Ziua,400120,B - Locuință Bifamilială,158,174,1988,2,452252
+13248,Calea Dorobanților 14,Mănăștur,400205,E - Clădire Comercială,4771,488,1994,19,15680225
+33509,Strada Traian 162,Bună Ziua,400007,F - Spațiu de Birouri,338,1795,1987,22,1398531
+53540,Bulevardul Gheorghe Marinescu 17,Iris,400130,A - Locuință Unifamilială,117,516,1994,1,341142
+63964,Strada Horea 156,Gheorgheni,400005,H - Teren Neamenajat,0,3324,0,0,1210897
+97806,Strada Cloșca 41,Europa,400004,C - Bloc Fără Lift,12734,1901,1997,105,43497999
+42527,Strada Aurel Vlaicu 187,Dâmbul Rotund,400006,A - Locuință Unifamilială,152,276,1935,1,217134
+44970,Calea Baciului 141,Gheorgheni,400005,D - Bloc Cu Lift,12760,3336,2004,119,19044831
+30866,Strada Fabricii 37,Mănăștur,400003,D - Bloc Cu Lift,10607,3719,1984,36,13138310
+24168,Strada Tăietura Turcului 14,Someșeni,400205,H - Teren Neamenajat,0,4702,0,0,1733505
+60140,Calea Turzii 26,Florești,400130,H - Teren Neamenajat,0,2910,0,0,1072388
+15075,Bulevardul Muncii 26,Grigorescu,400010,B - Locuință Bifamilială,179,475,1992,2,525602
+71694,Strada Horea 178,Borhanci,400003,F - Spațiu de Birouri,6816,1495,1990,14,5838434
+39154,Bulevardul Muncii 183,Între Lacuri,400120,G - Depozit / Industrial,9566,28528,1993,1,22338577
+36158,Strada Cloșca 119,Sopor,400006,E - Clădire Comercială,4189,2459,1991,4,10979111
+70332,Calea Turzii 36,Baciu,400009,D - Bloc Cu Lift,4812,3304,1969,117,14810007
+55830,Strada Fabricii 162,Mărăști,400315,G - Depozit / Industrial,19834,7971,1972,1,47935949
+50001,Calea Baciului 121,Dâmbul Rotund,400205,C - Bloc Fără Lift,6493,1907,1997,32,8114442
+39831,Calea Dorobanților 102,Zorilor,400009,A - Locuință Unifamilială,202,778,2017,1,489850
+39219,Strada Traian 41,Mănăștur,400010,C - Bloc Fără Lift,12557,3298,2005,65,12750324
+13101,Bulevardul Muncii 17,Grigorescu,400006,D - Bloc Cu Lift,1201,3038,2006,30,3638503
+96511,Bulevardul Eroilor 11,Dâmbul Rotund,400006,B - Locuință Bifamilială,346,798,1965,2,1220588
+35313,Calea Baciului 146,Mănăștur,400007,G - Depozit / Industrial,12470,20257,2011,1,42874793
+62227,Calea Turzii 97,Baciu,400004,G - Depozit / Industrial,12063,27779,1992,1,33642444
+53025,Bulevardul Gheorghe Marinescu 2,Europa,400394,C - Bloc Fără Lift,7707,978,1969,33,17080290
+46517,Bulevardul 21 Decembrie 1989 48,Mănăștur,400006,B - Locuință Bifamilială,197,574,1972,2,708660
+19099,Strada Cloșca 123,Florești,400010,C - Bloc Fără Lift,11104,3713,1962,56,16749865
+46585,Strada Tăietura Turcului 42,Mănăștur,400120,A - Locuință Unifamilială,155,207,1951,1,267688
+56025,Strada Piezișă 154,Borhanci,400120,A - Locuință Unifamilială,225,237,1957,1,570706
+94080,Strada Cloșca 44,Florești,400315,G - Depozit / Industrial,5176,27037,2007,1,20277538
+76768,Strada Aurel Vlaicu 131,Grigorescu,400003,F - Spațiu de Birouri,7755,2057,2017,20,8162359
+62386,Bulevardul 21 Decembrie 1989 28,Mărăști,400004,G - Depozit / Industrial,5400,20841,1976,1,16507082
+99065,Bulevardul Gheorghe Marinescu 10,Baciu,400205,B - Locuință Bifamilială,127,643,2014,2,365803
+80282,Strada Memorandumului 199,Dâmbul Rotund,400120,G - Depozit / Industrial,17606,14784,1993,1,61274603
+53404,Bulevardul Nicolae Titulescu 59,Iris,400008,G - Depozit / Industrial,11985,20301,2017,1,47794281
+13617,Strada Tăietura Turcului 26,Bună Ziua,400003,E - Clădire Comercială,4108,1152,1985,30,6947494
+25118,Bulevardul Nicolae Titulescu 66,Florești,400001,A - Locuință Unifamilială,347,270,1996,1,382031
+44237,Strada Constantin Brâncuși 81,Bună Ziua,400006,B - Locuință Bifamilială,159,586,2013,2,498348
+33405,Calea Baciului 109,Borhanci,400006,E - Clădire Comercială,5775,1827,1993,25,11818752
+86099,Strada Cloșca 46,Zorilor,400009,H - Teren Neamenajat,0,2278,0,0,754155
+44795,Strada Donath 181,Bună Ziua,400130,C - Bloc Fără Lift,14508,3838,1975,88,41968890
+15014,Strada Constantin Brâncuși 42,Gheorgheni,400004,G - Depozit / Industrial,11589,27242,2005,1,38667999
+24208,Bulevardul Eroilor 42,Bună Ziua,400120,A - Locuință Unifamilială,126,298,1990,1,497475
+88193,Calea Dorobanților 68,Florești,400006,B - Locuință Bifamilială,99,543,1981,2,410775
+66959,Strada Constantin Brâncuși 153,Mărăști,400205,C - Bloc Fără Lift,10990,2324,1961,60,15620298
+55309,Strada Fabricii 74,Florești,400001,D - Bloc Cu Lift,10579,994,1964,90,19098397
+51114,Calea Florești 23,Grigorescu,400205,G - Depozit / Industrial,12071,22943,1995,1,27003724
+67199,Strada Memorandumului 189,Între Lacuri,400002,B - Locuință Bifamilială,225,722,2004,2,741865
+89457,Calea Turzii 58,Borhanci,400004,H - Teren Neamenajat,0,3509,0,0,717390
+77033,Bulevardul Nicolae Titulescu 130,Gheorgheni,400009,B - Locuință Bifamilială,337,451,1973,2,1321240
+25157,Calea Turzii 138,Someșeni,400205,E - Clădire Comercială,5886,2013,2016,13,12791926
+60488,Strada Avram Iancu 199,Sopor,400120,H - Teren Neamenajat,0,424,0,0,86126
+85574,Strada Piezișă 163,Iris,400004,D - Bloc Cu Lift,13609,1593,2005,56,30031281
+34914,Calea Turzii 64,Grigorescu,400002,G - Depozit / Industrial,11706,3491,2005,1,39817257

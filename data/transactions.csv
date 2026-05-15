@@ -1,0 +1,593 @@
+id,propkey,sale_date,sale_price,buyer_name,seller_name,transaction_type
+1,93810,2020-10-06,1922742,Alina Farcaș,Cluj Capital SRL,Flip
+2,24592,2022-04-25,746745,Ilie & Rusu Imobiliare SRL,Oana Munteanu,Arm's Length
+3,13278,2020-08-22,19375060,Patricia Moldovan,Bogdan Ardelean,Arm's Length
+4,46048,2022-08-19,37409035,Napoca Estate SRL,Nicolae Farcaș,Multi-Parcel
+5,42098,2021-08-31,0,Stan & Pop Development SRL,Napoca Construct SRL,Arm's Length
+6,42098,2024-02-22,7433045,Someș Assets SA,Apusean Group SA,Arm's Length
+7,39256,2019-07-01,8212469,Someș Development SA,Cristina Constantin,Cash Buyer
+8,98696,2024-11-11,573206,Mihai Farcaș,Napoca Properties SA,Same Party
+9,21395,2024-05-12,1616053,Ardeal Capital SA,Gabriela Munteanu,Multi-Parcel
+10,87397,2023-07-18,806813,Gabriela Sandu,Someș Imobiliare SRL,Arm's Length
+11,65302,2020-12-08,257908,Trans Properties SRL,Rusu & Dumitrescu Development SRL,Arm's Length
+12,14165,2020-11-15,7414896,Banat Assets SRL,Bianca Pop,Arm's Length
+13,14165,2024-09-12,8988811,Valentina Moldovan,Laura Ionescu,Arm's Length
+14,13905,2021-10-21,44695354,Andrei Stan,Gabriel Vlad,Arm's Length
+15,22280,2020-12-14,1528576,Simona Stan,Ramona Moldovan,Related Parties
+16,22280,2021-03-04,919311,Călin Ardelean,Lucian Chira,Arm's Length
+17,22280,2024-11-15,1201067,Napoca Properties SRL,Teodora Munteanu,Cash Buyer
+18,38657,2024-07-26,16263171,Constantin & Ardelean Invest SRL,Alina Stoica,Arm's Length
+19,40495,2019-05-15,49683754,Trans Group SRL,Laura Farcaș,Same Party
+20,76237,2021-09-11,19477316,Cristina Stan,Cluj Holdings SRL,Same Party
+21,88907,2018-08-16,13370593,Mihai Mureșan,Emil Ionescu,Related Parties
+22,13478,2022-07-07,2077230,Horia Farcaș,Călin Vlad,Partial Interest
+23,83563,2023-06-29,11439951,Apusean Assets SA,Nicolae Mureșan,Arm's Length
+24,95181,2023-03-14,13540352,Ardeal Holdings SA,Bogdan Ardelean,Partial Interest
+25,81426,2019-06-08,10248081,Bianca Blaga,Nicolae Sandu,Arm's Length
+26,38893,2024-05-17,1593318,Ilie & Ionescu Properties SRL,Bianca Mureșan,Related Parties
+27,68878,2021-05-04,11607606,Daniel Dumitrescu,Banat Holdings SRL,Cash Buyer
+28,87236,2019-03-12,0,Andreea Ardelean,Vlad Vlad,Arm's Length
+29,87236,2022-11-12,27443514,Feleac Invest SRL,Gabriela Pop,Partial Interest
+30,46463,2025-04-10,682258,Trans Properties SRL,Alexandru Popa,Cash Buyer
+31,65392,2023-04-16,8902063,Ioan Pop,Vest Development SRL,Arm's Length
+32,65392,2023-06-10,18156711,Trans Estate SA,Andreea Ardelean,Related Parties
+33,54597,2018-09-06,10713629,Paul Popa,Apusean Group SA,Arm's Length
+34,46421,2018-03-27,5092030,Monica Farcaș,Ramona Stan,Multi-Parcel
+35,30379,2022-05-18,605546,Farcaș & Dumitrescu Holdings SRL,Ardeal Group SA,Partial Interest
+36,30379,2022-09-04,340908,Maria Constantin,Andrei Pop,Related Parties
+37,38221,2020-12-04,403275,Vest Invest SRL,Diana Chira,Cash Buyer
+38,54118,2020-11-22,888093,Blaga & Farcaș Invest SRL,Ramona Ilie,Cash Buyer
+39,23396,2019-03-10,387091,Ardeal Capital SRL,Florina Stoica,Arm's Length
+40,23396,2019-03-31,414574,Someș Invest SRL,Ramona Sandu,Multi-Parcel
+41,23396,2024-11-05,0,Gabriel Vlad,Patricia Vlad,Cash Buyer
+42,22156,2020-10-02,2497236,Nicolae Ilie,Blaga & Vlad Imobiliare SRL,Multi-Parcel
+43,59797,2018-02-10,74488811,Patricia Moldovan,Andrei Stan,Arm's Length
+44,22676,2018-08-25,608669,Lungu & Vlad Imobiliare SRL,Blaga & Farcaș Properties SRL,Flip
+45,22676,2023-10-31,513961,Nicoleta Rusu,Stoica & Mureșan Imobiliare SRL,Arm's Length
+46,22676,2025-01-31,457330,Feleac Invest SA,Maria Blaga,Partial Interest
+47,57052,2025-02-16,0,Sandu & Blaga Invest SRL,Nicoleta Munteanu,Cash Buyer
+48,55082,2021-12-22,298337,Ioan Constantin,Cristina Dănilă,Flip
+49,89131,2023-12-25,28298895,Someș Development SA,Feleac Invest SA,Arm's Length
+50,89131,2025-01-15,19286487,Patricia Mureșan,Nicolae Stan,Cash Buyer
+51,44671,2023-01-02,8321272,Dănilă & Ardelean Development SRL,Ardelean & Sandu Properties SRL,Multi-Parcel
+52,80284,2019-06-14,15238215,Nicoleta Popa,Vest Invest SA,Arm's Length
+53,80284,2023-10-04,8344498,Maria Stoica,Cristian Stan,Arm's Length
+54,26361,2018-07-19,384830,Silviu Vlad,Cluj Development SRL,Arm's Length
+55,26361,2022-09-24,282564,Andreea Stan,Teodora Ilie,Multi-Parcel
+56,59615,2019-09-03,15189980,Vest Construct SRL,Ramona Munteanu,Cash Buyer
+57,59615,2023-01-14,13153446,Chira & Popa Estate SRL,Banat Estate SRL,Partial Interest
+58,20328,2018-08-05,679451,Valentina Ionescu,Laura Dumitrescu,Cash Buyer
+59,82357,2024-07-01,1211922,Alina Lungu,Nicolae Pop,Related Parties
+60,48427,2021-07-23,185216,Bogdan Stan,Nicolae Ionescu,Arm's Length
+61,48427,2022-04-14,149734,Someș Development SRL,Laura Rusu,Arm's Length
+62,92397,2018-08-01,384850,Laura Moldovan,Silviu Sandu,Arm's Length
+63,92397,2019-05-11,0,Banat Invest SA,Silviu Stan,Related Parties
+64,92397,2020-04-09,409433,Vlad & Chira Properties SRL,Valentina Sandu,Arm's Length
+65,91070,2018-06-21,782167,Paul Munteanu,Vest Construct SA,Cash Buyer
+66,91070,2023-01-25,1627266,Carmen Stoica,Călin Stan,Cash Buyer
+67,91070,2024-03-23,1509391,Monica Munteanu,Ramona Munteanu,Flip
+68,57400,2021-08-10,17731877,Alina Farcaș,Cluj Properties SA,Related Parties
+69,85674,2023-06-26,29777013,Trans Invest SRL,Mihai Farcaș,Cash Buyer
+70,35203,2019-12-27,30932647,Alexandru Constantin,Laura Vlad,Same Party
+71,16006,2021-05-26,24771317,Banat Capital SA,Mihai Popa,Same Party
+72,16006,2025-01-04,25731780,Banat Assets SA,Banat Properties SRL,Multi-Parcel
+73,96673,2019-06-06,1870542,Pop & Chira Assets SRL,Silviu Ilie,Flip
+74,96673,2020-11-29,852269,Vest Holdings SRL,Carpat Group SRL,Partial Interest
+75,39871,2023-10-20,39192912,Alexandru Rusu,Bogdan Dănilă,Arm's Length
+76,47930,2020-07-13,13788161,Alina Ardelean,Alexandru Dănilă,Arm's Length
+77,47930,2022-10-02,12512629,Bianca Lungu,Ioana Mureșan,Cash Buyer
+78,20458,2022-12-02,31276657,Ioan Mureșan,Bianca Ilie,Related Parties
+79,20458,2024-12-12,16888449,Mihai Rusu,Nicolae Constantin,Multi-Parcel
+80,40512,2018-02-13,653727,Cluj Group SA,Cristina Dumitrescu,Multi-Parcel
+81,40512,2024-12-30,0,Stan & Blaga Holdings SRL,Trans Assets SRL,Partial Interest
+82,23238,2020-09-22,0,Apusean Holdings SA,Valentina Stan,Arm's Length
+83,46434,2021-11-05,27379357,Carpat Imobiliare SRL,Emil Dumitrescu,Related Parties
+84,69429,2020-04-04,25656312,Apusean Assets SA,Apusean Assets SA,Partial Interest
+85,93320,2021-09-08,352900,Florin Constantin,Emil Constantin,Cash Buyer
+86,57819,2021-09-19,22378318,Apusean Imobiliare SRL,Elena Stoica,Multi-Parcel
+87,31319,2025-01-29,5922937,Gabriel Ionescu,Silviu Constantin,Arm's Length
+88,37460,2018-03-27,533455,Trans Capital SRL,Lucian Ionescu,Partial Interest
+89,37460,2019-02-19,569826,Someș Properties SRL,Dumitrescu & Chira Development SRL,Same Party
+90,97841,2021-07-26,29854583,Silviu Stoica,Lungu & Constantin Imobiliare SRL,Arm's Length
+91,44993,2021-02-21,65923817,Trans Assets SRL,Radu Rusu,Same Party
+92,99593,2023-09-17,719593,Trans Group SA,Mihai Dănilă,Arm's Length
+93,99593,2025-03-27,891659,Nicolae Rusu,Nicoleta Munteanu,Flip
+94,94939,2019-07-05,3149056,Monica Sandu,Nicolae Sandu,Related Parties
+95,19358,2023-07-31,35760559,Bogdan Stoica,Blaga & Chira Invest SRL,Arm's Length
+96,89840,2019-02-08,441421,Gabriel Dumitrescu,Stan & Chira Holdings SRL,Related Parties
+97,89840,2020-07-21,387225,Banat Imobiliare SA,Radu Stan,Cash Buyer
+98,93227,2020-07-18,41568084,Trans Construct SA,Monica Dumitrescu,Arm's Length
+99,93227,2020-07-21,33411750,Cristian Dănilă,Stoica & Pop Group SRL,Multi-Parcel
+100,32431,2021-10-23,1146897,Banat Imobiliare SRL,Cluj Properties SA,Cash Buyer
+101,32431,2021-12-23,1064819,Vest Development SA,Vest Invest SRL,Arm's Length
+102,80010,2020-02-11,3668154,Carpat Properties SRL,Vlad Ardelean,Same Party
+103,70589,2020-04-23,3643760,Nicolae Rusu,Călin Stan,Arm's Length
+104,70589,2021-03-08,4737496,Feleac Holdings SRL,Trans Properties SA,Arm's Length
+105,70589,2022-04-30,4979939,Alexandru Stan,Vest Assets SA,Related Parties
+106,59735,2021-09-09,23750616,Trans Construct SRL,Stoica & Rusu Assets SRL,Multi-Parcel
+107,59735,2023-11-24,22528349,Mihai Ionescu,Ardeal Development SA,Multi-Parcel
+108,45382,2018-06-28,726591,Dumitrescu & Ardelean Development SRL,Valentina Popa,Arm's Length
+109,93886,2018-11-10,20933416,Bogdan Ilie,Mihai Dumitrescu,Multi-Parcel
+110,93886,2019-03-07,0,Ardelean & Ilie Invest SRL,Florin Ilie,Arm's Length
+111,93886,2023-08-29,12444064,Horia Popa,Oana Ionescu,Cash Buyer
+112,38785,2019-09-21,8365340,Cluj Estate SA,Diana Rusu,Partial Interest
+113,38785,2021-01-24,10079613,Florin Vlad,Gabriela Mureșan,Related Parties
+114,40021,2018-09-16,28601203,Carpat Invest SRL,Lungu & Chira Capital SRL,Cash Buyer
+115,40021,2020-06-22,23098910,Ioan Ionescu,Ioan Pop,Arm's Length
+116,14207,2023-02-23,4004978,Sandu & Stoica Assets SRL,Călin Chira,Arm's Length
+117,51347,2019-12-04,3694981,Stan & Lungu Properties SRL,Monica Ardelean,Arm's Length
+118,51347,2024-05-20,0,Teodora Dănilă,Alina Constantin,Flip
+119,45093,2019-05-24,11523513,Emil Stan,Andrei Constantin,Arm's Length
+120,45093,2021-06-19,19329668,Cluj Estate SRL,Patricia Stoica,Flip
+121,18675,2020-07-27,8688637,Constantin & Farcaș Development SRL,Someș Group SA,Arm's Length
+122,18675,2021-09-18,10914514,Dumitrescu & Stan Invest SRL,Silviu Dumitrescu,Multi-Parcel
+123,37653,2018-11-17,366012,Maria Stoica,Gabriela Munteanu,Arm's Length
+124,84341,2018-11-24,55044393,Patricia Stan,Simona Pop,Arm's Length
+125,84341,2023-05-25,49023996,Carpat Properties SA,Ovidiu Stoica,Arm's Length
+126,51245,2022-03-17,807008,Pop & Pop Estate SRL,Nicoleta Ardelean,Arm's Length
+127,37869,2022-08-31,1104356,Patricia Moldovan,Popa & Rusu Assets SRL,Arm's Length
+128,75435,2020-11-11,2410983,Constantin & Constantin Group SRL,Apusean Imobiliare SRL,Partial Interest
+129,75435,2021-11-28,2762808,Vlad Dănilă,Ionescu & Pop Invest SRL,Arm's Length
+130,61856,2022-04-24,33814359,Nicolae Munteanu,Teodora Chira,Flip
+131,61856,2025-03-24,41317418,Carmen Popa,Apusean Properties SA,Arm's Length
+132,94259,2020-05-08,3087748,Ardeal Development SRL,Napoca Development SA,Arm's Length
+133,28726,2019-07-05,16931669,Andrei Ionescu,Dumitrescu & Munteanu Development SRL,Flip
+134,44718,2025-01-01,484610,Alexandru Dănilă,Paul Popa,Arm's Length
+135,42325,2018-01-30,797116,Radu Munteanu,Ardelean & Lungu Assets SRL,Arm's Length
+136,83579,2022-02-27,650774,Vlad Moldovan,Monica Popa,Arm's Length
+137,44438,2019-07-23,329300,Trans Assets SRL,Trans Estate SA,Related Parties
+138,44438,2022-07-04,488096,Apusean Imobiliare SRL,Lungu & Ilie Capital SRL,Same Party
+139,86622,2022-06-28,5969815,Ardeal Development SA,Feleac Properties SRL,Arm's Length
+140,66155,2023-08-29,6635711,Ilie & Ionescu Group SRL,Ardelean & Chira Capital SRL,Arm's Length
+141,66155,2024-05-31,8370292,Pop & Ionescu Construct SRL,Laura Constantin,Flip
+142,86484,2019-05-20,3239969,Florin Dănilă,Farcaș & Mureșan Construct SRL,Related Parties
+143,86484,2023-05-05,2592390,Patricia Constantin,Ardeal Holdings SRL,Partial Interest
+144,38746,2019-04-21,487613,Tudor Chira,Vest Development SRL,Arm's Length
+145,38746,2020-02-10,396202,Feleac Invest SA,Silviu Ilie,Partial Interest
+146,28131,2021-04-30,10305607,Cluj Assets SA,Radu Popa,Multi-Parcel
+147,76784,2024-06-08,830223,Lungu & Stan Capital SRL,Ioana Moldovan,Multi-Parcel
+148,74686,2020-01-04,22074778,Nicolae Ardelean,Oana Rusu,Flip
+149,74686,2022-05-24,17415832,Ardeal Properties SA,Banat Imobiliare SRL,Arm's Length
+150,74686,2023-06-20,33363651,Maria Stan,Emil Pop,Multi-Parcel
+151,21915,2024-06-15,374921,Florina Moldovan,Trans Properties SRL,Cash Buyer
+152,16175,2019-04-26,1645188,Vest Group SRL,Vlad Ionescu,Arm's Length
+153,16175,2023-10-13,2108431,Rusu & Munteanu Group SRL,Ardeal Invest SRL,Partial Interest
+154,16175,2025-04-16,1268109,Cristina Ardelean,Călin Dănilă,Partial Interest
+155,30033,2025-03-25,605363,Valentina Ionescu,Cluj Development SA,Arm's Length
+156,92240,2024-01-07,65402173,Popa & Dumitrescu Invest SRL,Vlad Ionescu,Arm's Length
+157,99192,2021-07-11,6039992,Bianca Mureșan,Teodora Stoica,Arm's Length
+158,65333,2024-02-08,164804,Maria Chira,Tudor Ardelean,Partial Interest
+159,88172,2023-11-11,506157,Bianca Constantin,Someș Holdings SRL,Related Parties
+160,18326,2019-07-04,640644,Gabriel Munteanu,Someș Development SRL,Arm's Length
+161,18326,2020-05-31,572826,Napoca Capital SRL,Cristina Blaga,Partial Interest
+162,60432,2022-09-16,9265174,Gabriel Popa,Carpat Development SA,Cash Buyer
+163,88104,2022-01-26,1385505,Feleac Development SRL,Diana Ionescu,Arm's Length
+164,71348,2021-06-09,621283,Gabriel Farcaș,Andrei Ionescu,Arm's Length
+165,79352,2022-05-15,1508996,Rusu & Ardelean Assets SRL,Alexandru Blaga,Partial Interest
+166,42953,2019-06-02,871266,Constantin & Farcaș Development SRL,Ionescu & Ilie Construct SRL,Arm's Length
+167,42953,2019-08-08,1187407,Ioana Stoica,Ardeal Holdings SA,Arm's Length
+168,82512,2021-07-04,1192209,Carmen Stoica,Simona Pop,Arm's Length
+169,11504,2019-07-13,967004,Banat Capital SA,Pop & Sandu Estate SRL,Same Party
+170,11504,2022-10-03,1174651,Blaga & Farcaș Imobiliare SRL,Someș Estate SA,Partial Interest
+171,11504,2023-09-15,1293183,Paul Rusu,Călin Lungu,Arm's Length
+172,99166,2019-04-28,31463176,Horia Blaga,Moldovan & Ilie Assets SRL,Arm's Length
+173,99166,2020-10-20,47912684,Lucian Ionescu,Alexandru Popa,Arm's Length
+174,99166,2024-01-18,35609947,Pop & Stan Holdings SRL,Mihai Vlad,Related Parties
+175,25014,2022-10-21,20082491,Someș Construct SA,Pop & Vlad Capital SRL,Arm's Length
+176,80381,2019-07-02,827206,Gabriel Popa,Silviu Ardelean,Flip
+177,44973,2019-06-06,56754861,Stan & Popa Invest SRL,Stan & Stan Construct SRL,Arm's Length
+178,44973,2021-08-23,47433898,Pop & Sandu Group SRL,Paul Mureșan,Arm's Length
+179,94012,2020-10-11,78938,Constantin & Sandu Capital SRL,Ardeal Estate SA,Arm's Length
+180,94012,2024-12-04,117852,Vest Imobiliare SRL,Emil Stan,Cash Buyer
+181,54587,2024-11-30,468247,Ioana Lungu,Cluj Estate SA,Arm's Length
+182,24621,2018-07-31,18658967,Andrei Ionescu,Andrei Lungu,Arm's Length
+183,48469,2023-04-18,53826469,Călin Popa,Valentina Stan,Multi-Parcel
+184,66985,2022-01-20,1110293,Carmen Popa,Vlad Popa,Related Parties
+185,69470,2020-02-20,1281246,Gabriela Chira,Moldovan & Stan Capital SRL,Related Parties
+186,69470,2020-03-01,899652,Apusean Construct SA,Ardeal Development SA,Flip
+187,69470,2022-12-31,635994,Elena Stoica,Tudor Moldovan,Flip
+188,10425,2020-02-19,4484624,Valentina Rusu,Gabriel Dumitrescu,Related Parties
+189,10425,2022-06-17,3388982,Ilie & Blaga Estate SRL,Feleac Holdings SRL,Arm's Length
+190,44522,2019-05-03,0,Elena Munteanu,Bianca Constantin,Arm's Length
+191,44522,2024-03-11,3405442,Lungu & Mureșan Estate SRL,Someș Development SRL,Arm's Length
+192,75612,2021-04-22,1885933,Gabriel Pop,Banat Invest SA,Arm's Length
+193,75612,2021-08-22,1604965,Gabriela Ilie,Napoca Capital SRL,Flip
+194,33416,2022-06-08,651829,Daniel Ilie,Someș Capital SRL,Partial Interest
+195,76542,2020-01-09,0,Carmen Stan,Florin Ilie,Arm's Length
+196,23947,2019-02-15,16068448,Alexandru Moldovan,Bogdan Munteanu,Arm's Length
+197,23947,2022-07-07,16162294,Apusean Invest SRL,Trans Assets SRL,Arm's Length
+198,23947,2023-11-28,29327852,Laura Chira,Andrei Popa,Arm's Length
+199,91959,2019-02-25,16298881,Someș Construct SA,Ioana Rusu,Arm's Length
+200,49117,2019-04-06,9645539,Apusean Invest SRL,Bogdan Moldovan,Arm's Length
+201,93748,2019-12-31,31430610,Andreea Stoica,Ardeal Holdings SRL,Arm's Length
+202,76540,2018-11-09,31586562,Trans Group SRL,Diana Dănilă,Same Party
+203,76540,2020-12-23,24299935,Nicoleta Lungu,Paul Sandu,Arm's Length
+204,76540,2022-02-20,27813979,Carpat Group SRL,Trans Estate SA,Arm's Length
+205,89818,2020-07-31,1435365,Mureșan & Constantin Construct SRL,Cluj Construct SRL,Multi-Parcel
+206,36071,2019-07-02,11766980,Stoica & Ilie Properties SRL,Chira & Sandu Capital SRL,Arm's Length
+207,30032,2020-07-08,201179,Vest Construct SRL,Călin Dănilă,Same Party
+208,31174,2018-05-04,7818508,Daniel Ardelean,Blaga & Stoica Group SRL,Arm's Length
+209,31174,2019-10-10,10056139,Cluj Assets SRL,Teodora Ionescu,Cash Buyer
+210,79514,2023-02-04,1267452,Laura Mureșan,Elena Dumitrescu,Related Parties
+211,79514,2024-03-19,1002754,Ardeal Group SA,Vest Development SA,Arm's Length
+212,88504,2022-10-04,337228,Napoca Properties SRL,Ardeal Capital SA,Arm's Length
+213,88504,2025-04-02,476758,Napoca Invest SRL,Dănilă & Moldovan Assets SRL,Arm's Length
+214,52487,2018-07-07,9766022,Emil Lungu,Nicoleta Stan,Arm's Length
+215,52487,2018-07-16,13235548,Stan & Pop Assets SRL,Simona Dănilă,Multi-Parcel
+216,52487,2023-06-05,0,Feleac Capital SA,Elena Ionescu,Arm's Length
+217,74042,2023-08-17,24374059,Vest Imobiliare SRL,Oana Constantin,Arm's Length
+218,74042,2023-10-16,16826103,Alexandru Stan,Stoica & Chira Invest SRL,Arm's Length
+219,74042,2024-10-29,21773518,Nicoleta Mureșan,Ovidiu Munteanu,Arm's Length
+220,12552,2020-11-14,18277254,Nicolae Farcaș,Elena Ilie,Same Party
+221,12552,2022-12-16,12290984,Laura Moldovan,Cluj Capital SA,Same Party
+222,12552,2025-04-17,15867238,Carmen Constantin,Ovidiu Mureșan,Arm's Length
+223,24662,2023-04-03,10430679,Oana Sandu,Apusean Invest SRL,Multi-Parcel
+224,57576,2024-10-11,1116343,Paul Stan,Monica Dănilă,Multi-Parcel
+225,41385,2022-04-07,1564187,Cluj Development SRL,Daniel Mureșan,Cash Buyer
+226,41571,2018-12-01,21176932,Andrei Mureșan,Sandu & Lungu Holdings SRL,Flip
+227,20322,2022-09-13,16201696,Dănilă & Rusu Imobiliare SRL,Andreea Dumitrescu,Cash Buyer
+228,73699,2024-11-30,47390584,Pop & Stan Group SRL,Ardelean & Lungu Invest SRL,Cash Buyer
+229,19071,2020-12-12,0,Banat Invest SA,Emil Sandu,Multi-Parcel
+230,19071,2022-07-23,741825,Tudor Pop,Lucian Pop,Related Parties
+231,79822,2021-06-11,2295025,Apusean Estate SA,Ioan Popa,Partial Interest
+232,26483,2022-03-09,377083,Patricia Stoica,Popa & Mureșan Invest SRL,Related Parties
+233,26483,2022-10-21,0,Valentina Popa,Carpat Assets SA,Flip
+234,26483,2023-02-23,625519,Diana Dumitrescu,Popa & Vlad Group SRL,Cash Buyer
+235,26828,2025-03-26,20675487,Gabriel Stoica,Patricia Constantin,Arm's Length
+236,72296,2018-03-05,2443169,Banat Development SRL,Mihai Dumitrescu,Cash Buyer
+237,72296,2018-04-18,3657711,Rusu & Ionescu Development SRL,Teodora Ionescu,Arm's Length
+238,72296,2018-05-14,3188400,Laura Chira,Apusean Capital SRL,Cash Buyer
+239,79163,2018-04-24,27118584,Ilie & Vlad Properties SRL,Florin Stoica,Same Party
+240,79163,2019-09-19,18876011,Cluj Holdings SRL,Cristian Pop,Partial Interest
+241,89507,2024-07-01,2233213,Daniel Mureșan,Lucian Dumitrescu,Flip
+242,65461,2023-07-05,702939,Apusean Group SA,Florina Stoica,Multi-Parcel
+243,36365,2024-10-20,1501685,Alina Ionescu,Napoca Invest SA,Arm's Length
+244,95180,2019-09-17,14574844,Cristian Munteanu,Emil Mureșan,Flip
+245,58944,2024-03-08,373167,Laura Ionescu,Napoca Development SRL,Cash Buyer
+246,77839,2021-06-30,13220204,Laura Lungu,Andreea Rusu,Partial Interest
+247,77839,2024-08-03,16914844,Cluj Estate SRL,Nicolae Stoica,Arm's Length
+248,69177,2025-03-27,595488,Daniel Vlad,Feleac Construct SRL,Arm's Length
+249,25860,2021-07-11,9157212,Ioana Chira,Horia Farcaș,Arm's Length
+250,42493,2020-06-09,3165106,Vest Development SRL,Apusean Capital SRL,Related Parties
+251,18392,2018-07-11,9639622,Tudor Pop,Tudor Pop,Arm's Length
+252,18392,2023-08-05,9210992,Bianca Lungu,Ardeal Group SA,Cash Buyer
+253,12757,2021-01-30,71265363,Napoca Group SRL,Călin Vlad,Arm's Length
+254,12757,2021-05-17,111651188,Sandu & Constantin Properties SRL,Lucian Chira,Arm's Length
+255,87110,2018-06-26,7864700,Laura Ionescu,Dănilă & Ilie Invest SRL,Arm's Length
+256,87110,2018-08-04,8001757,Trans Invest SA,Feleac Assets SA,Cash Buyer
+257,87110,2020-11-29,11114053,Napoca Invest SRL,Florin Dumitrescu,Arm's Length
+258,82603,2018-11-04,28223799,Călin Lungu,Banat Estate SRL,Arm's Length
+259,40161,2021-07-07,16309431,Ioana Vlad,Ovidiu Farcaș,Multi-Parcel
+260,87128,2022-06-28,3903032,Elena Ilie,Popa & Constantin Imobiliare SRL,Arm's Length
+261,38864,2020-02-06,10201773,Nicolae Dumitrescu,Carpat Development SRL,Multi-Parcel
+262,38864,2020-12-28,16266185,Patricia Dumitrescu,Vest Properties SRL,Arm's Length
+263,10942,2023-12-10,1040194,Călin Moldovan,Cristina Munteanu,Arm's Length
+264,19305,2023-12-20,4986344,Napoca Group SRL,Emil Vlad,Related Parties
+265,92719,2024-09-08,0,Constantin & Ionescu Construct SRL,Someș Properties SA,Arm's Length
+266,17716,2023-02-08,0,Bogdan Ionescu,Alina Farcaș,Multi-Parcel
+267,40007,2023-04-25,16084483,Maria Constantin,Someș Properties SA,Arm's Length
+268,18834,2019-02-14,2360357,Laura Vlad,Lucian Stoica,Multi-Parcel
+269,18834,2021-06-01,2220474,Ardeal Holdings SA,Cluj Properties SA,Cash Buyer
+270,14117,2019-08-04,620946,Dumitrescu & Rusu Invest SRL,Valentina Ilie,Partial Interest
+271,14117,2020-06-21,859226,Banat Development SRL,Laura Stoica,Arm's Length
+272,14117,2022-01-03,471377,Dănilă & Vlad Holdings SRL,Alexandru Ardelean,Partial Interest
+273,53309,2019-08-26,206966,Horia Pop,Emil Stoica,Related Parties
+274,53309,2019-09-08,255055,Bianca Munteanu,Horia Blaga,Multi-Parcel
+275,53309,2023-03-26,229578,Gabriela Sandu,Carmen Stoica,Arm's Length
+276,19287,2023-04-23,34607109,Laura Stoica,Florina Dănilă,Partial Interest
+277,77391,2021-08-13,331243,Horia Mureșan,Ovidiu Chira,Cash Buyer
+278,46500,2019-01-29,6407024,Vest Group SA,Vest Group SA,Arm's Length
+279,46500,2022-11-25,5631396,Maria Constantin,Apusean Properties SA,Same Party
+280,97684,2024-05-05,22740776,Radu Ilie,Mureșan & Moldovan Holdings SRL,Cash Buyer
+281,73624,2019-03-15,14220629,Tudor Blaga,Bianca Dumitrescu,Arm's Length
+282,73624,2025-04-15,16559642,Elena Stoica,Cluj Group SA,Same Party
+283,38080,2020-04-02,0,Paul Pop,Ramona Rusu,Related Parties
+284,84847,2020-01-24,682849,Farcaș & Popa Development SRL,Cluj Properties SRL,Related Parties
+285,71953,2019-12-01,1226465,Tudor Ardelean,Gabriel Rusu,Arm's Length
+286,71953,2020-09-12,1106896,Ardeal Assets SRL,Tudor Stoica,Multi-Parcel
+287,71993,2024-12-14,11558756,Alexandru Ionescu,Carpat Capital SRL,Arm's Length
+288,63354,2023-11-21,13452639,Cristian Munteanu,Stoica & Rusu Invest SRL,Partial Interest
+289,34957,2022-03-23,3564603,Napoca Properties SA,Cristina Dănilă,Arm's Length
+290,34957,2023-06-05,2306047,Călin Popa,Trans Construct SA,Multi-Parcel
+291,34957,2025-03-27,3149537,Ionescu & Rusu Development SRL,Bianca Farcaș,Cash Buyer
+292,22363,2018-06-03,1354113,Lungu & Popa Group SRL,Banat Estate SRL,Cash Buyer
+293,96374,2022-11-28,14964483,Carmen Dănilă,Călin Dumitrescu,Partial Interest
+294,63883,2024-02-17,1062752,Feleac Capital SA,Trans Estate SA,Partial Interest
+295,63883,2024-05-16,731175,Mihai Mureșan,Elena Blaga,Related Parties
+296,71213,2019-04-29,1301238,Gabriel Rusu,Mureșan & Ionescu Holdings SRL,Related Parties
+297,98259,2023-10-22,28338483,Paul Munteanu,Cluj Construct SA,Arm's Length
+298,95649,2020-04-01,13237719,Bianca Constantin,Banat Assets SA,Arm's Length
+299,94696,2018-05-25,100322327,Someș Holdings SA,Diana Moldovan,Related Parties
+300,94696,2021-11-17,72689195,Ioana Pop,Pop & Dumitrescu Estate SRL,Arm's Length
+301,22899,2022-04-03,548569,Patricia Sandu,Ardeal Group SA,Related Parties
+302,62772,2022-02-15,23512874,Nicolae Chira,Alina Constantin,Flip
+303,54473,2018-08-21,402495,Horia Stan,Trans Invest SA,Arm's Length
+304,54473,2018-11-10,638286,Ioana Ilie,Vlad & Chira Holdings SRL,Flip
+305,24322,2020-09-27,27961724,Vlad Ardelean,Emil Stan,Related Parties
+306,24322,2023-11-28,27098933,Stan & Moldovan Capital SRL,Ramona Popa,Arm's Length
+307,35112,2021-01-12,22734575,Alexandru Rusu,Cluj Capital SRL,Same Party
+308,35112,2021-02-12,16368478,Nicoleta Pop,Monica Munteanu,Multi-Parcel
+309,34931,2020-06-05,20477497,Bianca Popa,Maria Chira,Cash Buyer
+310,34931,2024-08-17,16558838,Florin Stan,Laura Munteanu,Related Parties
+311,68800,2024-02-02,9406930,Vlad Pop,Tudor Lungu,Arm's Length
+312,28373,2020-01-03,20165539,Dumitrescu & Sandu Imobiliare SRL,Carmen Munteanu,Multi-Parcel
+313,28373,2022-12-23,27225824,Laura Ardelean,Daniel Stan,Same Party
+314,65296,2018-07-23,0,Feleac Imobiliare SRL,Laura Munteanu,Partial Interest
+315,65296,2020-08-11,609800,Călin Mureșan,Diana Blaga,Cash Buyer
+316,46509,2024-05-25,40270555,Apusean Assets SRL,Lungu & Sandu Construct SRL,Multi-Parcel
+317,70637,2021-04-19,14521941,Banat Capital SRL,Blaga & Blaga Assets SRL,Arm's Length
+318,42742,2020-05-30,0,Bogdan Constantin,Banat Estate SA,Partial Interest
+319,42742,2022-04-01,14519037,Carpat Estate SA,Napoca Capital SA,Arm's Length
+320,19880,2020-09-26,55049091,Ioana Ilie,Patricia Vlad,Same Party
+321,19880,2021-04-15,42661035,Nicolae Constantin,Elena Chira,Arm's Length
+322,68082,2022-07-28,15643537,Vest Development SRL,Elena Dănilă,Related Parties
+323,82132,2020-03-22,2336832,Simona Popa,Andrei Sandu,Arm's Length
+324,80855,2023-12-09,49933285,Diana Lungu,Monica Dănilă,Arm's Length
+325,11934,2019-03-18,0,Ovidiu Sandu,Paul Stan,Partial Interest
+326,22224,2023-09-18,5655362,Ovidiu Ionescu,Banat Holdings SA,Related Parties
+327,22224,2024-08-11,11306861,Cristina Blaga,Patricia Stoica,Arm's Length
+328,40982,2021-07-28,39747435,Sandu & Blaga Holdings SRL,Banat Construct SA,Arm's Length
+329,63269,2019-05-01,9678205,Vlad Popa,Munteanu & Stan Invest SRL,Arm's Length
+330,73653,2023-09-15,0,Pop & Ardelean Imobiliare SRL,Horia Dănilă,Flip
+331,73092,2022-12-28,17759453,Ramona Sandu,Ardeal Properties SA,Arm's Length
+332,38016,2018-11-20,509092,Radu Mureșan,Monica Moldovan,Arm's Length
+333,38016,2019-04-23,405103,Bianca Pop,Banat Development SRL,Cash Buyer
+334,38016,2021-12-19,551850,Paul Stoica,Bogdan Blaga,Arm's Length
+335,62565,2018-01-14,1238194,Banat Development SA,Ioana Vlad,Related Parties
+336,62565,2020-05-27,1289183,Paul Ardelean,Oana Farcaș,Arm's Length
+337,17685,2023-05-25,1970003,Trans Construct SA,Vest Invest SRL,Same Party
+338,59672,2019-04-11,10856976,Feleac Imobiliare SA,Radu Dumitrescu,Multi-Parcel
+339,59672,2021-11-24,12211661,Vest Group SRL,Gabriel Moldovan,Arm's Length
+340,59672,2022-06-19,7660498,Banat Properties SA,Diana Farcaș,Arm's Length
+341,10282,2019-06-14,0,Vlad & Chira Invest SRL,Teodora Dumitrescu,Partial Interest
+342,61173,2020-03-23,6355467,Apusean Construct SRL,Silviu Constantin,Arm's Length
+343,44760,2018-03-24,15466492,Florin Moldovan,Călin Rusu,Multi-Parcel
+344,44760,2018-05-28,25178179,Nicolae Pop,Silviu Farcaș,Partial Interest
+345,44760,2023-11-27,29811258,Monica Sandu,Cluj Holdings SA,Related Parties
+346,69638,2020-04-10,5346813,Nicolae Chira,Horia Chira,Related Parties
+347,47388,2022-04-16,5144450,Florin Dănilă,Oana Constantin,Arm's Length
+348,65444,2023-05-07,764919,Someș Capital SRL,Ardelean & Dănilă Capital SRL,Arm's Length
+349,96752,2023-04-24,3570249,Ioan Stan,Tudor Farcaș,Cash Buyer
+350,73788,2018-01-23,201054,Ioana Lungu,Paul Blaga,Related Parties
+351,30289,2018-11-30,34027352,Diana Ionescu,Călin Moldovan,Arm's Length
+352,34890,2019-12-01,4141571,Ardeal Development SRL,Laura Blaga,Arm's Length
+353,34890,2023-07-22,3245437,Andreea Vlad,Laura Ardelean,Related Parties
+354,48890,2021-09-14,1411252,Alina Lungu,Cristian Ardelean,Cash Buyer
+355,17665,2020-02-08,476175,Lucian Chira,Nicoleta Pop,Arm's Length
+356,17665,2020-03-27,551827,Banat Development SRL,Valentina Chira,Cash Buyer
+357,17665,2021-07-01,459207,Tudor Popa,Radu Dănilă,Related Parties
+358,85914,2022-04-18,3706515,Simona Dumitrescu,Feleac Capital SRL,Related Parties
+359,17989,2019-08-11,18086965,Trans Development SA,Monica Stoica,Arm's Length
+360,17989,2019-08-24,24525780,Horia Blaga,Bogdan Farcaș,Related Parties
+361,51104,2019-11-12,194402,Popa & Chira Development SRL,Florina Pop,Cash Buyer
+362,51104,2025-02-08,198327,Gabriela Rusu,Alexandru Dumitrescu,Cash Buyer
+363,17492,2023-11-25,533130,Cluj Assets SA,Napoca Group SRL,Arm's Length
+364,16572,2020-11-02,2333051,Vlad Ilie,Trans Estate SA,Related Parties
+365,86569,2018-06-06,408994,Vest Invest SRL,Cluj Construct SRL,Arm's Length
+366,86569,2022-02-22,443797,Ioan Ionescu,Dănilă & Vlad Estate SRL,Same Party
+367,75909,2022-09-02,24670211,Mureșan & Ionescu Group SRL,Vlad Dumitrescu,Arm's Length
+368,79615,2022-08-04,441082,Ioan Ilie,Carmen Dănilă,Cash Buyer
+369,30635,2018-12-28,17627767,Cluj Capital SRL,Ramona Mureșan,Arm's Length
+370,30635,2019-01-06,30380277,Stan & Stoica Imobiliare SRL,Napoca Properties SRL,Arm's Length
+371,30635,2019-04-22,19398520,Napoca Holdings SRL,Laura Mureșan,Multi-Parcel
+372,17455,2024-06-28,8993932,Banat Development SRL,Banat Capital SRL,Related Parties
+373,76562,2021-11-21,863689,Munteanu & Mureșan Estate SRL,Laura Dumitrescu,Arm's Length
+374,76562,2022-11-13,0,Banat Construct SRL,Mihai Dănilă,Arm's Length
+375,76562,2025-03-31,912817,Paul Lungu,Ardeal Properties SRL,Arm's Length
+376,20500,2019-10-29,3792777,Vest Group SA,Laura Vlad,Multi-Parcel
+377,20500,2021-06-08,3947872,Radu Popa,Napoca Assets SA,Multi-Parcel
+378,20500,2023-03-28,0,Blaga & Dumitrescu Assets SRL,Stan & Lungu Imobiliare SRL,Related Parties
+379,34356,2019-08-03,4251872,Bogdan Ionescu,Feleac Development SRL,Arm's Length
+380,34356,2021-06-20,2984566,Apusean Invest SA,Mihai Dumitrescu,Partial Interest
+381,34356,2021-11-18,5813435,Someș Construct SRL,Stan & Rusu Construct SRL,Cash Buyer
+382,18981,2022-10-06,4971729,Banat Properties SRL,Nicoleta Vlad,Multi-Parcel
+383,18981,2024-09-11,4742586,Someș Group SA,Feleac Holdings SRL,Related Parties
+384,87992,2021-10-22,308936,Gabriel Sandu,Vest Estate SRL,Arm's Length
+385,18907,2018-12-05,7625288,Cristian Dănilă,Trans Imobiliare SA,Partial Interest
+386,18907,2023-03-20,8574002,Ardeal Assets SRL,Ramona Blaga,Multi-Parcel
+387,98501,2023-04-24,347185,Mihai Mureșan,Ioan Dănilă,Same Party
+388,40828,2023-10-11,65046578,Paul Ilie,Vlad Vlad,Multi-Parcel
+389,62923,2021-10-14,463448,Ovidiu Lungu,Andrei Farcaș,Arm's Length
+390,84668,2022-06-11,19531569,Napoca Construct SA,Farcaș & Constantin Estate SRL,Arm's Length
+391,84668,2023-12-17,0,Diana Rusu,Ardeal Construct SA,Arm's Length
+392,42271,2021-05-21,386575,Sandu & Popa Capital SRL,Napoca Assets SA,Arm's Length
+393,42271,2022-06-30,624105,Vest Holdings SA,Florina Munteanu,Arm's Length
+394,42271,2022-09-27,0,Emil Pop,Elena Munteanu,Arm's Length
+395,85880,2024-09-19,26689316,Vlad Stoica,Farcaș & Ilie Assets SRL,Arm's Length
+396,87924,2024-09-04,7898705,Ovidiu Stan,Paul Dumitrescu,Flip
+397,15209,2019-11-28,700499,Carpat Construct SA,Carpat Construct SRL,Arm's Length
+398,91183,2021-07-15,8714997,Vest Imobiliare SA,Stoica & Chira Group SRL,Arm's Length
+399,20745,2019-06-24,686270,Horia Ionescu,Oana Chira,Arm's Length
+400,20745,2022-03-18,704129,Ardeal Construct SRL,Valentina Rusu,Multi-Parcel
+401,20745,2024-01-11,595261,Daniel Rusu,Carpat Construct SRL,Cash Buyer
+402,64948,2019-02-07,6892908,Elena Farcaș,Ardeal Assets SA,Same Party
+403,64948,2019-12-07,8004383,Ardeal Construct SA,Vlad Rusu,Arm's Length
+404,96163,2020-03-01,48030648,Dumitrescu & Lungu Properties SRL,Alexandru Dumitrescu,Arm's Length
+405,86503,2023-02-24,2070814,Ardeal Assets SA,Ionescu & Constantin Group SRL,Same Party
+406,84085,2018-01-29,2612890,Nicolae Munteanu,Valentina Popa,Multi-Parcel
+407,84085,2018-10-14,2556719,Moldovan & Stoica Development SRL,Bianca Vlad,Same Party
+408,78522,2023-09-27,523273,Cristina Popa,Vlad & Sandu Construct SRL,Cash Buyer
+409,44179,2023-05-31,19418663,Florin Munteanu,Trans Construct SRL,Related Parties
+410,36772,2020-11-22,0,Cristina Vlad,Maria Ionescu,Arm's Length
+411,36772,2024-05-16,639100,Stan & Stan Assets SRL,Mihai Munteanu,Partial Interest
+412,97782,2018-04-25,1461045,Teodora Rusu,Daniel Vlad,Arm's Length
+413,51180,2024-08-01,736348,Carpat Group SRL,Mihai Pop,Arm's Length
+414,41285,2018-09-23,213682,Gabriela Vlad,Banat Imobiliare SA,Arm's Length
+415,44814,2020-07-24,25168912,Napoca Estate SA,Chira & Mureșan Imobiliare SRL,Arm's Length
+416,44814,2023-11-17,20285666,Constantin & Constantin Group SRL,Vlad Munteanu,Arm's Length
+417,61876,2019-01-10,7582034,Feleac Capital SRL,Tudor Ardelean,Flip
+418,27154,2024-01-09,36765422,Paul Dumitrescu,Tudor Dumitrescu,Cash Buyer
+419,94607,2021-05-13,198515,Gabriela Dănilă,Farcaș & Ilie Imobiliare SRL,Cash Buyer
+420,49321,2022-07-26,732506,Maria Munteanu,Ioana Lungu,Arm's Length
+421,69929,2024-04-17,6086603,Carpat Group SRL,Daniel Mureșan,Arm's Length
+422,51441,2019-01-23,1509722,Ioana Dumitrescu,Horia Lungu,Related Parties
+423,51441,2021-06-01,1368884,Apusean Properties SA,Mihai Ionescu,Partial Interest
+424,19508,2019-10-06,7231248,Constantin & Munteanu Group SRL,Maria Vlad,Multi-Parcel
+425,19508,2024-11-04,6047109,Vest Development SA,Mihai Moldovan,Arm's Length
+426,11220,2019-07-28,3965719,Stoica & Vlad Imobiliare SRL,Mihai Lungu,Arm's Length
+427,11220,2021-12-19,3022421,Ardeal Capital SRL,Paul Dănilă,Cash Buyer
+428,11220,2025-03-30,2822872,Ardelean & Constantin Holdings SRL,Dănilă & Rusu Imobiliare SRL,Arm's Length
+429,91416,2021-02-04,518615,Nicolae Stan,Dănilă & Stoica Assets SRL,Arm's Length
+430,19602,2024-06-03,1426406,Ardeal Construct SRL,Vlad & Ilie Capital SRL,Related Parties
+431,37938,2023-03-03,367599,Elena Popa,Vest Development SA,Same Party
+432,76307,2018-07-16,571813,Lungu & Chira Group SRL,Apusean Invest SRL,Arm's Length
+433,76307,2023-12-05,1031785,Mureșan & Dănilă Group SRL,Gabriela Mureșan,Same Party
+434,27361,2021-02-08,688849,Tudor Lungu,Nicolae Pop,Same Party
+435,27361,2022-11-01,653258,Cristian Munteanu,Cristina Lungu,Related Parties
+436,55745,2020-03-31,184091,Someș Capital SRL,Ardeal Imobiliare SRL,Arm's Length
+437,19016,2018-06-11,8953286,Emil Dumitrescu,Nicolae Munteanu,Same Party
+438,42018,2020-06-08,0,Pop & Ilie Capital SRL,Ovidiu Ilie,Flip
+439,58434,2020-04-22,11367059,Carpat Invest SA,Emil Popa,Arm's Length
+440,47353,2021-07-21,787076,Ramona Pop,Nicolae Rusu,Arm's Length
+441,47353,2022-01-07,1147617,Maria Constantin,Carmen Rusu,Arm's Length
+442,47353,2024-10-13,0,Feleac Properties SRL,Someș Estate SA,Same Party
+443,67433,2018-06-09,440489,Someș Development SA,Radu Stan,Cash Buyer
+444,81200,2020-01-14,17049389,Laura Farcaș,Alexandru Lungu,Arm's Length
+445,81200,2022-02-04,8296736,Andreea Blaga,Călin Pop,Partial Interest
+446,49651,2020-07-01,11766380,Valentina Ilie,Banat Imobiliare SRL,Arm's Length
+447,90173,2023-04-08,17774194,Diana Ardelean,Banat Capital SA,Arm's Length
+448,79329,2019-08-08,476763,Florin Munteanu,Napoca Construct SRL,Arm's Length
+449,11025,2023-03-08,24149163,Someș Assets SA,Bianca Rusu,Flip
+450,11025,2024-08-16,26232719,Ioana Ionescu,Cluj Assets SRL,Same Party
+451,97538,2021-11-09,9635883,Gabriel Chira,Napoca Estate SA,Same Party
+452,82692,2020-02-03,8626517,Teodora Munteanu,Lucian Sandu,Cash Buyer
+453,82692,2020-11-11,10949850,Silviu Stoica,Lucian Stoica,Arm's Length
+454,82692,2021-10-13,9486900,Carpat Capital SRL,Feleac Imobiliare SRL,Flip
+455,96951,2023-11-23,7057698,Teodora Ionescu,Călin Ionescu,Related Parties
+456,96951,2024-09-27,6400594,Banat Development SA,Munteanu & Moldovan Development SRL,Arm's Length
+457,23577,2023-11-08,11216724,Gabriel Chira,Feleac Assets SA,Multi-Parcel
+458,27601,2018-10-01,29422300,Constantin & Rusu Properties SRL,Vest Assets SA,Arm's Length
+459,25129,2018-10-16,12623056,Elena Dumitrescu,Napoca Construct SA,Flip
+460,25129,2020-07-15,5716885,Ovidiu Stoica,Chira & Farcaș Group SRL,Arm's Length
+461,30374,2021-01-19,0,Daniel Ardelean,Constantin & Blaga Invest SRL,Cash Buyer
+462,30374,2021-10-30,15292732,Ardelean & Sandu Development SRL,Călin Munteanu,Same Party
+463,45697,2020-10-27,48330418,Paul Constantin,Ioana Dănilă,Partial Interest
+464,45697,2021-02-03,41292442,Banat Development SA,Oana Moldovan,Same Party
+465,46930,2024-08-15,17330829,Tudor Farcaș,Vest Imobiliare SA,Arm's Length
+466,89276,2022-12-09,15778533,Vest Imobiliare SA,Someș Imobiliare SRL,Related Parties
+467,37607,2021-09-09,1128121,Apusean Construct SRL,Constantin & Munteanu Group SRL,Cash Buyer
+468,54942,2021-08-22,3327299,Monica Rusu,Florina Ardelean,Cash Buyer
+469,54942,2023-02-20,3682229,Napoca Invest SRL,Mureșan & Rusu Construct SRL,Related Parties
+470,36685,2025-03-04,2271214,Vlad & Ionescu Properties SRL,Călin Dumitrescu,Arm's Length
+471,93130,2023-09-05,9008327,Gabriela Mureșan,Vlad Rusu,Cash Buyer
+472,44600,2019-08-21,6789247,Maria Farcaș,Ardeal Construct SA,Flip
+473,44600,2021-10-25,9206403,Paul Constantin,Constantin & Constantin Capital SRL,Arm's Length
+474,76244,2020-06-03,13253113,Carpat Estate SA,Gabriela Sandu,Same Party
+475,42914,2022-06-25,543381,Munteanu & Sandu Construct SRL,Feleac Construct SRL,Same Party
+476,16658,2018-11-12,21091830,Someș Invest SA,Teodora Ardelean,Cash Buyer
+477,22097,2019-03-06,33895709,Feleac Group SA,Cluj Group SRL,Partial Interest
+478,93136,2023-07-30,12742315,Nicoleta Ardelean,Elena Mureșan,Same Party
+479,65518,2018-09-25,9244989,Vest Properties SA,Gabriela Ilie,Arm's Length
+480,46265,2021-06-01,8003067,Banat Construct SA,Andreea Moldovan,Flip
+481,15778,2022-01-07,2546119,Ioana Farcaș,Ionescu & Ionescu Imobiliare SRL,Related Parties
+482,15778,2024-08-03,4048958,Oana Sandu,Trans Properties SRL,Arm's Length
+483,10464,2019-01-28,322269,Emil Constantin,Bogdan Lungu,Multi-Parcel
+484,10464,2020-01-20,363858,Apusean Invest SA,Radu Pop,Arm's Length
+485,27146,2018-04-24,12046908,Simona Ionescu,Nicoleta Popa,Arm's Length
+486,93507,2019-09-26,869181,Trans Imobiliare SA,Carpat Invest SA,Multi-Parcel
+487,93507,2024-09-22,1195921,Diana Ardelean,Cristian Farcaș,Arm's Length
+488,44335,2022-05-12,466208,Paul Dumitrescu,Bianca Vlad,Partial Interest
+489,44335,2023-02-06,249665,Dănilă & Popa Estate SRL,Apusean Estate SRL,Multi-Parcel
+490,44335,2024-02-23,400220,Someș Group SRL,Stoica & Sandu Development SRL,Related Parties
+491,31178,2018-12-04,1590272,Horia Moldovan,Bianca Dumitrescu,Arm's Length
+492,67912,2021-06-11,798058,Emil Vlad,Bianca Sandu,Partial Interest
+493,67912,2024-05-28,916358,Diana Ilie,Constantin & Lungu Invest SRL,Arm's Length
+494,67912,2024-08-03,901548,Ardeal Holdings SRL,Florin Lungu,Related Parties
+495,82309,2020-07-24,609478,Vest Assets SRL,Stoica & Dumitrescu Holdings SRL,Arm's Length
+496,82309,2022-03-03,0,Paul Munteanu,Vest Imobiliare SA,Cash Buyer
+497,82309,2022-05-17,529820,Paul Mureșan,Apusean Properties SRL,Partial Interest
+498,66057,2020-11-16,6162130,Gabriela Mureșan,Simona Dumitrescu,Related Parties
+499,66057,2021-03-12,4243460,Florina Mureșan,Carmen Constantin,Multi-Parcel
+500,66057,2022-06-20,5691723,Teodora Dumitrescu,Lungu & Moldovan Assets SRL,Partial Interest
+501,24663,2019-12-20,20177341,Bogdan Constantin,Emil Lungu,Related Parties
+502,24663,2020-10-24,25685391,Valentina Ionescu,Ioan Moldovan,Flip
+503,81511,2018-03-13,673549,Florin Pop,Tudor Moldovan,Flip
+504,14722,2019-05-06,7765696,Simona Dănilă,Maria Farcaș,Arm's Length
+505,14722,2024-05-11,5531935,Ramona Ardelean,Elena Ilie,Arm's Length
+506,58393,2022-01-15,12374471,Someș Construct SRL,Patricia Stoica,Partial Interest
+507,82420,2024-01-27,20156966,Vest Group SA,Ramona Rusu,Arm's Length
+508,29410,2021-10-15,44732925,Emil Farcaș,Ovidiu Chira,Partial Interest
+509,66333,2022-03-16,11688983,Vlad Sandu,Feleac Construct SRL,Arm's Length
+510,66333,2022-07-31,10930092,Emil Rusu,Florina Munteanu,Arm's Length
+511,26704,2019-10-01,11257344,Elena Ardelean,Vlad Blaga,Arm's Length
+512,26704,2024-04-26,14439346,Cluj Construct SRL,Monica Vlad,Partial Interest
+513,26704,2025-03-11,9359550,Dănilă & Ilie Group SRL,Daniel Stoica,Arm's Length
+514,15482,2024-04-20,11962861,Silviu Chira,Napoca Capital SA,Arm's Length
+515,50404,2019-02-02,22840919,Lucian Ilie,Florina Ilie,Arm's Length
+516,50404,2019-08-24,24901129,Vlad & Mureșan Properties SRL,Napoca Development SRL,Flip
+517,50404,2022-12-28,25240379,Napoca Invest SA,Paul Pop,Flip
+518,57795,2024-08-14,19476303,Alina Ardelean,Daniel Moldovan,Cash Buyer
+519,15229,2021-06-09,5573646,Carmen Lungu,Someș Assets SA,Arm's Length
+520,37535,2021-05-24,1249112,Monica Vlad,Sandu & Sandu Construct SRL,Arm's Length
+521,42706,2020-12-07,33760448,Apusean Estate SRL,Pop & Stan Invest SRL,Arm's Length
+522,97416,2019-12-27,480127,Cluj Construct SRL,Farcaș & Mureșan Properties SRL,Cash Buyer
+523,23473,2023-03-03,1143894,Ardeal Properties SRL,Bogdan Pop,Partial Interest
+524,56357,2020-08-12,4605445,Ardelean & Farcaș Properties SRL,Tudor Moldovan,Arm's Length
+525,83385,2023-09-11,598292,Diana Mureșan,Ioan Constantin,Arm's Length
+526,91351,2024-08-23,367317,Florin Blaga,Gabriel Stoica,Related Parties
+527,30257,2018-09-10,5786686,Trans Imobiliare SRL,Mureșan & Lungu Assets SRL,Partial Interest
+528,30257,2018-09-22,10664935,Apusean Group SA,Trans Construct SRL,Partial Interest
+529,41029,2023-06-27,1888770,Trans Group SRL,Mihai Ilie,Arm's Length
+530,31299,2023-01-27,187243,Rusu & Stan Development SRL,Vest Properties SRL,Arm's Length
+531,31299,2023-03-18,186912,Emil Pop,Daniel Stoica,Arm's Length
+532,33206,2021-02-11,13895169,Andrei Vlad,Mureșan & Lungu Group SRL,Partial Interest
+533,33206,2024-02-29,19147445,Horia Ionescu,Horia Farcaș,Related Parties
+534,64040,2019-05-15,560432,Tudor Ardelean,Trans Construct SRL,Arm's Length
+535,13248,2020-05-07,24306215,Ardelean & Munteanu Estate SRL,Apusean Capital SRL,Flip
+536,33509,2021-08-11,2201318,Paul Pop,Ardeal Development SRL,Related Parties
+537,33509,2024-06-02,1923222,Laura Mureșan,Feleac Holdings SA,Arm's Length
+538,33509,2025-02-04,1875034,Lucian Farcaș,Cristian Munteanu,Cash Buyer
+539,53540,2021-07-10,509970,Maria Moldovan,Dumitrescu & Blaga Estate SRL,Cash Buyer
+540,53540,2023-06-09,325521,Someș Holdings SRL,Nicolae Mureșan,Multi-Parcel
+541,53540,2024-10-13,351979,Ovidiu Lungu,Gabriel Ilie,Same Party
+542,63964,2024-10-20,1341674,Chira & Ardelean Construct SRL,Mihai Chira,Arm's Length
+543,42527,2021-08-19,229290,Cristina Moldovan,Bianca Stan,Cash Buyer
+544,44970,2018-10-06,15729512,Apusean Construct SRL,Ioan Mureșan,Arm's Length
+545,30866,2024-02-11,9931713,Feleac Group SRL,Gabriel Constantin,Cash Buyer
+546,24168,2025-03-25,0,Feleac Properties SRL,Elena Blaga,Related Parties
+547,60140,2022-05-07,1480288,Vest Estate SA,Emil Dănilă,Arm's Length
+548,71694,2023-07-07,4124486,Emil Stan,Banat Holdings SA,Related Parties
+549,39154,2022-03-14,25908095,Napoca Development SRL,Horia Ilie,Arm's Length
+550,70332,2025-04-22,19322049,Emil Dumitrescu,Maria Dumitrescu,Arm's Length
+551,55830,2021-05-27,53563715,Cluj Holdings SRL,Someș Construct SRL,Arm's Length
+552,55830,2022-01-18,42457705,Florina Ardelean,Banat Holdings SA,Arm's Length
+553,50001,2018-11-15,10181460,Pop & Stoica Group SRL,Banat Properties SRL,Cash Buyer
+554,50001,2020-10-14,6390199,Napoca Development SRL,Napoca Imobiliare SA,Related Parties
+555,39831,2019-08-04,458721,Pop & Ardelean Properties SRL,Bogdan Constantin,Flip
+556,39831,2021-05-22,543596,Carmen Stan,Mihai Rusu,Partial Interest
+557,13101,2023-03-23,3897498,Laura Stoica,Gabriela Munteanu,Related Parties
+558,35313,2020-02-10,39073370,Sandu & Chira Group SRL,Moldovan & Stoica Construct SRL,Arm's Length
+559,53025,2023-04-20,20327794,Apusean Development SRL,Mihai Vlad,Flip
+560,46517,2021-11-24,985449,Vest Invest SA,Someș Construct SA,Partial Interest
+561,19099,2023-01-21,23086891,Elena Farcaș,Daniel Dănilă,Arm's Length
+562,19099,2023-03-27,13828172,Ardeal Estate SA,Teodora Popa,Arm's Length
+563,19099,2025-03-28,20399964,Apusean Group SA,Apusean Estate SRL,Related Parties
+564,46585,2020-06-16,326396,Someș Capital SA,Teodora Popa,Partial Interest
+565,46585,2022-05-28,306685,Emil Chira,Feleac Imobiliare SA,Partial Interest
+566,46585,2023-11-13,191289,Trans Invest SRL,Apusean Development SA,Arm's Length
+567,94080,2021-11-06,21270581,Cluj Group SA,Simona Lungu,Multi-Parcel
+568,76768,2020-11-13,10860576,Andreea Vlad,Simona Pop,Arm's Length
+569,62386,2023-06-20,22831680,Diana Ilie,Ioan Constantin,Arm's Length
+570,99065,2023-04-07,267368,Cluj Properties SA,Alina Blaga,Cash Buyer
+571,80282,2023-08-19,52886719,Munteanu & Dănilă Invest SRL,Simona Ionescu,Related Parties
+572,53404,2018-06-13,45942634,Paul Constantin,Someș Development SRL,Arm's Length
+573,53404,2019-10-29,35343259,Trans Invest SRL,Someș Properties SRL,Arm's Length
+574,53404,2021-04-16,65302318,Alina Blaga,Nicoleta Chira,Related Parties
+575,25118,2021-02-16,417430,Simona Rusu,Feleac Properties SA,Arm's Length
+576,86099,2020-03-15,830695,Florina Dănilă,Silviu Moldovan,Arm's Length
+577,44795,2019-08-27,40722783,Radu Munteanu,Alina Stoica,Arm's Length
+578,15014,2019-07-16,59110165,Călin Ionescu,Silviu Mureșan,Cash Buyer
+579,15014,2021-08-01,32152485,Ardeal Assets SA,Nicolae Vlad,Related Parties
+580,24208,2018-09-02,0,Nicoleta Rusu,Florin Stan,Arm's Length
+581,24208,2020-12-11,562857,Ioana Farcaș,Trans Invest SA,Related Parties
+582,24208,2022-07-23,0,Andrei Vlad,Napoca Group SRL,Arm's Length
+583,88193,2021-10-30,399744,Oana Dănilă,Banat Assets SA,Arm's Length
+584,66959,2024-06-09,12863949,Ardeal Holdings SA,Laura Stoica,Partial Interest
+585,55309,2020-07-22,18749783,Apusean Estate SRL,Laura Munteanu,Flip
+586,51114,2020-02-11,37575213,Apusean Estate SA,Gabriela Ilie,Arm's Length
+587,67199,2019-12-12,597564,Monica Ionescu,Simona Vlad,Arm's Length
+588,89457,2023-06-07,965131,Călin Rusu,Oana Pop,Multi-Parcel
+589,25157,2020-11-09,14189885,Andrei Sandu,Simona Farcaș,Related Parties
+590,25157,2023-07-21,10198634,Bianca Moldovan,Laura Popa,Arm's Length
+591,60488,2021-01-04,70165,Bianca Pop,Vlad Munteanu,Partial Interest
+592,85574,2020-09-12,27251570,Elena Pop,Monica Constantin,Related Parties

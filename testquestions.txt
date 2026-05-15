@@ -1,0 +1,17 @@
+Query 1: The Property Lookup
+(This proves your lookup_properties tool works and handles multiple filters: ownership type, location, and price).
+
+"Show me all SRL-owned properties in ZIP code 400120 that sold for over 1,000,000 RON."
+
+Query 2: The Market Comparison (Two-Parts)
+(This proves your calculate_market_metrics tool works, AND it proves your SessionMemory interceptor successfully handles multi-turn context without hallucinating).
+
+Part A: "What is the median sale price in Gheorgheni?"
+Part B (Follow-up): "What about in Mărăști?"
+Part C: What about Mars?
+
+Query 3: The Ambiguous/Unanswerable Question
+(This proves your agent obeys the system prompt, refuses to hallucinate, and knows the limits of its own database).
+
+"Can you give me the names of the tenants renting the most expensive building in Zorilor?"
+(The agent should politely explain that the dataset only tracks property sales and ownership, not tenant data, and decline to answer).
