@@ -13,6 +13,9 @@ MAX_ROWS_RETURNED = 12
 # mapped to neighborhoods. Use the `borough` field (or geocoded `geo_neighborhood`).
 
 BOROUGH_ALIASES = {
+    "centru": "Centru",
+    "center": "Centru",
+    "centrum": "Centru",
     "marasti": "Mărăști",
     "mărăști": "Mărăști",
     "gheorgheni": "Gheorgheni",
