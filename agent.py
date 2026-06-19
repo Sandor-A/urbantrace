@@ -68,8 +68,18 @@ def _detect_language(text: str) -> str:
 
 
 _LANG_INSTRUCTIONS: dict[str, str] = {
-    "hu": "IMPORTANT: The user wrote in Hungarian. Your entire response MUST be in Hungarian.",
-    "ro": "IMPORTANT: Utilizatorul a scris în română. Răspunde integral în limba română.",
+    "hu": (
+        "LANGUAGE RULE — MANDATORY: The user is writing in Hungarian. "
+        "Your ENTIRE response must be in Hungarian (Magyar). Do not use English or Romanian. "
+        "NYELVI SZABÁLY — KÖTELEZŐ: A felhasználó magyarul ír. "
+        "Az összes válaszodat KIZÁRÓLAG MAGYARUL írd! Ne használj angolt vagy románt."
+    ),
+    "ro": (
+        "LANGUAGE RULE — MANDATORY: The user is writing in Romanian. "
+        "Your ENTIRE response must be in Romanian. Do not use English or Hungarian. "
+        "REGULĂ LINGVISTICĂ — OBLIGATORIE: Utilizatorul scrie în română. "
+        "Răspunde EXCLUSIV ÎN ROMÂNĂ. Nu folosi engleza sau maghiara."
+    ),
 }
 
 
@@ -205,7 +215,7 @@ class PropertyAssistant:
                 "metadata": {},
             }
 
-    def _handle_simple_followup(self, user_text: str, turn_messages: list[dict[str, Any]]) -> str | None:
+    def _handle_simple_followup(self, user_text: str, turn_messages: list[dict[str, Any]], lang_note: str | None = None) -> str | None:
         text = user_text.strip().lower()
 
         if not text.startswith("what about"):
@@ -293,6 +303,9 @@ class PropertyAssistant:
                 ),
             },
         ]
+        # Remind model of language rule right before it synthesises
+        if lang_note:
+            final_messages.append({"role": "system", "content": lang_note})
 
         final = self.client.chat.completions.create(
             model=self.model,
@@ -319,18 +332,29 @@ class PropertyAssistant:
         else:
             turn_messages = self.messages
 
-        followup_answer = self._handle_simple_followup(user_text, turn_messages)
+        followup_answer = self._handle_simple_followup(user_text, turn_messages, lang_note)
         if followup_answer:
             return followup_answer
 
         # Detect purely conversational messages that don't need a tool call
         _factual_keywords = (
+            # English
             "price", "owner", "sale", "property", "address", "borough",
-            "neighborhood", "cartier", "strada", "bulevardul", "calea",
-            "street", "sqm", "median", "average", "srl", "tell me about",
-            "who owns", "how much", "what is", "show me", "list",
+            "neighborhood", "street", "sqm", "median", "average", "srl",
+            "tell me about", "who owns", "how much", "what is", "show me", "list",
+            "strada", "bulevardul", "calea", "cartier",
+            # Romanian
+            "pret", "proprietar", "vanzare", "cumparare", "apartament",
+            "imobil", "adresa", "statistica", "medie", "cat costa",
+            "cine detine", "arata", "zona", "suprafata", "bloc",
+            # Hungarian
+            "tulajdonos", "eladas", "ingatlan", "negyed", "statisztika",
+            "mennyibe", "mutasd", "legolcsobb", "legdragabb", "terulet",
         )
         needs_tool = any(kw in user_text.lower() for kw in _factual_keywords)
+        # For non-English detected messages longer than a greeting, always allow tools
+        if not needs_tool and lang != "en" and len(user_text.split()) > 3:
+            needs_tool = True
         tool_choice = "required" if needs_tool else "auto"
 
         first = self.client.chat.completions.create(
@@ -378,6 +402,8 @@ class PropertyAssistant:
                 turn_messages = [
                     {"role": "system", "content": system_content},
                     *self.messages[1:],
+                    # Repeat the language rule right before synthesis so it's not buried
+                    {"role": "system", "content": lang_note},
                 ]
             else:
                 turn_messages = self.messages
