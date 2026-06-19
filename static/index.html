@@ -542,11 +542,18 @@
         align-items: stretch;
         gap: 10px;
         overflow-x: visible;
+        position: static;
       }
       .filter-label { display: flex; margin-right: 4px; }
       .chip-sep { display: none; }
       .filter-group { flex-wrap: wrap; gap: 6px; }
-      .filter-select { flex: 1; min-width: 0; }
+      .filter-select {
+        flex: 1; min-width: 0;
+        appearance: auto; -webkit-appearance: auto;
+        background-image: none;
+        padding: 8px 14px; font-size: 14px;
+      }
+      .sort-select { width: 100%; font-size: 14px; padding: 9px 14px; }
 
       .main { padding: 20px 14px 90px; }
       .results-header { flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -1184,12 +1191,10 @@
     .then(r => r.json())
     .then(data => {
       PROPERTIES = data;
-      visible = [...PROPERTIES];
-      renderCards();
+      applyFilters();
     })
     .catch(() => {
-      // Server not running (local dev without backend): render empty state
-      renderCards();
+      applyFilters();
     });
 
   // First hop + badge after 4s
