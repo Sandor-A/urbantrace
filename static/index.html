@@ -531,10 +531,12 @@
 
     /* ── Hamburger ─────────────────────────────── */
     .hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      background: none; border: none; cursor: pointer; padding: 6px; flex-shrink: 0;
+      display: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      background: none; border: none; cursor: pointer;
+      min-width: 44px; min-height: 44px; padding: 0; flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent; touch-action: manipulation;
     }
-    .hamburger span { display: block; width: 22px; height: 2.5px; background: rgba(255,255,255,.85); border-radius: 2px; transition: all .25s; }
+    .hamburger span { display: block; width: 22px; height: 2.5px; background: rgba(255,255,255,.85); border-radius: 2px; transition: all .25s; pointer-events: none; }
     .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
     .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
@@ -542,8 +544,7 @@
     /* ── Mobile nav ────────────────────────────── */
     .mobile-nav {
       background: rgba(10,26,56,.97); border-top: 1px solid rgba(255,255,255,.08);
-      position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
-      /* opacity+transform avoids the iOS Safari overflow:hidden/fixed rendering bug */
+      position: fixed; top: 64px; left: 0; right: 0; z-index: 9999;
       visibility: hidden; opacity: 0; transform: translateY(-8px);
       transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
       pointer-events: none;
@@ -635,7 +636,7 @@
     <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴 Română</button>
     <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺 Magyar</button>
   </div>
-  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
 </header>
@@ -644,7 +645,7 @@
   <a href="/" class="active" data-i18n="nav_search">Search</a>
   <a href="/stats" data-i18n="nav_stats">Market Stats</a>
   <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
-  <a href="#" onclick="openAbout();toggleMobileNav();return false;" data-i18n="nav_about">About</a>
+  <a href="#" onclick="openAbout();closeMobileNav();return false;" data-i18n="nav_about">About</a>
   <div class="mobile-lang">
     <span class="mobile-lang-label" data-i18n="nav_language">Language</span>
     <button class="lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧 EN</button>
@@ -977,6 +978,13 @@
 
     // Re-render cards for empty state text update
     renderCards();
+
+    // Re-render Brick greeting in new language if conversation hasn't started yet
+    const _cp = document.getElementById('cp-msgs');
+    if (_cp && _cp.children.length > 0 && !_cp.querySelector('.cm-row.user')) {
+      _cp.innerHTML = '';
+      addMsg('assistant', T[lang].brick_hi, true);
+    }
   }
 
   /* ── Building SVG illustrations ─────────────── */
@@ -1270,18 +1278,49 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAbout(); });
 
   /* ── Mobile nav ─────────────────────────────── */
-  function toggleMobileNav() {
-    document.getElementById('mobile-nav').classList.toggle('open');
-    document.getElementById('hamburger').classList.toggle('open');
+  var _mnBtn = document.getElementById('hamburger');
+  var _mnNav = document.getElementById('mobile-nav');
+
+  function closeMobileNav() {
+    _mnNav.classList.remove('open');
+    _mnBtn.classList.remove('open');
+    _mnBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
   }
 
-  document.addEventListener('click', e => {
-    const nav = document.getElementById('mobile-nav');
-    const btn = document.getElementById('hamburger');
-    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
-      nav.classList.remove('open');
-      btn.classList.remove('open');
+  function toggleMobileNav() {
+    if (_mnNav.classList.contains('open')) { closeMobileNav(); return; }
+    _mnNav.classList.add('open');
+    _mnBtn.classList.add('open');
+    _mnBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  _mnBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    toggleMobileNav();
+  });
+
+  /* Close on tap outside — touchstart fires instantly on iOS, no 300ms wait */
+  document.addEventListener('touchstart', function(e) {
+    if (_mnNav.classList.contains('open') && !_mnNav.contains(e.target) && !_mnBtn.contains(e.target)) {
+      closeMobileNav();
     }
+  }, { passive: true });
+
+  document.addEventListener('click', function(e) {
+    if (_mnNav.classList.contains('open') && !_mnNav.contains(e.target)) {
+      closeMobileNav();
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && _mnNav.classList.contains('open')) closeMobileNav();
+  });
+
+  /* Auto-close when a nav link is tapped */
+  _mnNav.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', closeMobileNav);
   });
 
   /* ── Clear chat / quick chips ────────────────── */
