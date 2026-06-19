@@ -921,30 +921,10 @@
     return `data:image/svg+xml,${encodeURIComponent(s[type] || s.apartment)}`;
   }
 
-  /* ── Mock data ──────────────────────────────── */
-  const PROPERTIES = [
-    { id:1,  addr:'Bd. Eroilor 42',                  hood:'Centru',        price:1580000, sqm:110, owner:'Individual', date:'2024-01', type:'villa' },
-    { id:2,  addr:'Bd. 21 Decembrie 1989 78',        hood:'Centru',        price:2180000, sqm:130, owner:'SRL',        date:'2024-04', type:'modern' },
-    { id:3,  addr:'Str. Avram Iancu 22',             hood:'Centru',        price:945000,  sqm:75,  owner:'Individual', date:'2024-03', type:'apartment' },
-    { id:4,  addr:'Str. Horea 15',                   hood:'Grigorescu',    price:875000,  sqm:65,  owner:'SRL',        date:'2024-03', type:'apartment' },
-    { id:5,  addr:'Str. Cloșca 9',                   hood:'Grigorescu',    price:620000,  sqm:58,  owner:'Individual', date:'2023-11', type:'house' },
-    { id:6,  addr:'Str. Fabricii 8',                 hood:'Mărăști',       price:720000,  sqm:72,  owner:'SRL',        date:'2023-11', type:'house' },
-    { id:7,  addr:'Str. Donath 12',                  hood:'Mărăști',       price:1050000, sqm:85,  owner:'Individual', date:'2024-02', type:'townhouse' },
-    { id:8,  addr:'Calea Mănăștur 55',               hood:'Mănăștur',      price:475000,  sqm:58,  owner:'Individual', date:'2023-09', type:'house' },
-    { id:9,  addr:'Calea Baciului 14',               hood:'Mănăștur',      price:380000,  sqm:48,  owner:'SRL',        date:'2023-07', type:'apartment' },
-    { id:10, addr:'Str. Observatorului 5',           hood:'Zorilor',       price:690000,  sqm:62,  owner:'Individual', date:'2023-12', type:'villa' },
-    { id:11, addr:'Calea Turzii 30',                 hood:'Zorilor',       price:540000,  sqm:55,  owner:'SRL',        date:'2024-01', type:'apartment' },
-    { id:12, addr:'Str. Piezișă 3',                  hood:'Europa',        price:650000,  sqm:55,  owner:'Individual', date:'2023-12', type:'villa' },
-    { id:13, addr:'Bd. Gheorghe Marinescu 45',       hood:'Gheorgheni',    price:890000,  sqm:70,  owner:'SRL',        date:'2024-01', type:'apartment' },
-    { id:14, addr:'Bd. Nicolae Titulescu 88',        hood:'Bună Ziua',     price:760000,  sqm:68,  owner:'Individual', date:'2024-02', type:'modern' },
-    { id:15, addr:'Str. Alexandru Vaida Voevod 71',  hood:'Iris',          price:490000,  sqm:52,  owner:'Individual', date:'2023-10', type:'house' },
-    { id:16, addr:'Calea Florești 120',              hood:'Florești',      price:420000,  sqm:50,  owner:'SRL',        date:'2023-08', type:'house' },
-    { id:17, addr:'Bd. Muncii 52',                   hood:'Someșeni',      price:350000,  sqm:45,  owner:'Individual', date:'2023-06', type:'apartment' },
-    { id:18, addr:'Str. Pavlov 44',                  hood:'Dâmbul Rotund', price:310000,  sqm:42,  owner:'Individual', date:'2023-05', type:'apartment' },
-  ];
-
+  /* ── Property data (loaded from API) ─────────── */
+  let PROPERTIES = [];
   const filters = { hood:'All', own:'All', price:'Any' };
-  let visible = [...PROPERTIES];
+  let visible = [];
 
   const fmt  = n => new Intl.NumberFormat('ro-RO').format(n);
   const psqm = (p, s) => fmt(Math.round(p/s)) + ' RON/mp';
@@ -1056,7 +1036,7 @@
     if (!chatOpen) toggleChat();
     setTimeout(() => {
       const inp = document.getElementById('cm-input');
-      inp.value = `${T[currentLang].card_ask} ${addr} (${hood})`;
+      inp.value = `${T[currentLang].card_ask} ${addr}`;
       inp.focus();
     }, 320);
   }
@@ -1196,11 +1176,21 @@
   }
 
   /* ── Boot ───────────────────────────────────── */
-  // Init language
   setLang(localStorage.getItem('ut_lang') || 'en');
-  renderCards();
-
   addMsg('assistant', T[currentLang].brick_hi, true);
+
+  // Load real property data from the server
+  fetch('/api/properties-sample?limit=24')
+    .then(r => r.json())
+    .then(data => {
+      PROPERTIES = data;
+      visible = [...PROPERTIES];
+      renderCards();
+    })
+    .catch(() => {
+      // Server not running (local dev without backend): render empty state
+      renderCards();
+    });
 
   // First hop + badge after 4s
   setTimeout(() => { if (!chatOpen) { brickHop(); showBadge(); } }, 4000);

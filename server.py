@@ -77,6 +77,59 @@ def reset():
     return {"status": "ok"}
 
 
+@app.get("/api/properties-sample")
+def properties_sample(limit: int = Query(default=24, ge=1, le=100)):
+    if not _data_store:
+        raise HTTPException(status_code=503, detail="Data not loaded.")
+
+    _PC_TYPE = {
+        "a": "house", "b": "townhouse", "c": "apartment",
+        "d": "apartment", "e": "modern", "f": "modern",
+        "g": "modern", "h": "house",
+    }
+
+    valid: list[dict] = []
+    for prop in _data_store.properties:
+        txs = _data_store.transactions_by_propkey.get(prop["propkey"], [])
+        best = max(
+            (tx for tx in txs if (tx.get("sale_price") or 0) > 1000),
+            key=lambda t: t.get("sale_price") or 0,
+            default=None,
+        )
+        if not best:
+            continue
+        sf = float(prop.get("building_sf") or 0)
+        if sf <= 0:
+            continue
+        owner = _data_store.ownership_by_propkey.get(prop["propkey"], {})
+        pc = str(prop.get("property_class") or "").strip().lower()
+        pc_key = pc[0] if pc else ""
+        sale_date = best.get("sale_date")
+        valid.append({
+            "propkey":  prop["propkey"],
+            "addr":     prop.get("address", ""),
+            "hood":     prop.get("borough", ""),
+            "price":    int(best["sale_price"]),
+            "sqm":      int(sf),
+            "owner":    "SRL" if owner.get("is_srl") else "Individual",
+            "date":     sale_date.strftime("%Y-%m") if sale_date else "",
+            "type":     _PC_TYPE.get(pc_key, "apartment"),
+        })
+
+    # Pick up to 2 per borough for variety, sorted by price desc within each
+    from collections import defaultdict as _dd
+    by_hood: dict = _dd(list)
+    for v in sorted(valid, key=lambda x: -x["price"]):
+        if len(by_hood[v["hood"]]) < 2:
+            by_hood[v["hood"]].append(v)
+
+    sample: list[dict] = []
+    for items in by_hood.values():
+        sample.extend(items)
+    sample.sort(key=lambda x: -x["price"])
+    return sample[:limit]
+
+
 @app.get("/api/chart-data")
 def chart_data():
     if not _data_store:

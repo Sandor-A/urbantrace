@@ -52,6 +52,20 @@ class ToolResult:
         return asdict(self)
 
 
+_ADDR_EXPANSIONS = {
+    "bd.": "bulevardul", "bul.": "bulevardul",
+    "str.": "strada", "st.": "strada",
+    "cal.": "calea", "cl.": "calea",
+    "aleea": "aleea", "al.": "aleea",
+    "pta.": "piața", "p-ta.": "piața",
+}
+
+
+def _normalize_addr(addr: str) -> str:
+    parts = addr.lower().split()
+    return " ".join(_ADDR_EXPANSIONS.get(p, p) for p in parts)
+
+
 def _clean_borough(value: str | None) -> str | None:
     if not value:
         return None
@@ -293,8 +307,11 @@ def lookup_owner(
     for row in store.property_ownership:
         if propkey is not None and row.get("propkey") != int(propkey):
             continue
-        if address and address.lower() not in str(row.get("address", "")).lower():
-            continue
+        if address:
+            query_norm = _normalize_addr(address)
+            row_norm = _normalize_addr(str(row.get("address", "")))
+            if query_norm not in row_norm:
+                continue
         if owner_name_contains and owner_name_contains.lower() not in str(row.get("owner_name", "")).lower():
             continue
         if not any([address, propkey is not None, owner_name_contains]):
