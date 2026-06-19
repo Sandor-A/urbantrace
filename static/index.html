@@ -459,6 +459,95 @@
       border: 5px solid transparent; border-top-color: var(--g900);
     }
     #brick-btn:hover .brick-tip { opacity: 1; transform: translateY(0); }
+
+    /* ── Quick-question chips ──────────────────── */
+    .cp-chips {
+      padding: 8px 10px 4px; display: flex; gap: 6px;
+      overflow-x: auto; flex-shrink: 0; background: #fff;
+      border-top: 1px solid var(--g200);
+    }
+    .cp-chips::-webkit-scrollbar { display: none; }
+    .cp-chip {
+      padding: 5px 12px; border-radius: 20px;
+      border: 1.5px solid var(--g200); background: var(--g50);
+      font-size: 11.5px; font-weight: 500; color: var(--accent);
+      cursor: pointer; white-space: nowrap; font-family: inherit;
+      transition: all .15s; flex-shrink: 0;
+    }
+    .cp-chip:hover { background: #eff6ff; border-color: var(--accent); }
+
+    /* ── Clear-chat button ─────────────────────── */
+    .cp-new {
+      background: rgba(255,255,255,.1); border: none; color: rgba(255,255,255,.7);
+      width: 26px; height: 26px; border-radius: 8px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 14px;
+      transition: background .15s; margin-right: 2px;
+    }
+    .cp-new:hover { background: rgba(255,255,255,.22); color: #fff; }
+
+    /* ── Hamburger ─────────────────────────────── */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 6px; flex-shrink: 0;
+    }
+    .hamburger span { display: block; width: 22px; height: 2.5px; background: rgba(255,255,255,.85); border-radius: 2px; transition: all .25s; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* ── Mobile nav ────────────────────────────── */
+    .mobile-nav {
+      background: rgba(10,26,56,.97); border-top: 1px solid rgba(255,255,255,.08);
+      position: sticky; top: 64px; z-index: 99;
+      max-height: 0; overflow: hidden; transition: max-height .3s ease;
+      pointer-events: none;
+    }
+    .mobile-nav.open { max-height: 320px; pointer-events: all; }
+    .mobile-nav a {
+      display: block; padding: 14px 24px; color: rgba(255,255,255,.75);
+      text-decoration: none; font-size: 15px; font-weight: 500;
+      border-bottom: 1px solid rgba(255,255,255,.07); transition: all .15s;
+    }
+    .mobile-nav a.active, .mobile-nav a:hover { color: #fff; background: rgba(255,255,255,.06); }
+    .mobile-lang { display: flex; gap: 8px; padding: 14px 24px; }
+
+    /* ── Responsive breakpoints ────────────────── */
+    @media (max-width: 768px) {
+      header { padding: 0 16px; }
+      nav, .lang-switcher { display: none !important; }
+      .hamburger { display: flex; }
+
+      .hero { padding: 36px 20px 32px; }
+      .hero h1 { font-size: 26px; }
+      .hero p { font-size: 14px; margin-bottom: 22px; }
+      .search-box { border-radius: 14px; }
+      .search-box input { padding: 12px 16px; font-size: 14px; }
+      .search-box button { padding: 0 16px; font-size: 13px; }
+
+      .filters-bar {
+        padding: 10px 14px; flex-wrap: nowrap;
+        overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 6px;
+      }
+      .filters-bar::-webkit-scrollbar { display: none; }
+      .filter-label { display: none; }
+      .chip-sep { display: none; }
+
+      .main { padding: 20px 14px 90px; }
+      .results-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .results-title { font-size: 17px; }
+      .prop-grid { grid-template-columns: 1fr; gap: 16px; }
+
+      #brick-widget { bottom: 14px; right: 14px; }
+      #chat-panel {
+        width: calc(100vw - 28px);
+        max-width: 420px;
+        height: min(72vh, 520px);
+      }
+    }
+    @media (max-width: 420px) {
+      .hero h1 { font-size: 22px; }
+      #chat-panel { width: calc(100vw - 20px); }
+    }
   </style>
 </head>
 <body>
@@ -476,11 +565,26 @@
     <a href="#" class="nav-about" onclick="openAbout();return false;" data-i18n="nav_about">About</a>
   </nav>
   <div class="lang-switcher">
-    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧 EN</button>
-    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴 RO</button>
-    <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺 HU</button>
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧</button>
+    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴</button>
+    <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺</button>
   </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="/" class="active" data-i18n="nav_search">Search</a>
+  <a href="/stats" data-i18n="nav_stats">Market Stats</a>
+  <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
+  <a href="#" onclick="openAbout();toggleMobileNav();return false;" data-i18n="nav_about">About</a>
+  <div class="mobile-lang">
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧</button>
+    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴</button>
+    <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺</button>
+  </div>
+</nav>
 
 <!-- Hero -->
 <section class="hero">
@@ -578,9 +682,16 @@
         <div class="cp-name">Brick — UrbanTrace AI</div>
         <div class="cp-sub"><div class="cp-dot"></div>Cluj-Napoca Property Expert</div>
       </div>
+      <button class="cp-new" onclick="clearChat()" title="New conversation">↺</button>
       <button class="cp-close" onclick="toggleChat()">✕</button>
     </div>
     <div class="cp-msgs" id="cp-msgs"></div>
+    <div class="cp-chips" id="cp-chips">
+      <button class="cp-chip" onclick="askChip(this)">Median price in Centru?</button>
+      <button class="cp-chip" onclick="askChip(this)">Top SRL owners?</button>
+      <button class="cp-chip" onclick="askChip(this)">Prices in Grigorescu?</button>
+      <button class="cp-chip" onclick="askChip(this)">Most recent sales?</button>
+    </div>
     <div class="cp-input-area">
       <div class="cp-input-wrap">
         <textarea id="cm-input" rows="1" data-i18n-ph="ask_ph" placeholder="Ask about properties…"></textarea>
@@ -770,13 +881,17 @@
   }
 
   function applyFilters() {
-    const q = document.getElementById('main-search').value.toLowerCase();
+    const q = document.getElementById('main-search').value.toLowerCase().trim();
+    const activeHood  = document.querySelector('.chip[data-group="hood"].active')?.dataset.val  ?? 'All';
+    const activeOwn   = document.querySelector('.chip[data-group="own"].active')?.dataset.val   ?? 'All';
+    const activePrice = document.querySelector('.chip[data-group="price"].active')?.dataset.val ?? 'Any';
+
     visible = PROPERTIES.filter(p => {
-      if (filters.hood !== 'All' && p.hood !== filters.hood) return false;
-      if (filters.own  !== 'All' && p.owner !== filters.own)  return false;
-      if (filters.price === 'low'  && p.price >= 500000)                     return false;
-      if (filters.price === 'mid'  && (p.price < 500000 || p.price > 1e6))   return false;
-      if (filters.price === 'high' && p.price <= 1e6)                         return false;
+      if (activeHood  !== 'All' && p.hood  !== activeHood)  return false;
+      if (activeOwn   !== 'All' && p.owner !== activeOwn)   return false;
+      if (activePrice === 'low'  && p.price >= 500000)       return false;
+      if (activePrice === 'mid'  && (p.price < 500000 || p.price > 1000000)) return false;
+      if (activePrice === 'high' && p.price <= 1000000)      return false;
       if (q && !p.addr.toLowerCase().includes(q) &&
                !p.hood.toLowerCase().includes(q) &&
                !p.owner.toLowerCase().includes(q)) return false;
@@ -815,7 +930,7 @@
     }
 
     grid.innerHTML = list.map(p => `
-      <div class="prop-card" onclick="cardClick(${JSON.stringify(p.addr)}, ${JSON.stringify(p.hood)})">
+      <div class="prop-card" onclick='cardClick(${JSON.stringify(p.addr)}, ${JSON.stringify(p.hood)})'>
         <div class="prop-img">
           <img src="${buildingImg(p.type)}" alt="${p.type}" loading="lazy" />
           <div class="prop-img-overlay"></div>
@@ -978,6 +1093,27 @@
   function openAbout()  { document.getElementById('about-modal').classList.add('open'); }
   function closeAbout() { document.getElementById('about-modal').classList.remove('open'); }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAbout(); });
+
+  /* ── Mobile nav ─────────────────────────────── */
+  function toggleMobileNav() {
+    document.getElementById('mobile-nav').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+  }
+
+  /* ── Clear chat / quick chips ────────────────── */
+  function clearChat() {
+    document.getElementById('cp-msgs').innerHTML = '';
+    const chips = document.getElementById('cp-chips');
+    if (chips) chips.style.display = 'flex';
+    addMsg('assistant', T[currentLang].brick_hi, true);
+  }
+
+  function askChip(btn) {
+    document.getElementById('cm-input').value = btn.textContent;
+    const chips = document.getElementById('cp-chips');
+    if (chips) chips.style.display = 'none';
+    cmSend();
+  }
 
   /* ── Boot ───────────────────────────────────── */
   // Init language

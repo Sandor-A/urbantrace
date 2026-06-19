@@ -22,9 +22,6 @@ _assistant: PropertyAssistant | None = None
 _lock = threading.Lock()
 
 _static = Path(__file__).parent / "static"
-_HTML           = (_static / "index.html").read_text(encoding="utf-8")
-_STATS_HTML     = (_static / "stats.html").read_text(encoding="utf-8") if (_static / "stats.html").exists() else "<h1>Stats page not ready</h1>"
-_OWNERSHIP_HTML = (_static / "ownership.html").read_text(encoding="utf-8") if (_static / "ownership.html").exists() else "<h1>Ownership page not ready</h1>"
 
 
 @asynccontextmanager
@@ -47,7 +44,7 @@ class ChatRequest(BaseModel):
 
 @app.get("/", response_class=HTMLResponse)
 def root():
-    return _HTML
+    return (_static / "index.html").read_text(encoding="utf-8")
 
 
 @app.get("/stats", response_class=HTMLResponse)
@@ -240,4 +237,5 @@ def _compute_chart_data(store: PropertyDataStore) -> dict:
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("server:app", host="127.0.0.1", port=8000, reload=False)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("server:app", host="0.0.0.0", port=port, reload=False)

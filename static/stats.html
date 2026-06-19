@@ -53,8 +53,8 @@
     .lang-switcher { display: flex; align-items: center; gap: 4px; margin-left: 20px; }
     .lang-btn {
       background: transparent; border: 1.5px solid rgba(255,255,255,.22); color: rgba(255,255,255,.6);
-      border-radius: 20px; padding: 4px 10px; font-size: 11.5px; font-weight: 600; font-family: inherit;
-      cursor: pointer; transition: all .15s; white-space: nowrap;
+      border-radius: 8px; padding: 5px 8px; font-size: 18px; font-family: inherit;
+      cursor: pointer; transition: all .15s; line-height: 1;
     }
     .lang-btn:hover { border-color: rgba(255,255,255,.5); color: rgba(255,255,255,.85); }
     .lang-btn.active { background: #fff; border-color: #fff; color: var(--navy); }
@@ -221,6 +221,57 @@
     .brick-tip { position: absolute; bottom: calc(100% + 10px); right: 0; background: var(--g900); color: #fff; padding: 6px 11px; border-radius: 8px; font-size: 11.5px; font-weight: 500; white-space: nowrap; pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s; }
     .brick-tip::after { content: ''; position: absolute; top: 100%; right: 18px; border: 5px solid transparent; border-top-color: var(--g900); }
     #brick-btn:hover .brick-tip { opacity: 1; transform: translateY(0); }
+
+    /* ── Quick chips + clear ───────────────────── */
+    .cp-chips { padding: 8px 10px 4px; display: flex; gap: 6px; overflow-x: auto; flex-shrink: 0; background: #fff; border-top: 1px solid var(--g200); }
+    .cp-chips::-webkit-scrollbar { display: none; }
+    .cp-chip { padding: 5px 12px; border-radius: 20px; border: 1.5px solid var(--g200); background: var(--g50); font-size: 11.5px; font-weight: 500; color: var(--accent); cursor: pointer; white-space: nowrap; font-family: inherit; transition: all .15s; flex-shrink: 0; }
+    .cp-chip:hover { background: #eff6ff; border-color: var(--accent); }
+    .cp-new { background: rgba(255,255,255,.1); border: none; color: rgba(255,255,255,.7); width: 26px; height: 26px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: background .15s; margin-right: 2px; }
+    .cp-new:hover { background: rgba(255,255,255,.22); color: #fff; }
+
+    /* ── Hamburger ─────────────────────────────── */
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; flex-shrink: 0; }
+    .hamburger span { display: block; width: 22px; height: 2.5px; background: rgba(255,255,255,.85); border-radius: 2px; transition: all .25s; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* ── Mobile nav ────────────────────────────── */
+    .mobile-nav { background: rgba(10,26,56,.97); border-top: 1px solid rgba(255,255,255,.08); position: sticky; top: 64px; z-index: 99; max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+    .mobile-nav.open { max-height: 320px; }
+    .mobile-nav a { display: block; padding: 14px 24px; color: rgba(255,255,255,.75); text-decoration: none; font-size: 15px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,.07); transition: all .15s; }
+    .mobile-nav a.active, .mobile-nav a:hover { color: #fff; background: rgba(255,255,255,.06); }
+    .mobile-lang { display: flex; gap: 8px; padding: 14px 24px; }
+
+    /* ── Responsive ────────────────────────────── */
+    @media (max-width: 768px) {
+      header { padding: 0 16px; }
+      nav, .lang-switcher { display: none !important; }
+      .hamburger { display: flex; }
+
+      .page-bar { padding: 14px 16px; }
+      .page-title { font-size: 18px; }
+      .data-badge { font-size: 11px; padding: 4px 10px; }
+
+      .main { padding: 16px 14px 80px; }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .kpi-value { font-size: 20px; }
+      .kpi-card { padding: 16px 16px; }
+
+      .charts-row { flex-direction: column; }
+      .chart-card.flex-2, .chart-card.flex-1, .chart-card.full { flex: none; }
+      .chart-wrap.tall { height: 220px; }
+      .chart-wrap { height: 200px; }
+      .chart-wrap.short { height: 180px; }
+
+      #brick-widget { bottom: 14px; right: 14px; }
+      #chat-panel { width: calc(100vw - 28px); max-width: 420px; height: min(72vh, 520px); }
+    }
+    @media (max-width: 480px) {
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .kpi-value { font-size: 18px; }
+    }
   </style>
 </head>
 <body>
@@ -237,11 +288,26 @@
     <a href="#" class="nav-about" onclick="openAbout();return false;" data-i18n="nav_about">About</a>
   </nav>
   <div class="lang-switcher">
-    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧 EN</button>
-    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴 RO</button>
-    <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺 HU</button>
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧</button>
+    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴</button>
+    <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺</button>
   </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="/" data-i18n="nav_search">Search</a>
+  <a href="/stats" class="active" data-i18n="nav_stats">Market Stats</a>
+  <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
+  <a href="#" onclick="openAbout();toggleMobileNav();return false;" data-i18n="nav_about">About</a>
+  <div class="mobile-lang">
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧</button>
+    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴</button>
+    <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺</button>
+  </div>
+</nav>
 
 <div class="page-bar">
   <div class="page-bar-inner">
@@ -370,9 +436,16 @@
         <div class="cp-name">Brick — UrbanTrace AI</div>
         <div class="cp-sub"><div class="cp-dot"></div>Cluj-Napoca Property Expert</div>
       </div>
+      <button class="cp-new" onclick="clearChat()" title="New conversation">↺</button>
       <button class="cp-close" onclick="toggleChat()">✕</button>
     </div>
     <div class="cp-msgs" id="cp-msgs"></div>
+    <div class="cp-chips" id="cp-chips">
+      <button class="cp-chip" onclick="askChip(this)">Highest price growth?</button>
+      <button class="cp-chip" onclick="askChip(this)">SRL % in Centru?</button>
+      <button class="cp-chip" onclick="askChip(this)">Sales over 2M RON?</button>
+      <button class="cp-chip" onclick="askChip(this)">Best neighborhood?</button>
+    </div>
     <div class="cp-input-area">
       <div class="cp-input-wrap">
         <textarea id="cm-input" rows="1" data-i18n-ph="ask_ph" placeholder="Ask about market trends…"></textarea>
@@ -832,6 +905,31 @@
   document.getElementById('cm-send').addEventListener('click', cmSend);
   document.getElementById('cm-input').addEventListener('keydown', e => { if (e.key==='Enter'&&!e.shiftKey){e.preventDefault();cmSend();} });
   document.getElementById('cm-input').addEventListener('input', function() { this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,90)+'px'; });
+
+  function toggleMobileNav() {
+    document.getElementById('mobile-nav').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+  }
+
+  function clearChat() {
+    document.getElementById('cp-msgs').innerHTML = '';
+    const chips = document.getElementById('cp-chips');
+    if (chips) chips.style.display = 'flex';
+    addMsg('assistant',
+      "I'm **Brick** 🧱 — ask me to dig deeper into the charts!\n\n" +
+      "- *\"Which neighborhood had the highest price growth?\"*\n" +
+      "- *\"What % of Centru properties are SRL-owned?\"*\n" +
+      "- *\"Show recent transactions above 2M RON\"*",
+      true
+    );
+  }
+
+  function askChip(btn) {
+    document.getElementById('cm-input').value = btn.textContent;
+    const chips = document.getElementById('cp-chips');
+    if (chips) chips.style.display = 'none';
+    cmSend();
+  }
 
   /* ── Boot ───────────────────────────────────── */
   setLang(localStorage.getItem('ut_lang') || 'en');
