@@ -1314,8 +1314,11 @@
     if (!container || !picks.length) return;
 
     container.innerHTML = picks.slice(0, 4).map(p =>
-      `<button class="ex-chip" onclick="exSearch(${JSON.stringify(p.addr)})">${p.addr}</button>`
+      `<button class="ex-chip">${p.addr}</button>`
     ).join('');
+    container.querySelectorAll('.ex-chip').forEach((btn, i) => {
+      btn.addEventListener('click', () => exSearch(picks[i].addr));
+    });
     wrapper.style.display = 'flex';
   }
 
