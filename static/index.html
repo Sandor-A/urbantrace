@@ -189,6 +189,15 @@
     }
     .search-box button:hover { background: #1d4ed8; }
 
+    /* ── Load more ──────────────────────────────── */
+    .load-more-btn {
+      background: var(--accent); color: #fff; border: none;
+      border-radius: 12px; padding: 12px 36px; font-size: 14px;
+      font-weight: 600; font-family: inherit; cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .load-more-btn:hover { background: #1d4ed8; transform: translateY(-1px); }
+
     /* ── Search examples ────────────────────────── */
     .search-examples {
       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
@@ -708,6 +717,9 @@
     </select>
   </div>
   <div class="prop-grid" id="prop-grid"></div>
+  <div id="load-more-wrap" style="display:none; text-align:center; margin-top:28px">
+    <button id="load-more-btn" class="load-more-btn" onclick="loadMore()"></button>
+  </div>
 </main>
 
 
@@ -834,7 +846,8 @@
       sort_sqm_d:'Area: Large → Small', sort_sqm_a:'Area: Small → Large',
       sort_rec:'Most Recent', sort_old:'Oldest Sale',
       res_title:'Property Listings',
-      res_count_one:'Showing 1 property', res_count_many:'Showing {n} properties',
+      res_count_one:'Showing 1 property', res_count_many:'Showing {shown} of {n} properties',
+      load_more:'Load more properties',
       chip_q1:'Median price in Centru?', chip_q2:'Top SRL owners?',
       chip_q3:'Prices in Grigorescu?', chip_q4:'Most recent sales?',
       brick_tip:'Ask me anything! 😊', card_ask:'Tell me about', you_label:'You',
@@ -860,7 +873,8 @@
       sort_sqm_d:'Suprafață: Mare → Mică', sort_sqm_a:'Suprafață: Mică → Mare',
       sort_rec:'Cele mai recente', sort_old:'Cele mai vechi',
       res_title:'Anunțuri Imobiliare',
-      res_count_one:'Se afișează 1 proprietate', res_count_many:'Se afișează {n} proprietăți',
+      res_count_one:'Se afișează 1 proprietate', res_count_many:'Se afișează {shown} din {n} proprietăți',
+      load_more:'Încarcă mai multe',
       chip_q1:'Prețul median în Centru?', chip_q2:'Top proprietari SRL?',
       chip_q3:'Prețuri în Grigorescu?', chip_q4:'Cele mai recente vânzări?',
       brick_tip:'Întreabă-mă orice! 😊', card_ask:'Spune-mi despre', you_label:'Tu',
@@ -886,7 +900,8 @@
       sort_sqm_d:'Terület: Nagy → Kicsi', sort_sqm_a:'Terület: Kicsi → Nagy',
       sort_rec:'Legújabb', sort_old:'Legrégebbi',
       res_title:'Ingatlanhirdetések',
-      res_count_one:'1 ingatlan megjelenítve', res_count_many:'{n} ingatlan megjelenítve',
+      res_count_one:'1 ingatlan megjelenítve', res_count_many:'{shown} / {n} ingatlan megjelenítve',
+      load_more:'Továbbiak betöltése',
       chip_q1:'Medián ár Centrumban?', chip_q2:'Top KFT tulajdonosok?',
       chip_q3:'Árak Grigorescu-ban?', chip_q4:'Legutóbbi eladások?',
       brick_tip:'Kérdezz bármit! 😊', card_ask:'Mesélj erről', you_label:'Te',
@@ -967,9 +982,11 @@
   let PROPERTIES = [];
   const filters = { hood:'All', own:'All', price:'Any' };
   let visible = [];
+  const PAGE_SIZE = 24;
+  let shownCount = PAGE_SIZE;
 
   const fmt  = n => new Intl.NumberFormat('ro-RO').format(n);
-  const psqm = (p, s) => fmt(Math.round(p/s)) + ' RON/mp';
+  const psqm = (p, s) => s > 0 ? fmt(Math.round(p/s)) + ' RON/mp' : '—';
 
   function pickChip(el) {
     const g = el.dataset.group;
@@ -1011,9 +1028,12 @@
     if (e.key === 'Enter') applyFilters();
   });
 
-  function renderCards() {
+  let _sortedList = [];
+
+  function renderCards(resetPage = true) {
     const sort = document.querySelector('.sort-select').value;
     const lang = currentLang;
+    if (resetPage) shownCount = PAGE_SIZE;
     const list = [...visible];
     const ppm  = p => p.sqm > 0 ? p.price / p.sqm : 0;
     switch (sort) {
@@ -1026,10 +1046,18 @@
       case 'recent':      list.sort((a,b) => b.date.localeCompare(a.date)); break;
       case 'oldest':      list.sort((a,b) => a.date.localeCompare(b.date)); break;
     }
+    _sortedList = list;
 
     const n = list.length;
+    const shown = Math.min(shownCount, n);
     const tpl = n === 1 ? T[lang].res_count_one : T[lang].res_count_many;
-    document.getElementById('results-count').textContent = tpl.replace('{n}', n);
+    document.getElementById('results-count').textContent =
+      tpl.replace('{n}', n).replace('{shown}', shown);
+
+    const lmWrap = document.getElementById('load-more-wrap');
+    const lmBtn  = document.getElementById('load-more-btn');
+    if (lmBtn) lmBtn.textContent = T[lang].load_more || 'Load more';
+    if (lmWrap) lmWrap.style.display = shown < n ? 'block' : 'none';
 
     const grid = document.getElementById('prop-grid');
 
@@ -1044,7 +1072,7 @@
       return;
     }
 
-    grid.innerHTML = list.map(p => `
+    grid.innerHTML = list.slice(0, shownCount).map(p => `
       <div class="prop-card" onclick='cardClick(${JSON.stringify(p.addr)}, ${JSON.stringify(p.hood)})'>
         <div class="prop-img">
           <img src="${buildingImg(p.type)}" alt="${p.type}" loading="lazy" />
@@ -1078,6 +1106,11 @@
         </div>
       </div>
     `).join('');
+  }
+
+  function loadMore() {
+    shownCount += PAGE_SIZE;
+    renderCards(false);
   }
 
   function brickHop() {
@@ -1267,7 +1300,7 @@
   }
 
   // Load real property data from the server
-  fetch('/api/properties-sample?limit=24')
+  fetch('/api/properties-sample')
     .then(r => r.json())
     .then(data => {
       PROPERTIES = data;

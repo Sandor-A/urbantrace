@@ -11,18 +11,26 @@ from tools import OPENAI_TOOL_SCHEMAS, TOOL_FUNCTIONS
 
 
 SYSTEM_PROMPT = """
-You are UrbanTrace Research Assistant, an AI assistant for exploring structured Cluj-Napoca property data.
+You are Brick, the UrbanTrace property research assistant for Cluj-Napoca.
+You have access to a real database of 500 properties with ownership records and sale transactions.
 
-Core rules:
-1. ALWAYS call a tool before answering any factual question about properties, owners, prices, or transactions.
-2. Never invent property data. Final answers must be grounded in tool results.
-3. If a tool returns no results, try a broader search (e.g., use only the street name without the number, or remove the borough filter) before saying no data exists.
-4. Address lookup: use `lookup_owner` with just the street name (e.g., "Eroilor" or "Horea") when a full address search fails -- the tool does substring matching. Abbreviations like "Bd.", "Str." are auto-expanded to "Bulevardul", "Strada", etc.
-5. For "Tell me about X address" requests: call BOTH `lookup_owner` (for ownership) AND `search_properties` (for recent sale transactions) using the street name as the address filter.
-6. Preserve multi-turn context. If the user says "what about Gheorgheni?" reuse relevant prior filters and only change the requested field.
-7. Neighborhoods (cartiere): Available neighborhoods: Centru, Grigorescu, Marasti, Manastur, Gheorgheni, Zorilor, Europa, Iris, Buna Ziua, Sopor, Floresti, Borhanci, Dambul Rotund, Intre Lacuri, Someseni.
-8. When showing property rows, show at most 8 rows in Markdown. Always include sample size and filters/caveats.
-9. Area is in square meters (mp), prices in RON (Romanian Leu). 1 EUR ~ 5 RON.
+STRICT RULES — never break these:
+1. Every factual answer (prices, addresses, owners, statistics) MUST come from a tool result.
+   If you have not called a tool yet, call one before answering.
+2. NEVER invent, estimate, or extrapolate property data. If the tool returns no results,
+   say exactly that — do not fill in with guesses or general knowledge.
+3. If a tool returns status "empty", tell the user plainly: no records found for those filters,
+   then suggest one concrete alternative (e.g., broaden the search, try a nearby neighborhood).
+4. Address searches use substring matching. For "Tell me about X" queries always call BOTH:
+   - lookup_owner(address=<street name only>) for ownership
+   - search_properties(borough=<hood>) for recent transactions in the area
+5. If the user's question is ambiguous, ask ONE short clarifying question — do not guess.
+6. Multi-turn: if the user says "what about Gheorgheni?" keep all prior filters and swap only the borough.
+7. Format: show max 8 property rows in a Markdown table. Always state the total match count
+   and any caveats (e.g., "$0 sales excluded", "results capped at 12").
+8. Units: area in m², prices in RON. Approximate: 1 EUR ~ 5 RON.
+9. Available neighborhoods: Centru, Grigorescu, Marasti, Manastur, Gheorgheni, Zorilor,
+   Europa, Iris, Buna Ziua, Floresti, Dambul Rotund, Someseni.
 """.strip()
 
 class PropertyAssistant:
@@ -164,7 +172,7 @@ class PropertyAssistant:
         final = self.client.chat.completions.create(
             model=self.model,
             messages=final_messages,
-            temperature=0.1,
+            temperature=0,
         )
 
         answer = final.choices[0].message.content or "I could not generate a response."
@@ -178,12 +186,22 @@ class PropertyAssistant:
         if followup_answer:
             return followup_answer
 
+        # Detect purely conversational messages that don't need a tool call
+        _factual_keywords = (
+            "price", "owner", "sale", "property", "address", "borough",
+            "neighborhood", "cartier", "strada", "bulevardul", "calea",
+            "street", "sqm", "median", "average", "srl", "tell me about",
+            "who owns", "how much", "what is", "show me", "list",
+        )
+        needs_tool = any(kw in user_text.lower() for kw in _factual_keywords)
+        tool_choice = "required" if needs_tool else "auto"
+
         first = self.client.chat.completions.create(
             model=self.model,
             messages=self.messages,
             tools=OPENAI_TOOL_SCHEMAS,
-            tool_choice="auto",
-            temperature=0.1,
+            tool_choice=tool_choice,
+            temperature=0,
         )
 
         assistant_msg = first.choices[0].message
@@ -212,13 +230,14 @@ class PropertyAssistant:
             final = self.client.chat.completions.create(
                 model=self.model,
                 messages=self.messages,
-                temperature=0.1,
+                temperature=0,
             )
 
             answer = final.choices[0].message.content or "I could not generate a response."
             self.messages.append({"role": "assistant", "content": answer})
             return answer
 
+        # No tool call — only acceptable for pure greetings / meta questions
         answer = assistant_msg.content or "I need one more detail to answer that."
         self.messages.append({"role": "assistant", "content": answer})
         return answer
