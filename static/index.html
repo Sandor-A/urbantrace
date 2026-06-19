@@ -985,6 +985,7 @@
 
   function renderCards() {
     const sort = document.querySelector('.sort-select').value;
+    const lang = currentLang;
     const list = [...visible];
     if (sort === 'price-desc') list.sort((a,b) => b.price - a.price);
     if (sort === 'price-asc')  list.sort((a,b) => a.price - b.price);
@@ -996,7 +997,6 @@
     document.getElementById('results-count').textContent = tpl.replace('{n}', n);
 
     const grid = document.getElementById('prop-grid');
-    const lang = currentLang;
 
     if (!list.length) {
       grid.innerHTML = `<div class="empty-state">
