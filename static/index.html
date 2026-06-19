@@ -214,6 +214,7 @@
       box-shadow: 0 2px 8px rgba(37,99,235,.3);
     }
     .chip-sep { width: 1px; height: 20px; background: var(--g200); margin: 0 4px; }
+    .filter-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
     .filter-select {
       padding: 5px 30px 5px 14px; border-radius: 20px;
       border: 1.5px solid var(--g200); background: var(--g50);
@@ -536,12 +537,16 @@
       .search-box button { padding: 0 16px; font-size: 13px; }
 
       .filters-bar {
-        padding: 10px 14px; flex-wrap: nowrap;
-        overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 6px;
+        padding: 10px 14px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        overflow-x: visible;
       }
-      .filters-bar::-webkit-scrollbar { display: none; }
-      .filter-label { display: none; }
+      .filter-label { display: flex; margin-right: 4px; }
       .chip-sep { display: none; }
+      .filter-group { flex-wrap: wrap; gap: 6px; }
+      .filter-select { flex: 1; min-width: 0; }
 
       .main { padding: 20px 14px 90px; }
       .results-header { flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -618,35 +623,41 @@
 
 <!-- Filters -->
 <div class="filters-bar">
-  <span class="filter-label" data-i18n="lbl_hood">Neighborhood</span>
-  <select class="filter-select" id="filter-hood" onchange="applyFilters()">
-    <option value="All" data-i18n-opt="hood_all">All Neighborhoods</option>
-    <option value="Centru">Centru</option>
-    <option value="Grigorescu">Grigorescu</option>
-    <option value="Mărăști">Mărăști</option>
-    <option value="Mănăștur">Mănăștur</option>
-    <option value="Zorilor">Zorilor</option>
-    <option value="Europa">Europa</option>
-    <option value="Gheorgheni">Gheorgheni</option>
-    <option value="Bună Ziua">Bună Ziua</option>
-    <option value="Iris">Iris</option>
-    <option value="Florești">Florești</option>
-    <option value="Someșeni">Someșeni</option>
-    <option value="Dâmbul Rotund">Dâmbul Rotund</option>
-  </select>
+  <div class="filter-group">
+    <span class="filter-label" data-i18n="lbl_hood">Neighborhood</span>
+    <select class="filter-select" id="filter-hood" onchange="applyFilters()">
+      <option value="All" data-i18n-opt="hood_all">All Neighborhoods</option>
+      <option value="Centru">Centru</option>
+      <option value="Grigorescu">Grigorescu</option>
+      <option value="Mărăști">Mărăști</option>
+      <option value="Mănăștur">Mănăștur</option>
+      <option value="Zorilor">Zorilor</option>
+      <option value="Europa">Europa</option>
+      <option value="Gheorgheni">Gheorgheni</option>
+      <option value="Bună Ziua">Bună Ziua</option>
+      <option value="Iris">Iris</option>
+      <option value="Florești">Florești</option>
+      <option value="Someșeni">Someșeni</option>
+      <option value="Dâmbul Rotund">Dâmbul Rotund</option>
+    </select>
+  </div>
   <div class="chip-sep"></div>
-  <span class="filter-label" data-i18n="lbl_own">Ownership</span>
-  <div class="chip active" data-group="own" data-val="All"        onclick="pickChip(this)" data-i18n="opt_all">All</div>
-  <div class="chip"        data-group="own" data-val="SRL"        onclick="pickChip(this)">SRL</div>
-  <div class="chip"        data-group="own" data-val="Individual" onclick="pickChip(this)" data-i18n="opt_individual">Individual</div>
+  <div class="filter-group">
+    <span class="filter-label" data-i18n="lbl_own">Ownership</span>
+    <div class="chip active" data-group="own" data-val="All"        onclick="pickChip(this)" data-i18n="opt_all">All</div>
+    <div class="chip"        data-group="own" data-val="SRL"        onclick="pickChip(this)">SRL</div>
+    <div class="chip"        data-group="own" data-val="Individual" onclick="pickChip(this)" data-i18n="opt_individual">Individual</div>
+  </div>
   <div class="chip-sep"></div>
-  <span class="filter-label" data-i18n="lbl_price">Price</span>
-  <div class="chip active" data-group="price" data-val="Any"    onclick="pickChip(this)" data-i18n="opt_any">Any</div>
-  <div class="chip"        data-group="price" data-val="budget" onclick="pickChip(this)" data-i18n="price_budget">&lt; 300k</div>
-  <div class="chip"        data-group="price" data-val="low"    onclick="pickChip(this)" data-i18n="price_low">300k – 600k</div>
-  <div class="chip"        data-group="price" data-val="mid"    onclick="pickChip(this)" data-i18n="price_mid">600k – 1M</div>
-  <div class="chip"        data-group="price" data-val="high1"  onclick="pickChip(this)" data-i18n="price_high1">1M – 2M</div>
-  <div class="chip"        data-group="price" data-val="high2"  onclick="pickChip(this)" data-i18n="price_high2">&gt; 2M RON</div>
+  <div class="filter-group">
+    <span class="filter-label" data-i18n="lbl_price">Price</span>
+    <div class="chip active" data-group="price" data-val="Any"    onclick="pickChip(this)" data-i18n="opt_any">Any</div>
+    <div class="chip"        data-group="price" data-val="budget" onclick="pickChip(this)" data-i18n="price_budget">&lt; 300k</div>
+    <div class="chip"        data-group="price" data-val="low"    onclick="pickChip(this)" data-i18n="price_low">300k – 600k</div>
+    <div class="chip"        data-group="price" data-val="mid"    onclick="pickChip(this)" data-i18n="price_mid">600k – 1M</div>
+    <div class="chip"        data-group="price" data-val="high1"  onclick="pickChip(this)" data-i18n="price_high1">1M – 2M</div>
+    <div class="chip"        data-group="price" data-val="high2"  onclick="pickChip(this)" data-i18n="price_high2">&gt; 2M RON</div>
+  </div>
 </div>
 
 <!-- Main content -->
