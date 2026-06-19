@@ -644,9 +644,10 @@
     document.getElementById('load-more-btn').textContent = T[lang].load_more;
 
     const _cp = document.getElementById('cp-msgs');
-    if (_cp && _cp.children.length > 0 && !_cp.querySelector('.cm-row.user')) {
+    const _hi = T[lang] && T[lang].brick_hi;
+    if (_hi && _cp && _cp.children.length > 0 && !_cp.querySelector('.cm-row.user')) {
       _cp.innerHTML = '';
-      addMsg('assistant', T[lang].brick_hi, true);
+      addMsg('assistant', _hi, true);
     }
   }
 
@@ -895,16 +896,23 @@
     _mnNav.classList.remove('open');
     _mnBtn.classList.remove('open');
     _mnBtn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
   }
 
-  function toggleMobileNav() {
-    if (_mnNav.classList.contains('open')) { closeMobileNav(); return; }
+  function openMobileNav() {
     _mnNav.classList.add('open');
     _mnBtn.classList.add('open');
     _mnBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
   }
+
+  function toggleMobileNav() {
+    _mnNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  }
+
+  _mnBtn.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleMobileNav();
+  });
 
   _mnBtn.addEventListener('click', function(e) {
     e.stopPropagation();
@@ -928,6 +936,7 @@
   });
 
   _mnNav.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('touchend', function(e) { e.preventDefault(); closeMobileNav(); });
     a.addEventListener('click', closeMobileNav);
   });
 

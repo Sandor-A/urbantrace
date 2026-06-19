@@ -512,6 +512,7 @@
       chip_q1:'Highest price growth?', chip_q2:'SRL % in Centru?',
       chip_q3:'Sales over 2M RON?', chip_q4:'Best neighborhood?',
       brick_tip:'Ask me anything! 😊', you_label:'You',
+      brick_hi:"I'm **Brick** 🧱 — ask me to dig deeper into the charts!\n\n- *\"Which neighborhood had the highest price growth?\"*\n- *\"What % of Centru properties are SRL-owned?\"*\n- *\"Show recent transactions above 2M RON\"*",
     },
     ro: {
       nav_search:'Căutare', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre', nav_language:'Limbă',
@@ -530,6 +531,7 @@
       chip_q1:'Cea mai mare creștere a prețurilor?', chip_q2:'% SRL în Centru?',
       chip_q3:'Vânzări peste 2M RON?', chip_q4:'Cel mai bun cartier?',
       brick_tip:'Întreabă-mă orice! 😊', you_label:'Tu',
+      brick_hi:"Sunt **Brick** 🧱 — întreabă-mă să aprofundăm graficele!\n\n- *\"Ce cartier a avut cea mai mare creștere a prețurilor?\"*\n- *\"Ce % din proprietățile din Centru sunt SRL-uri?\"*\n- *\"Arată tranzacțiile recente peste 2M RON\"*",
     },
     hu: {
       nav_search:'Keresés', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk', nav_language:'Nyelv',
@@ -548,6 +550,7 @@
       chip_q1:'Legnagyobb ár-növekedés?', chip_q2:'KFT % Centrumban?',
       chip_q3:'2M RON feletti eladások?', chip_q4:'Legjobb negyed?',
       brick_tip:'Kérdezz bármit! 😊', you_label:'Te',
+      brick_hi:"**Brick** vagyok 🧱 — kérdezz, mélyebbre ásunk a grafikonokban!\n\n- *\"Melyik negyedben volt a legnagyobb árnövekedés?\"*\n- *\"A Centrumos ingatlanok hány %-a KFT-tulajdonú?\"*\n- *\"Mutass 2M RON feletti legutóbbi tranzakciókat\"*",
     },
   };
 
@@ -578,9 +581,10 @@
     document.documentElement.lang = lang;
 
     const _cp = document.getElementById('cp-msgs');
-    if (_cp && _cp.children.length > 0 && !_cp.querySelector('.cm-row.user')) {
+    const _hi = T[lang] && T[lang].brick_hi;
+    if (_hi && _cp && _cp.children.length > 0 && !_cp.querySelector('.cm-row.user')) {
       _cp.innerHTML = '';
-      addMsg('assistant', T[lang].brick_hi, true);
+      addMsg('assistant', _hi, true);
     }
   }
 
@@ -938,16 +942,23 @@
     _mnNav.classList.remove('open');
     _mnBtn.classList.remove('open');
     _mnBtn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
   }
 
-  function toggleMobileNav() {
-    if (_mnNav.classList.contains('open')) { closeMobileNav(); return; }
+  function openMobileNav() {
     _mnNav.classList.add('open');
     _mnBtn.classList.add('open');
     _mnBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
   }
+
+  function toggleMobileNav() {
+    _mnNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  }
+
+  _mnBtn.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleMobileNav();
+  });
 
   _mnBtn.addEventListener('click', function(e) {
     e.stopPropagation();
@@ -971,6 +982,7 @@
   });
 
   _mnNav.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('touchend', function(e) { e.preventDefault(); closeMobileNav(); });
     a.addEventListener('click', closeMobileNav);
   });
 
@@ -998,13 +1010,7 @@
   setLang(localStorage.getItem('ut_lang') || 'en');
   init();
 
-  addMsg('assistant',
-    "I'm **Brick** 🧱 — ask me to dig deeper into the charts!\n\n" +
-    "- *\"Which neighborhood had the highest price growth?\"*\n" +
-    "- *\"What % of Centru properties are SRL-owned?\"*\n" +
-    "- *\"Show recent transactions above 2M RON\"*",
-    true
-  );
+  addMsg('assistant', T[currentLang].brick_hi, true);
 </script>
 </body>
 </html>

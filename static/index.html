@@ -981,9 +981,10 @@
 
     // Re-render Brick greeting in new language if conversation hasn't started yet
     const _cp = document.getElementById('cp-msgs');
-    if (_cp && _cp.children.length > 0 && !_cp.querySelector('.cm-row.user')) {
+    const _hi = T[lang] && T[lang].brick_hi;
+    if (_hi && _cp && _cp.children.length > 0 && !_cp.querySelector('.cm-row.user')) {
       _cp.innerHTML = '';
-      addMsg('assistant', T[lang].brick_hi, true);
+      addMsg('assistant', _hi, true);
     }
   }
 
@@ -1285,23 +1286,32 @@
     _mnNav.classList.remove('open');
     _mnBtn.classList.remove('open');
     _mnBtn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
   }
 
   function toggleMobileNav() {
-    if (_mnNav.classList.contains('open')) { closeMobileNav(); return; }
+    _mnNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  }
+
+  function openMobileNav() {
     _mnNav.classList.add('open');
     _mnBtn.classList.add('open');
     _mnBtn.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
   }
 
+  /* touchend fires before click — no 300ms wait; preventDefault cancels the click */
+  _mnBtn.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleMobileNav();
+  });
+
+  /* click fallback for non-touch (desktop) */
   _mnBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     toggleMobileNav();
   });
 
-  /* Close on tap outside — touchstart fires instantly on iOS, no 300ms wait */
+  /* Close on tap/click outside */
   document.addEventListener('touchstart', function(e) {
     if (_mnNav.classList.contains('open') && !_mnNav.contains(e.target) && !_mnBtn.contains(e.target)) {
       closeMobileNav();
@@ -1318,8 +1328,8 @@
     if (e.key === 'Escape' && _mnNav.classList.contains('open')) closeMobileNav();
   });
 
-  /* Auto-close when a nav link is tapped */
   _mnNav.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('touchend', function(e) { e.preventDefault(); closeMobileNav(); });
     a.addEventListener('click', closeMobileNav);
   });
 
