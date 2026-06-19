@@ -189,6 +189,24 @@
     }
     .search-box button:hover { background: #1d4ed8; }
 
+    /* ── Search examples ────────────────────────── */
+    .search-examples {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      margin-top: 14px; justify-content: center;
+    }
+    .search-ex-label {
+      font-size: 12px; color: rgba(255,255,255,.45); font-weight: 500; white-space: nowrap;
+    }
+    #ex-chips { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
+    .ex-chip {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.82); border-radius: 20px;
+      padding: 4px 12px; font-size: 12px; font-weight: 500;
+      cursor: pointer; transition: all .15s; white-space: nowrap;
+      font-family: inherit;
+    }
+    .ex-chip:hover { background: rgba(255,255,255,.2); color: #fff; border-color: rgba(255,255,255,.4); }
+
     /* ── Filters bar ────────────────────────────── */
     .filters-bar {
       background: #fff; border-bottom: 1px solid var(--g200);
@@ -625,6 +643,10 @@
         <span data-i18n="search_btn">Search</span>
       </button>
     </div>
+    <div class="search-examples" id="search-examples" style="display:none">
+      <span class="search-ex-label" data-i18n="ex_label">Try:</span>
+      <div id="ex-chips"></div>
+    </div>
   </div>
 </section>
 
@@ -811,7 +833,8 @@
       chip_q3:'Prices in Grigorescu?', chip_q4:'Most recent sales?',
       brick_tip:'Ask me anything! 😊', card_ask:'Tell me about', you_label:'You',
       area_unit:'m²',
-      brick_hi:"Hi! I'm **Brick** 🧱 — your Cluj-Napoca property assistant!\n\nClick any property card and I'll pull up details. Or ask me:\n- *\"What's the median price in Grigorescu?\"*\n- *\"Show SRL-owned properties over 1M RON\"*\n- *\"Who owns Bd. Eroilor 42?\"*",
+      ex_label:'Try:',
+      brick_hi:"Hi! I'm **Brick** 🧱 — your Cluj-Napoca property assistant!\n\nClick any property card and I'll pull up details. Or ask me:\n- *\"What's the median price in Grigorescu?\"*\n- *\"Show SRL-owned properties over 1M RON\"*\n- *\"Who owns Bulevardul Eroilor 65?\"*",
       about_by:'Designed and built by', about_copy:'© 2025 Sándor Attila Nagy. All rights reserved.',
       about_tag:'An AI-powered research assistant for exploring structured Cluj-Napoca property data through natural language.',
       empty:'No properties match your filters.<br>Try asking <strong>Brick</strong> for help 🧱',
@@ -834,7 +857,8 @@
       chip_q3:'Prețuri în Grigorescu?', chip_q4:'Cele mai recente vânzări?',
       brick_tip:'Întreabă-mă orice! 😊', card_ask:'Spune-mi despre', you_label:'Tu',
       area_unit:'mp',
-      brick_hi:"Salut! Sunt **Brick** 🧱 — asistentul tău imobiliar!\n\nApasă pe orice proprietate pentru detalii. Sau întreabă-mă:\n- *\"Care e prețul median în Grigorescu?\"*\n- *\"Proprietăți SRL peste 1M RON\"*\n- *\"Cine deține Bd. Eroilor 42?\"*",
+      ex_label:'Încearcă:',
+      brick_hi:"Salut! Sunt **Brick** 🧱 — asistentul tău imobiliar!\n\nApasă pe orice proprietate pentru detalii. Sau întreabă-mă:\n- *\"Care e prețul median în Grigorescu?\"*\n- *\"Proprietăți SRL peste 1M RON\"*\n- *\"Cine deține Bulevardul Eroilor 65?\"*",
       about_by:'Conceput și realizat de', about_copy:'© 2025 Sándor Attila Nagy. Toate drepturile rezervate.',
       about_tag:'Asistent de cercetare AI pentru date imobiliare structurate din Cluj-Napoca prin limbaj natural.',
       empty:'Nicio proprietate nu corespunde filtrelor.<br>Întreabă-l pe <strong>Brick</strong> 🧱',
@@ -857,7 +881,8 @@
       chip_q3:'Árak Grigorescu-ban?', chip_q4:'Legutóbbi eladások?',
       brick_tip:'Kérdezz bármit! 😊', card_ask:'Mesélj erről', you_label:'Te',
       area_unit:'m²',
-      brick_hi:"Szia! **Brick** vagyok 🧱 — kolozsvári ingatlan asszisztensed!\n\nKattints bármelyik ingatlanra a részletekért. Vagy kérdezz:\n- *\"Mi a medián ár Grigorescu-ban?\"*\n- *\"KFT-tulajdonú ingatlanok 1M RON felett\"*\n- *\"Kié a Bd. Eroilor 42?\"*",
+      ex_label:'Próbáld:',
+      brick_hi:"Szia! **Brick** vagyok 🧱 — kolozsvári ingatlan asszisztensed!\n\nKattints bármelyik ingatlanra a részletekért. Vagy kérdezz:\n- *\"Mi a medián ár Grigorescu-ban?\"*\n- *\"KFT-tulajdonú ingatlanok 1M RON felett\"*\n- *\"Kié a Bulevardul Eroilor 65?\"*",
       about_by:'Tervezte és fejlesztette', about_copy:'© 2025 Sándor Attila Nagy. Minden jog fenntartva.',
       about_tag:'Mesterséges intelligencia alapú kutatási asszisztens Kolozsvár ingatlanadatainak természetes nyelvű lekérdezéséhez.',
       empty:'Nem találhatók ingatlanok a szűrési feltételek alapján.<br>Kérdezd <strong>Brick</strong>-et 🧱',
@@ -1186,11 +1211,44 @@
   setLang(localStorage.getItem('ut_lang') || 'en');
   addMsg('assistant', T[currentLang].brick_hi, true);
 
+  function buildExChips(properties) {
+    const seen = new Set();
+    const picks = [];
+    // Pick one property from each of 4 diverse neighborhoods
+    const wantHoods = ['Centru','Grigorescu','Mărăști','Zorilor','Gheorgheni','Mănăștur','Europa','Florești'];
+    for (const hood of wantHoods) {
+      const p = properties.find(x => x.hood === hood && !seen.has(x.hood));
+      if (p) { seen.add(p.hood); picks.push(p); }
+      if (picks.length >= 4) break;
+    }
+    // Fallback: top 4 by price if not enough hoods
+    if (picks.length < 4) {
+      properties.slice(0, 4).forEach(p => { if (!picks.includes(p)) picks.push(p); });
+    }
+
+    const container = document.getElementById('ex-chips');
+    const wrapper   = document.getElementById('search-examples');
+    if (!container || !picks.length) return;
+
+    container.innerHTML = picks.slice(0, 4).map(p =>
+      `<button class="ex-chip" onclick="exSearch(${JSON.stringify(p.addr)})">${p.addr}</button>`
+    ).join('');
+    wrapper.style.display = 'flex';
+  }
+
+  function exSearch(addr) {
+    const inp = document.getElementById('main-search');
+    inp.value = addr;
+    applyFilters();
+    inp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
   // Load real property data from the server
   fetch('/api/properties-sample?limit=24')
     .then(r => r.json())
     .then(data => {
       PROPERTIES = data;
+      buildExChips(data);
       applyFilters();
     })
     .catch(() => {
