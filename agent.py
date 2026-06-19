@@ -23,8 +23,7 @@ Core rules:
 7. Neighborhoods (cartiere) are matched directly from the dataset's borough field. Use `neighborhood` or `borough` interchangeably — both resolve via name matching. Real geocoded coordinates (lat/lng) are also available when the geocache is populated. Available neighborhoods: Centru, Grigorescu, Mărăști, Mănăștur, Gheorgheni, Zorilor, Europa, Iris, Bună Ziua, Sopor, Florești, Borhanci, Dâmbul Rotund, Între Lacuri, Someșeni.
 8. When showing property rows, show at most 8 rows in Markdown. Always include sample size and filters/caveats when relevant.
 9. Area is measured in square meters (mp) and prices are in RON (Romanian Leu). 1 EUR ≈ 5 RON.
-“””.strip()
-"""
+""".strip()
 
 class PropertyAssistant:
     def __init__(self, store: PropertyDataStore, model: str | None = None):
