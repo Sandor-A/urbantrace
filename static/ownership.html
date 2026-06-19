@@ -335,8 +335,8 @@
     .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
     /* ── Mobile nav ────────────────────────────── */
-    .mobile-nav { background: rgba(10,26,56,.97); border-top: 1px solid rgba(255,255,255,.08); position: fixed; top: 64px; left: 0; right: 0; z-index: 99; max-height: 0; overflow: hidden; transition: max-height .3s ease; pointer-events: none; }
-    .mobile-nav.open { max-height: 320px; pointer-events: all; }
+    .mobile-nav { background: rgba(10,26,56,.97); border-top: 1px solid rgba(255,255,255,.08); position: fixed; top: 64px; left: 0; right: 0; z-index: 99; visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s; pointer-events: none; }
+    .mobile-nav.open { visibility: visible; opacity: 1; transform: translateY(0); transition: opacity .22s ease, transform .22s ease, visibility 0s linear 0s; pointer-events: all; }
     .mobile-nav a { display: block; padding: 14px 24px; color: rgba(255,255,255,.75); text-decoration: none; font-size: 15px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,.07); transition: all .15s; }
     .mobile-nav a.active, .mobile-nav a:hover { color: #fff; background: rgba(255,255,255,.06); }
     .mobile-lang { display: flex; gap: 8px; padding: 14px 24px; }
