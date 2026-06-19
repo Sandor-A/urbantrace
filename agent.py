@@ -8,7 +8,7 @@ from openai import OpenAI
 
 from memory import SessionMemory
 from data_loader import PropertyDataStore
-from tools import OPENAI_TOOL_SCHEMAS, TOOL_FUNCTIONS, BOROUGH_ALIASES
+from tools import OPENAI_TOOL_SCHEMAS, TOOL_FUNCTIONS, BOROUGH_ALIASES, _normalize_addr
 
 
 SYSTEM_PROMPT = """
@@ -32,8 +32,9 @@ STRICT RULES — never break these:
 8. Units: area in m², prices in RON. Approximate: 1 EUR ~ 5 RON.
 9. Available neighborhoods: Centru, Grigorescu, Marasti, Manastur, Gheorgheni, Zorilor,
    Europa, Iris, Buna Ziua, Floresti, Dambul Rotund, Someseni.
-10. TYPO CORRECTION: If the tool result caveats contain a "Did you mean" suggestion,
-    present those options to the user and ask which neighborhood they meant. Do not guess.
+10. TYPO CORRECTION: If the tool result caveats contain a "Did you mean" or "Closest matches"
+    suggestion (for neighborhood, address, or owner name), present those options to the user
+    and ask which one they meant. Do not guess — always confirm before re-searching.
 """.strip()
 
 
@@ -83,6 +84,30 @@ def _suggest_borough(raw: str) -> list[str]:
             seen.add(canonical)
             result.append(canonical)
     return result
+
+
+def _suggest_address(raw: str, store: PropertyDataStore) -> list[str]:
+    """Fuzzy-match `raw` against all known property addresses."""
+    raw_norm = _normalize_addr(raw)
+    norm_to_orig: dict[str, str] = {}
+    for p in store.properties:
+        addr = str(p.get("address", "")).strip()
+        if addr:
+            norm_to_orig.setdefault(_normalize_addr(addr), addr)
+    matches = difflib.get_close_matches(raw_norm, norm_to_orig.keys(), n=3, cutoff=0.55)
+    return [norm_to_orig[m] for m in matches]
+
+
+def _suggest_owner(raw: str, store: PropertyDataStore) -> list[str]:
+    """Fuzzy-match `raw` against all known owner names."""
+    raw_lower = raw.lower()
+    lower_to_orig: dict[str, str] = {}
+    for o in store.ownership:
+        name = str(o.get("owner_name", "")).strip()
+        if name:
+            lower_to_orig.setdefault(name.lower(), name)
+    matches = difflib.get_close_matches(raw_lower, lower_to_orig.keys(), n=3, cutoff=0.6)
+    return [lower_to_orig[m] for m in matches]
 
 
 def _inject_borough_suggestions(result: dict[str, Any], args: dict[str, Any]) -> None:
@@ -148,6 +173,28 @@ class PropertyAssistant:
                 )
 
             _inject_borough_suggestions(result, arguments)
+
+            if result.get("status") == "empty" and name == "lookup_owner":
+                caveats: list[str] = result.get("caveats", [])
+                raw_addr = arguments.get("address")
+                if raw_addr:
+                    addr_hits = _suggest_address(raw_addr, self.store)
+                    if addr_hits:
+                        caveats.append(
+                            f"Address not found. Closest matches: {'; '.join(addr_hits)} "
+                            f"(you searched: \"{raw_addr}\")"
+                        )
+                raw_owner = arguments.get("owner_name_contains")
+                if raw_owner:
+                    owner_hits = _suggest_owner(raw_owner, self.store)
+                    if owner_hits:
+                        caveats.append(
+                            f"Owner not found. Closest matches: {'; '.join(owner_hits)} "
+                            f"(you searched: \"{raw_owner}\")"
+                        )
+                if caveats:
+                    result["caveats"] = caveats
+
             return result
 
         except Exception as exc:
