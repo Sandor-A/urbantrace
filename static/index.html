@@ -264,9 +264,12 @@
     .results-count { font-size: 13px; color: var(--g400); margin-top: 3px; }
     .sort-select {
       border: 1.5px solid var(--g200); border-radius: 10px;
-      padding: 8px 14px; font-size: 13px; font-family: inherit;
+      padding: 8px 32px 8px 14px; font-size: 13px; font-family: inherit;
       color: var(--g700); background: #fff; cursor: pointer; outline: none;
       font-weight: 500;
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 11px center;
     }
 
     /* ── Property grid ──────────────────────────── */
@@ -319,6 +322,7 @@
     #brick-widget {
       position: fixed; bottom: 28px; right: 28px; z-index: 1000;
       display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+      pointer-events: none;
     }
 
     /* Chat panel */
@@ -456,6 +460,7 @@
       filter: drop-shadow(0 6px 18px rgba(232,93,38,.45));
       transition: transform .22s cubic-bezier(.34,1.56,.64,1), filter .2s;
       user-select: none; flex-shrink: 0;
+      pointer-events: auto;
     }
     #brick-btn:hover {
       transform: scale(1.09) translateY(-2px);
@@ -537,7 +542,7 @@
     /* ── Mobile nav ────────────────────────────── */
     .mobile-nav {
       background: rgba(10,26,56,.97); border-top: 1px solid rgba(255,255,255,.08);
-      position: sticky; top: 64px; z-index: 99;
+      position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
       max-height: 0; overflow: hidden; transition: max-height .3s ease;
       pointer-events: none;
     }
@@ -1260,6 +1265,15 @@
     document.getElementById('mobile-nav').classList.toggle('open');
     document.getElementById('hamburger').classList.toggle('open');
   }
+
+  document.addEventListener('click', e => {
+    const nav = document.getElementById('mobile-nav');
+    const btn = document.getElementById('hamburger');
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+      nav.classList.remove('open');
+      btn.classList.remove('open');
+    }
+  });
 
   /* ── Clear chat / quick chips ────────────────── */
   function clearChat() {
