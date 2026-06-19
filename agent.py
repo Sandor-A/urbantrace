@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import difflib
 import json
 import os
 from typing import Any
@@ -7,7 +8,7 @@ from openai import OpenAI
 
 from memory import SessionMemory
 from data_loader import PropertyDataStore
-from tools import OPENAI_TOOL_SCHEMAS, TOOL_FUNCTIONS
+from tools import OPENAI_TOOL_SCHEMAS, TOOL_FUNCTIONS, BOROUGH_ALIASES
 
 
 SYSTEM_PROMPT = """
@@ -31,7 +32,64 @@ STRICT RULES — never break these:
 8. Units: area in m², prices in RON. Approximate: 1 EUR ~ 5 RON.
 9. Available neighborhoods: Centru, Grigorescu, Marasti, Manastur, Gheorgheni, Zorilor,
    Europa, Iris, Buna Ziua, Floresti, Dambul Rotund, Someseni.
+10. TYPO CORRECTION: If the tool result caveats contain a "Did you mean" suggestion,
+    present those options to the user and ask which neighborhood they meant. Do not guess.
 """.strip()
+
+
+def _detect_language(text: str) -> str:
+    """Detect language from character signatures: ő/ű → Hungarian, ă/ș/ț/â/î → Romanian."""
+    lower = text.lower()
+    if any(c in lower for c in "őű"):
+        return "hu"
+    if any(c in lower for c in "ășțâî"):
+        return "ro"
+    return "en"
+
+
+_LANG_INSTRUCTIONS: dict[str, str] = {
+    "hu": "IMPORTANT: The user wrote in Hungarian. Your entire response MUST be in Hungarian.",
+    "ro": "IMPORTANT: Utilizatorul a scris în română. Răspunde integral în limba română.",
+}
+
+
+def _suggest_borough(raw: str) -> list[str]:
+    """Return canonical borough names fuzzy-close to `raw` (typo correction)."""
+    matches = difflib.get_close_matches(raw.lower(), BOROUGH_ALIASES.keys(), n=3, cutoff=0.6)
+    seen: set[str] = set()
+    result: list[str] = []
+    for m in matches:
+        canonical = BOROUGH_ALIASES[m]
+        if canonical not in seen:
+            seen.add(canonical)
+            result.append(canonical)
+    return result
+
+
+def _inject_borough_suggestions(result: dict[str, Any], args: dict[str, Any]) -> None:
+    """If result is empty and a borough arg was supplied, add fuzzy suggestions to caveats."""
+    if result.get("status") != "empty":
+        return
+
+    raw_borough = args.get("borough") or args.get("neighborhood")
+    if not raw_borough:
+        return
+
+    # Skip if the borough was already a valid exact alias
+    if raw_borough.strip().lower() in BOROUGH_ALIASES:
+        return
+
+    suggestions = _suggest_borough(raw_borough)
+    if not suggestions:
+        return
+
+    caveats: list[str] = result.get("caveats", [])
+    caveats.append(
+        f"Did you mean one of these neighborhoods? {', '.join(suggestions)} "
+        f"(your input: \"{raw_borough}\")"
+    )
+    result["caveats"] = caveats
+
 
 class PropertyAssistant:
     def __init__(self, store: PropertyDataStore, model: str | None = None):
@@ -70,6 +128,7 @@ class PropertyAssistant:
                     results=result.get("data"),
                 )
 
+            _inject_borough_suggestions(result, arguments)
             return result
 
         except Exception as exc:
@@ -80,7 +139,7 @@ class PropertyAssistant:
                 "metadata": {},
             }
 
-    def _handle_simple_followup(self, user_text: str) -> str | None:
+    def _handle_simple_followup(self, user_text: str, turn_messages: list[dict[str, Any]]) -> str | None:
         text = user_text.strip().lower()
 
         if not text.startswith("what about"):
@@ -149,7 +208,7 @@ class PropertyAssistant:
         # Do not append a fake tool message here; Chat Completions requires
         # tool messages to correspond to real tool_call IDs. Instead, pass the
         # follow-up result as plain assistant context.
-        final_messages = self.messages + [
+        final_messages = turn_messages + [
             {
                 "role": "assistant",
                 "content": (
@@ -182,7 +241,19 @@ class PropertyAssistant:
     def ask(self, user_text: str) -> str:
         self.messages.append({"role": "user", "content": user_text})
 
-        followup_answer = self._handle_simple_followup(user_text)
+        # Build per-turn messages with language instruction injected into system prompt
+        lang = _detect_language(user_text)
+        lang_note = _LANG_INSTRUCTIONS.get(lang)
+        if lang_note:
+            system_content = self.messages[0]["content"] + f"\n\n{lang_note}"
+            turn_messages: list[dict[str, Any]] = [
+                {"role": "system", "content": system_content},
+                *self.messages[1:],
+            ]
+        else:
+            turn_messages = self.messages
+
+        followup_answer = self._handle_simple_followup(user_text, turn_messages)
         if followup_answer:
             return followup_answer
 
@@ -198,7 +269,7 @@ class PropertyAssistant:
 
         first = self.client.chat.completions.create(
             model=self.model,
-            messages=self.messages,
+            messages=turn_messages,
             tools=OPENAI_TOOL_SCHEMAS,
             tool_choice=tool_choice,
             temperature=0,
@@ -208,6 +279,15 @@ class PropertyAssistant:
         self.messages.append(assistant_msg.model_dump())
 
         if assistant_msg.tool_calls:
+            # Build updated turn_messages to include the assistant's tool_call message
+            if lang_note:
+                turn_messages = [
+                    {"role": "system", "content": system_content},
+                    *self.messages[1:],
+                ]
+            else:
+                turn_messages = self.messages
+
             for tool_call in assistant_msg.tool_calls:
                 name = tool_call.function.name
 
@@ -227,9 +307,18 @@ class PropertyAssistant:
                     }
                 )
 
+            # Rebuild turn_messages with tool results included
+            if lang_note:
+                turn_messages = [
+                    {"role": "system", "content": system_content},
+                    *self.messages[1:],
+                ]
+            else:
+                turn_messages = self.messages
+
             final = self.client.chat.completions.create(
                 model=self.model,
-                messages=self.messages,
+                messages=turn_messages,
                 temperature=0,
             )
 
