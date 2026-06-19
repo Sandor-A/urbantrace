@@ -496,10 +496,10 @@
     </div>
     <div class="cp-msgs" id="cp-msgs"></div>
     <div class="cp-chips" id="cp-chips">
-      <button class="cp-chip" onclick="askChip(this)">SRL owners in Centru?</button>
-      <button class="cp-chip" onclick="askChip(this)">High-value SRL holdings?</button>
-      <button class="cp-chip" onclick="askChip(this)">Who owns Str. Horea 15?</button>
-      <button class="cp-chip" onclick="askChip(this)">Top property owners?</button>
+      <button class="cp-chip" data-chip="chip_q1" onclick="askChip(this)">SRL owners in Centru?</button>
+      <button class="cp-chip" data-chip="chip_q2" onclick="askChip(this)">High-value SRL holdings?</button>
+      <button class="cp-chip" data-chip="chip_q3" onclick="askChip(this)">Who owns Str. Horea 15?</button>
+      <button class="cp-chip" data-chip="chip_q4" onclick="askChip(this)">Top property owners?</button>
     </div>
     <div class="cp-input-area">
       <div class="cp-input-wrap">
@@ -513,7 +513,7 @@
 
   <div id="brick-btn" onclick="toggleChat()">
     <div class="brick-badge" id="brick-badge">1</div>
-    <div class="brick-tip">Ask me anything! 😊</div>
+    <div class="brick-tip" id="brick-tip">Ask me anything! 😊</div>
     <svg width="64" height="74" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="20" cy="12" rx="9" ry="5.5" fill="#c94e1e"/>
       <ellipse cx="44" cy="12" rx="9" ry="5.5" fill="#c94e1e"/>
@@ -558,6 +558,9 @@
       about_by:'Designed and built by', about_copy:'© 2025 Sándor Attila Nagy. All rights reserved.',
       about_tag:'An AI-powered research assistant for exploring structured Cluj-Napoca property data through natural language.',
       ask_ph:'Ask about properties…',
+      chip_q1:'SRL owners in Centru?', chip_q2:'High-value SRL holdings?',
+      chip_q3:'Who owns Str. Horea 15?', chip_q4:'Top property owners?',
+      brick_tip:'Ask me anything! 😊', you_label:'You',
       brick_hi:"Hi! I'm **Brick** 🧱 — your Cluj-Napoca property assistant!\n\nBrowse the ownership registry or ask me:\n- *\"Who owns SRL properties in Centru?\"*\n- *\"Show me high-value SRL holdings\"*\n- *\"Lookup owner at Str. Horea 15\"*",
       stats_showing:'Showing', stats_of:'of', stats_total:'total',
       stats_srl:'SRL', stats_ind:'Individual',
@@ -573,6 +576,9 @@
       about_by:'Conceput și realizat de', about_copy:'© 2025 Sándor Attila Nagy. Toate drepturile rezervate.',
       about_tag:'Asistent de cercetare AI pentru date imobiliare structurate din Cluj-Napoca prin limbaj natural.',
       ask_ph:'Întreabă despre proprietăți…',
+      chip_q1:'Proprietari SRL în Centru?', chip_q2:'Proprietăți SRL de mare valoare?',
+      chip_q3:'Cine deține Str. Horea 15?', chip_q4:'Top proprietari?',
+      brick_tip:'Întreabă-mă orice! 😊', you_label:'Tu',
       brick_hi:"Salut! Sunt **Brick** 🧱 — asistentul tău imobiliar!\n\nNavighează registrul sau întreabă-mă:\n- *\"Cine deține proprietăți SRL în Centru?\"*\n- *\"Proprietăți SRL de mare valoare\"*\n- *\"Proprietarul de la Str. Horea 15\"*",
       stats_showing:'Afișate', stats_of:'din', stats_total:'total',
       stats_srl:'SRL', stats_ind:'Persoană fizică',
@@ -588,6 +594,9 @@
       about_by:'Tervezte és fejlesztette', about_copy:'© 2025 Sándor Attila Nagy. Minden jog fenntartva.',
       about_tag:'Mesterséges intelligencia alapú kutatási asszisztens Kolozsvár ingatlanadatainak természetes nyelvű lekérdezéséhez.',
       ask_ph:'Kérdezz az ingatlanokról…',
+      chip_q1:'KFT tulajdonosok Centrumban?', chip_q2:'Magas értékű KFT ingatlanok?',
+      chip_q3:'Str. Horea 15 tulajdonosa?', chip_q4:'Top ingatlantulajdonosok?',
+      brick_tip:'Kérdezz bármit! 😊', you_label:'Te',
       brick_hi:"Szia! **Brick** vagyok 🧱 — kolozsvári ingatlan asszisztensed!\n\nBöngészd a nyilvántartót vagy kérdezz:\n- *\"Ki tulajdonol KFT ingatlanokat Centrumban?\"*\n- *\"Magas értékű KFT ingatlanok\"*\n- *\"Str. Horea 15 tulajdonosa\"*",
       stats_showing:'Megjelenítve', stats_of:'/', stats_total:'összesen',
       stats_srl:'KFT', stats_ind:'Magánszemély',
@@ -620,6 +629,13 @@
       const key = el.dataset.i18nPh;
       if (T[lang][key] !== undefined) el.placeholder = T[lang][key];
     });
+    document.querySelectorAll('[data-chip]').forEach(el => {
+      const key = el.dataset.chip;
+      if (T[lang][key]) el.textContent = T[lang][key];
+    });
+    const tip = document.getElementById('brick-tip');
+    if (tip) tip.textContent = T[lang].brick_tip;
+    document.documentElement.lang = lang;
 
     updateStatsBar();
     document.getElementById('load-more-btn').textContent = T[lang].load_more;
@@ -816,7 +832,7 @@
   function makeRow(role) {
     const row = document.createElement('div'); row.className = `cm-row ${role}`;
     const av = document.createElement('div'); av.className = `cm-av ${role}`;
-    av.textContent = role === 'assistant' ? '🧱' : 'You';
+    av.textContent = role === 'assistant' ? '🧱' : (T[currentLang]?.you_label || 'You');
     row.appendChild(av); return row;
   }
   function addMsg(role, text, markdown = false) {

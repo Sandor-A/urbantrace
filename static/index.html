@@ -214,6 +214,17 @@
       box-shadow: 0 2px 8px rgba(37,99,235,.3);
     }
     .chip-sep { width: 1px; height: 20px; background: var(--g200); margin: 0 4px; }
+    .filter-select {
+      padding: 5px 30px 5px 14px; border-radius: 20px;
+      border: 1.5px solid var(--g200); background: var(--g50);
+      font-size: 12.5px; font-weight: 500; color: var(--g700);
+      cursor: pointer; font-family: inherit; outline: none;
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 11px center;
+      white-space: nowrap; transition: border-color .15s;
+    }
+    .filter-select:hover, .filter-select:focus { border-color: var(--accent); color: var(--accent); }
 
     /* ── Main ───────────────────────────────────── */
     .main { max-width: 1280px; margin: 0 auto; padding: 32px 40px 100px; }
@@ -608,23 +619,34 @@
 <!-- Filters -->
 <div class="filters-bar">
   <span class="filter-label" data-i18n="lbl_hood">Neighborhood</span>
-  <div class="chip active" data-group="hood" data-val="All"        onclick="pickChip(this)" data-i18n="opt_all">All</div>
-  <div class="chip"        data-group="hood" data-val="Centru"     onclick="pickChip(this)">Centru</div>
-  <div class="chip"        data-group="hood" data-val="Grigorescu"  onclick="pickChip(this)">Grigorescu</div>
-  <div class="chip"        data-group="hood" data-val="Mănăștur"   onclick="pickChip(this)">Mănăștur</div>
-  <div class="chip"        data-group="hood" data-val="Zorilor"    onclick="pickChip(this)">Zorilor</div>
-  <div class="chip"        data-group="hood" data-val="Europa"     onclick="pickChip(this)">Europa</div>
+  <select class="filter-select" id="filter-hood" onchange="applyFilters()">
+    <option value="All" data-i18n-opt="hood_all">All Neighborhoods</option>
+    <option value="Centru">Centru</option>
+    <option value="Grigorescu">Grigorescu</option>
+    <option value="Mărăști">Mărăști</option>
+    <option value="Mănăștur">Mănăștur</option>
+    <option value="Zorilor">Zorilor</option>
+    <option value="Europa">Europa</option>
+    <option value="Gheorgheni">Gheorgheni</option>
+    <option value="Bună Ziua">Bună Ziua</option>
+    <option value="Iris">Iris</option>
+    <option value="Florești">Florești</option>
+    <option value="Someșeni">Someșeni</option>
+    <option value="Dâmbul Rotund">Dâmbul Rotund</option>
+  </select>
   <div class="chip-sep"></div>
   <span class="filter-label" data-i18n="lbl_own">Ownership</span>
-  <div class="chip active" data-group="own" data-val="All"         onclick="pickChip(this)" data-i18n="opt_all">All</div>
-  <div class="chip"        data-group="own" data-val="SRL"         onclick="pickChip(this)">SRL</div>
-  <div class="chip"        data-group="own" data-val="Individual"  onclick="pickChip(this)" data-i18n="opt_individual">Individual</div>
+  <div class="chip active" data-group="own" data-val="All"        onclick="pickChip(this)" data-i18n="opt_all">All</div>
+  <div class="chip"        data-group="own" data-val="SRL"        onclick="pickChip(this)">SRL</div>
+  <div class="chip"        data-group="own" data-val="Individual" onclick="pickChip(this)" data-i18n="opt_individual">Individual</div>
   <div class="chip-sep"></div>
   <span class="filter-label" data-i18n="lbl_price">Price</span>
-  <div class="chip active" data-group="price" data-val="Any"   onclick="pickChip(this)" data-i18n="opt_any">Any</div>
-  <div class="chip"        data-group="price" data-val="low"   onclick="pickChip(this)" data-i18n="price_low">&lt; 500k RON</div>
-  <div class="chip"        data-group="price" data-val="mid"   onclick="pickChip(this)" data-i18n="price_mid">500k – 1M</div>
-  <div class="chip"        data-group="price" data-val="high"  onclick="pickChip(this)" data-i18n="price_high">&gt; 1M RON</div>
+  <div class="chip active" data-group="price" data-val="Any"    onclick="pickChip(this)" data-i18n="opt_any">Any</div>
+  <div class="chip"        data-group="price" data-val="budget" onclick="pickChip(this)" data-i18n="price_budget">&lt; 300k</div>
+  <div class="chip"        data-group="price" data-val="low"    onclick="pickChip(this)" data-i18n="price_low">300k – 600k</div>
+  <div class="chip"        data-group="price" data-val="mid"    onclick="pickChip(this)" data-i18n="price_mid">600k – 1M</div>
+  <div class="chip"        data-group="price" data-val="high1"  onclick="pickChip(this)" data-i18n="price_high1">1M – 2M</div>
+  <div class="chip"        data-group="price" data-val="high2"  onclick="pickChip(this)" data-i18n="price_high2">&gt; 2M RON</div>
 </div>
 
 <!-- Main content -->
@@ -687,10 +709,10 @@
     </div>
     <div class="cp-msgs" id="cp-msgs"></div>
     <div class="cp-chips" id="cp-chips">
-      <button class="cp-chip" onclick="askChip(this)">Median price in Centru?</button>
-      <button class="cp-chip" onclick="askChip(this)">Top SRL owners?</button>
-      <button class="cp-chip" onclick="askChip(this)">Prices in Grigorescu?</button>
-      <button class="cp-chip" onclick="askChip(this)">Most recent sales?</button>
+      <button class="cp-chip" data-chip="chip_q1" onclick="askChip(this)">Median price in Centru?</button>
+      <button class="cp-chip" data-chip="chip_q2" onclick="askChip(this)">Top SRL owners?</button>
+      <button class="cp-chip" data-chip="chip_q3" onclick="askChip(this)">Prices in Grigorescu?</button>
+      <button class="cp-chip" data-chip="chip_q4" onclick="askChip(this)">Most recent sales?</button>
     </div>
     <div class="cp-input-area">
       <div class="cp-input-wrap">
@@ -705,7 +727,7 @@
   <!-- The brick mascot button -->
   <div id="brick-btn" onclick="toggleChat()">
     <div class="brick-badge" id="brick-badge">1</div>
-    <div class="brick-tip">Ask me anything! 😊</div>
+    <div class="brick-tip" id="brick-tip">Ask me anything! 😊</div>
     <svg width="64" height="74" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
       <!-- Studs (back ellipses for depth) -->
       <ellipse cx="20" cy="12" rx="9" ry="5.5" fill="#c94e1e"/>
@@ -760,10 +782,17 @@
       search_ph:'Search by address, neighborhood, owner…', search_btn:'Search',
       lbl_hood:'Neighborhood', lbl_own:'Ownership', lbl_price:'Price',
       opt_all:'All', opt_any:'Any', opt_individual:'Individual',
-      price_low:'< 500k RON', price_mid:'500k – 1M', price_high:'> 1M RON',
+      hood_all:'All Neighborhoods',
+      price_budget:'< 300k RON', price_low:'300k – 600k', price_mid:'600k – 1M',
+      price_high1:'1M – 2M RON', price_high2:'> 2M RON',
       sort_phd:'Price: High → Low', sort_pal:'Price: Low → High',
       sort_sqm:'Area: Large → Small', sort_rec:'Most Recent',
       res_title:'Property Listings',
+      res_count_one:'Showing 1 property', res_count_many:'Showing {n} properties',
+      chip_q1:'Median price in Centru?', chip_q2:'Top SRL owners?',
+      chip_q3:'Prices in Grigorescu?', chip_q4:'Most recent sales?',
+      brick_tip:'Ask me anything! 😊', card_ask:'Tell me about', you_label:'You',
+      area_unit:'m²',
       brick_hi:"Hi! I'm **Brick** 🧱 — your Cluj-Napoca property assistant!\n\nClick any property card and I'll pull up details. Or ask me:\n- *\"What's the median price in Grigorescu?\"*\n- *\"Show SRL-owned properties over 1M RON\"*\n- *\"Who owns Bd. Eroilor 42?\"*",
       about_by:'Designed and built by', about_copy:'© 2025 Sándor Attila Nagy. All rights reserved.',
       about_tag:'An AI-powered research assistant for exploring structured Cluj-Napoca property data through natural language.',
@@ -776,10 +805,17 @@
       search_ph:'Căutați după adresă, cartier, proprietar…', search_btn:'Căutare',
       lbl_hood:'Cartier', lbl_own:'Proprietar', lbl_price:'Preț',
       opt_all:'Toate', opt_any:'Orice', opt_individual:'Persoană fizică',
-      price_low:'< 500k RON', price_mid:'500k – 1M', price_high:'> 1M RON',
+      hood_all:'Toate cartierele',
+      price_budget:'< 300k RON', price_low:'300k – 600k', price_mid:'600k – 1M',
+      price_high1:'1M – 2M RON', price_high2:'> 2M RON',
       sort_phd:'Preț: Mare → Mic', sort_pal:'Preț: Mic → Mare',
       sort_sqm:'Suprafață: Mare → Mică', sort_rec:'Cele mai recente',
       res_title:'Anunțuri Imobiliare',
+      res_count_one:'Se afișează 1 proprietate', res_count_many:'Se afișează {n} proprietăți',
+      chip_q1:'Prețul median în Centru?', chip_q2:'Top proprietari SRL?',
+      chip_q3:'Prețuri în Grigorescu?', chip_q4:'Cele mai recente vânzări?',
+      brick_tip:'Întreabă-mă orice! 😊', card_ask:'Spune-mi despre', you_label:'Tu',
+      area_unit:'mp',
       brick_hi:"Salut! Sunt **Brick** 🧱 — asistentul tău imobiliar!\n\nApasă pe orice proprietate pentru detalii. Sau întreabă-mă:\n- *\"Care e prețul median în Grigorescu?\"*\n- *\"Proprietăți SRL peste 1M RON\"*\n- *\"Cine deține Bd. Eroilor 42?\"*",
       about_by:'Conceput și realizat de', about_copy:'© 2025 Sándor Attila Nagy. Toate drepturile rezervate.',
       about_tag:'Asistent de cercetare AI pentru date imobiliare structurate din Cluj-Napoca prin limbaj natural.',
@@ -792,10 +828,17 @@
       search_ph:'Keresés cím, negyed vagy tulajdonos alapján…', search_btn:'Keresés',
       lbl_hood:'Negyed', lbl_own:'Tulajdonos', lbl_price:'Ár',
       opt_all:'Összes', opt_any:'Bármely', opt_individual:'Magánszemély',
-      price_low:'< 500e RON', price_mid:'500e – 1M', price_high:'> 1M RON',
+      hood_all:'Összes negyed',
+      price_budget:'< 300e RON', price_low:'300e – 600e', price_mid:'600e – 1M',
+      price_high1:'1M – 2M RON', price_high2:'> 2M RON',
       sort_phd:'Ár: Magas → Alacsony', sort_pal:'Ár: Alacsony → Magas',
       sort_sqm:'Terület: Nagy → Kis', sort_rec:'Legújabb',
       res_title:'Ingatlanhirdetések',
+      res_count_one:'1 ingatlan megjelenítve', res_count_many:'{n} ingatlan megjelenítve',
+      chip_q1:'Medián ár Centrumban?', chip_q2:'Top KFT tulajdonosok?',
+      chip_q3:'Árak Grigorescu-ban?', chip_q4:'Legutóbbi eladások?',
+      brick_tip:'Kérdezz bármit! 😊', card_ask:'Mesélj erről', you_label:'Te',
+      area_unit:'m²',
       brick_hi:"Szia! **Brick** vagyok 🧱 — kolozsvári ingatlan asszisztensed!\n\nKattints bármelyik ingatlanra a részletekért. Vagy kérdezz:\n- *\"Mi a medián ár Grigorescu-ban?\"*\n- *\"KFT-tulajdonú ingatlanok 1M RON felett\"*\n- *\"Kié a Bd. Eroilor 42?\"*",
       about_by:'Tervezte és fejlesztette', about_copy:'© 2025 Sándor Attila Nagy. Minden jog fenntartva.',
       about_tag:'Mesterséges intelligencia alapú kutatási asszisztens Kolozsvár ingatlanadatainak természetes nyelvű lekérdezéséhez.',
@@ -834,6 +877,19 @@
       if (T[lang][key] !== undefined) el.textContent = T[lang][key];
     });
 
+    // Update Brick chat chips
+    document.querySelectorAll('[data-chip]').forEach(el => {
+      const key = el.dataset.chip;
+      if (T[lang][key]) el.textContent = T[lang][key];
+    });
+
+    // Update brick tooltip
+    const tip = document.getElementById('brick-tip');
+    if (tip) tip.textContent = T[lang].brick_tip;
+
+    // Update html lang attribute
+    document.documentElement.lang = lang;
+
     // Re-render cards for empty state text update
     renderCards();
   }
@@ -856,14 +912,24 @@
 
   /* ── Mock data ──────────────────────────────── */
   const PROPERTIES = [
-    { id:1, addr:'Str. Horea 15',           hood:'Centru',     price:875000,  sqm:65,  owner:'SRL',        date:'2024-03', type:'apartment' },
-    { id:2, addr:'Bd. Eroilor 42',          hood:'Centru',     price:1580000, sqm:110, owner:'Individual', date:'2024-01', type:'villa' },
-    { id:3, addr:'Str. Fabricii 8',         hood:'Grigorescu', price:720000,  sqm:72,  owner:'SRL',        date:'2023-11', type:'house' },
-    { id:4, addr:'Calea Mănăștur 55',       hood:'Mănăștur',   price:475000,  sqm:58,  owner:'Individual', date:'2023-09', type:'house' },
-    { id:5, addr:'Str. Donath 12',          hood:'Grigorescu', price:1050000, sqm:85,  owner:'Individual', date:'2024-02', type:'townhouse' },
-    { id:6, addr:'Bd. 21 Decembrie 1989 78',hood:'Centru',     price:2180000, sqm:130, owner:'SRL',        date:'2024-04', type:'modern' },
-    { id:7, addr:'Str. Piezișă 3',          hood:'Zorilor',    price:650000,  sqm:55,  owner:'Individual', date:'2023-12', type:'villa' },
-    { id:8, addr:'Calea Turzii 88',         hood:'Europa',     price:890000,  sqm:70,  owner:'SRL',        date:'2024-01', type:'apartment' },
+    { id:1,  addr:'Bd. Eroilor 42',                  hood:'Centru',        price:1580000, sqm:110, owner:'Individual', date:'2024-01', type:'villa' },
+    { id:2,  addr:'Bd. 21 Decembrie 1989 78',        hood:'Centru',        price:2180000, sqm:130, owner:'SRL',        date:'2024-04', type:'modern' },
+    { id:3,  addr:'Str. Avram Iancu 22',             hood:'Centru',        price:945000,  sqm:75,  owner:'Individual', date:'2024-03', type:'apartment' },
+    { id:4,  addr:'Str. Horea 15',                   hood:'Grigorescu',    price:875000,  sqm:65,  owner:'SRL',        date:'2024-03', type:'apartment' },
+    { id:5,  addr:'Str. Cloșca 9',                   hood:'Grigorescu',    price:620000,  sqm:58,  owner:'Individual', date:'2023-11', type:'house' },
+    { id:6,  addr:'Str. Fabricii 8',                 hood:'Mărăști',       price:720000,  sqm:72,  owner:'SRL',        date:'2023-11', type:'house' },
+    { id:7,  addr:'Str. Donath 12',                  hood:'Mărăști',       price:1050000, sqm:85,  owner:'Individual', date:'2024-02', type:'townhouse' },
+    { id:8,  addr:'Calea Mănăștur 55',               hood:'Mănăștur',      price:475000,  sqm:58,  owner:'Individual', date:'2023-09', type:'house' },
+    { id:9,  addr:'Calea Baciului 14',               hood:'Mănăștur',      price:380000,  sqm:48,  owner:'SRL',        date:'2023-07', type:'apartment' },
+    { id:10, addr:'Str. Observatorului 5',           hood:'Zorilor',       price:690000,  sqm:62,  owner:'Individual', date:'2023-12', type:'villa' },
+    { id:11, addr:'Calea Turzii 30',                 hood:'Zorilor',       price:540000,  sqm:55,  owner:'SRL',        date:'2024-01', type:'apartment' },
+    { id:12, addr:'Str. Piezișă 3',                  hood:'Europa',        price:650000,  sqm:55,  owner:'Individual', date:'2023-12', type:'villa' },
+    { id:13, addr:'Bd. Gheorghe Marinescu 45',       hood:'Gheorgheni',    price:890000,  sqm:70,  owner:'SRL',        date:'2024-01', type:'apartment' },
+    { id:14, addr:'Bd. Nicolae Titulescu 88',        hood:'Bună Ziua',     price:760000,  sqm:68,  owner:'Individual', date:'2024-02', type:'modern' },
+    { id:15, addr:'Str. Alexandru Vaida Voevod 71',  hood:'Iris',          price:490000,  sqm:52,  owner:'Individual', date:'2023-10', type:'house' },
+    { id:16, addr:'Calea Florești 120',              hood:'Florești',      price:420000,  sqm:50,  owner:'SRL',        date:'2023-08', type:'house' },
+    { id:17, addr:'Bd. Muncii 52',                   hood:'Someșeni',      price:350000,  sqm:45,  owner:'Individual', date:'2023-06', type:'apartment' },
+    { id:18, addr:'Str. Pavlov 44',                  hood:'Dâmbul Rotund', price:310000,  sqm:42,  owner:'Individual', date:'2023-05', type:'apartment' },
   ];
 
   const filters = { hood:'All', own:'All', price:'Any' };
@@ -881,17 +947,19 @@
   }
 
   function applyFilters() {
-    const q = document.getElementById('main-search').value.toLowerCase().trim();
-    const activeHood  = document.querySelector('.chip[data-group="hood"].active')?.dataset.val  ?? 'All';
-    const activeOwn   = document.querySelector('.chip[data-group="own"].active')?.dataset.val   ?? 'All';
-    const activePrice = document.querySelector('.chip[data-group="price"].active')?.dataset.val ?? 'Any';
+    const q          = document.getElementById('main-search').value.toLowerCase().trim();
+    const activeHood = document.getElementById('filter-hood').value;
+    const activeOwn  = document.querySelector('.chip[data-group="own"].active')?.dataset.val   ?? 'All';
+    const activePrice= document.querySelector('.chip[data-group="price"].active')?.dataset.val ?? 'Any';
 
     visible = PROPERTIES.filter(p => {
-      if (activeHood  !== 'All' && p.hood  !== activeHood)  return false;
-      if (activeOwn   !== 'All' && p.owner !== activeOwn)   return false;
-      if (activePrice === 'low'  && p.price >= 500000)       return false;
-      if (activePrice === 'mid'  && (p.price < 500000 || p.price > 1000000)) return false;
-      if (activePrice === 'high' && p.price <= 1000000)      return false;
+      if (activeHood  !== 'All' && p.hood  !== activeHood)                          return false;
+      if (activeOwn   !== 'All' && p.owner !== activeOwn)                           return false;
+      if (activePrice === 'budget' && p.price >= 300000)                            return false;
+      if (activePrice === 'low'  && (p.price < 300000  || p.price > 600000))        return false;
+      if (activePrice === 'mid'  && (p.price < 600000  || p.price > 1000000))       return false;
+      if (activePrice === 'high1'&& (p.price < 1000000 || p.price > 2000000))       return false;
+      if (activePrice === 'high2'&& p.price <= 2000000)                             return false;
       if (q && !p.addr.toLowerCase().includes(q) &&
                !p.hood.toLowerCase().includes(q) &&
                !p.owner.toLowerCase().includes(q)) return false;
@@ -912,8 +980,9 @@
     if (sort === 'sqm-desc')   list.sort((a,b) => b.sqm - a.sqm);
     if (sort === 'recent')     list.sort((a,b) => b.date.localeCompare(a.date));
 
-    document.getElementById('results-count').textContent =
-      `Showing ${list.length} propert${list.length === 1 ? 'y' : 'ies'}`;
+    const n = list.length;
+    const tpl = n === 1 ? T[lang].res_count_one : T[lang].res_count_many;
+    document.getElementById('results-count').textContent = tpl.replace('{n}', n);
 
     const grid = document.getElementById('prop-grid');
     const lang = currentLang;
@@ -951,7 +1020,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
               </svg>
-              ${p.sqm} mp
+              ${p.sqm} ${T[lang].area_unit}
             </div>
             <div class="prop-stat">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -976,7 +1045,7 @@
     if (!chatOpen) toggleChat();
     setTimeout(() => {
       const inp = document.getElementById('cm-input');
-      inp.value = `Tell me more about ${addr} in ${hood}`;
+      inp.value = `${T[currentLang].card_ask} ${addr} (${hood})`;
       inp.focus();
     }, 320);
   }
@@ -1008,7 +1077,7 @@
     row.className = `cm-row ${role}`;
     const av = document.createElement('div');
     av.className = `cm-av ${role}`;
-    av.textContent = role === 'assistant' ? '🧱' : 'You';
+    av.textContent = role === 'assistant' ? '🧱' : (T[currentLang]?.you_label || 'You');
     row.appendChild(av);
     return row;
   }
