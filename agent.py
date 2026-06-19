@@ -37,13 +37,32 @@ STRICT RULES — never break these:
 """.strip()
 
 
+_RO_KEYWORDS = frozenset([
+    "cartier", "proprietar", "vanzare", "cumparare", "apartament",
+    "imobil", "pretul", "cat costa", "cine detine", "arata-mi",
+    "spune-mi", "cel mai ieftin", "cele mai", "zona de",
+])
+
+_HU_KEYWORDS = frozenset([
+    "negyed", "ingatlan", "elad", "mennyibe", "tulajdonos",
+    "legolcsobb", "legdragabb", "kolozs",
+])
+
+
 def _detect_language(text: str) -> str:
-    """Detect language from character signatures: ő/ű → Hungarian, ă/ș/ț/â/î → Romanian."""
+    """Detect language: diacritics first, then keyword fallback."""
     lower = text.lower()
+    # Hungarian diacritics are unambiguous
     if any(c in lower for c in "őű"):
         return "hu"
+    # Romanian diacritics are unambiguous
     if any(c in lower for c in "ășțâî"):
         return "ro"
+    # Keyword fallback for diacritic-free typing
+    if any(kw in lower for kw in _RO_KEYWORDS):
+        return "ro"
+    if any(kw in lower for kw in _HU_KEYWORDS):
+        return "hu"
     return "en"
 
 
