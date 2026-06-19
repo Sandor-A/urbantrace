@@ -102,9 +102,12 @@ All three pages share a common design: glassmorphism sticky header with `backdro
 ### Property Search (`/`)
 
 - Hero search bar — keyword search across address, neighborhood, owner
-- Filter chips — neighborhood, ownership type (SRL / Individual), price range
-- Property cards — SVG building illustrations, price, area (mp), price/mp, owner badge
-- Sort by price, area, or date
+- **Real-data example chips** — 4 address chips picked from diverse neighborhoods, sourced live from the database, pre-fill the search bar on click
+- Filter chips — neighborhood dropdown (12 neighborhoods), ownership type (SRL / Individual / All), price range bands calibrated to actual RON distribution:
+  - `< 500k RON` · `500k – 2M` · `2M – 10M` · `10M – 30M` · `> 30M RON`
+- Property cards — SVG building illustrations, price, area (mp), price/mp, owner badge; 24 cards per page with **Load more** pagination
+- **8 sort options**: Price high→low, Price low→high, Price/m² high→low, Price/m² low→high, Area large→small, Area small→large, Most recent sale, Oldest sale — sorting applies to the full filtered dataset and shows all results at once
+- Filter bar **stays visible while scrolling** on mobile (sticky, z-index below the hamburger nav)
 - Clicking a card pre-fills the Brick assistant with a question about that property
 
 ### Market Statistics (`/stats`)
@@ -193,7 +196,9 @@ server.py — FastAPI
 
 ### Key design decisions
 
-- **Hallucination prevention** — system prompt forbids invention; all factual answers must come from a tool result; `temperature=0.1`
+- **Hallucination prevention** — system prompt forbids invention; all factual answers must come from a tool result; `temperature=0`
+- **Forced tool use** — messages containing factual keywords (price, owner, address, etc.) use `tool_choice="required"` so the LLM cannot answer without calling a tool first
+- **Address normalization** — `lookup_owner()` expands abbreviations before substring matching (`Bd.` → `Bulevardul`, `Str.` → `Strada`, `Cal.` → `Calea`, etc.) so queries like "Bd. Eroilor" correctly match database addresses
 - **Tool outputs carry caveats** — every tool returns `status` (`ok`, `empty`, `error`, `needs_clarification`), result data, and a `caveats` list
 - **Neighborhood matching** — the `neighborhood` filter matches directly against the `borough` field (after alias resolution). Real geocoded `geo_neighborhood` from Nominatim takes priority when available. ZIP-based lookup was removed because the dataset's ZIPs are randomly assigned and not neighborhood-specific
 - **Geocoding is non-blocking** — first startup triggers background geocoding; the app serves requests immediately using `borough` field matching while geocoding runs in the background

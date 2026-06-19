@@ -569,18 +569,21 @@
         align-items: stretch;
         gap: 10px;
         overflow-x: visible;
-        position: static;
+        position: sticky;
+        top: 64px;
+        z-index: 49;
       }
       .filter-label { display: flex; margin-right: 4px; }
       .chip-sep { display: none; }
       .filter-group { flex-wrap: wrap; gap: 6px; }
+      .chip { min-height: 44px; padding: 10px 14px; font-size: 13px; display: flex; align-items: center; justify-content: center; }
       .filter-select {
-        flex: 1; min-width: 0;
+        flex: 1; min-width: 0; min-height: 44px;
         appearance: auto; -webkit-appearance: auto;
         background-image: none;
         padding: 8px 14px; font-size: 14px;
       }
-      .sort-select { width: 100%; font-size: 14px; padding: 9px 14px; }
+      .sort-select { width: 100%; font-size: 14px; padding: 9px 14px; min-height: 44px; }
 
       .main { padding: 20px 14px 90px; }
       .results-header { flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -705,7 +708,7 @@
       <div class="results-title" data-i18n="res_title">Property Listings</div>
       <div class="results-count" id="results-count"></div>
     </div>
-    <select class="sort-select" onchange="renderCards()">
+    <select class="sort-select" id="sort-select">
       <option value="price-desc"  data-i18n-opt="sort_phd">Price: High → Low</option>
       <option value="price-asc"   data-i18n-opt="sort_pal">Price: Low → High</option>
       <option value="psqm-desc"   data-i18n-opt="sort_psqm_d">Price/m²: High → Low</option>
@@ -1031,7 +1034,7 @@
   let _sortedList = [];
 
   function renderCards(resetPage = true) {
-    const sort = document.querySelector('.sort-select').value;
+    const sort = (document.getElementById('sort-select') || document.querySelector('.sort-select')).value;
     const lang = currentLang;
     if (resetPage) shownCount = PAGE_SIZE;
     const list = [...visible];
@@ -1235,6 +1238,16 @@
   document.getElementById('cm-input').addEventListener('input', function() {
     this.style.height = 'auto';
     this.style.height = Math.min(this.scrollHeight, 90) + 'px';
+  });
+
+  document.getElementById('sort-select').addEventListener('change', () => {
+    shownCount = visible.length || PAGE_SIZE; // show all when re-sorting
+    renderCards(false);
+    const grid = document.getElementById('prop-grid');
+    if (grid) {
+      const top = grid.getBoundingClientRect().top + window.scrollY - 140;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }
   });
 
   /* ── About modal ───────────────────────────── */
