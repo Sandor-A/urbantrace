@@ -680,12 +680,12 @@
   <div class="chip-sep"></div>
   <div class="filter-group">
     <span class="filter-label" data-i18n="lbl_price">Price</span>
-    <div class="chip active" data-group="price" data-val="Any"    onclick="pickChip(this)" data-i18n="opt_any">Any</div>
-    <div class="chip"        data-group="price" data-val="budget" onclick="pickChip(this)" data-i18n="price_budget">&lt; 300k</div>
-    <div class="chip"        data-group="price" data-val="low"    onclick="pickChip(this)" data-i18n="price_low">300k – 600k</div>
-    <div class="chip"        data-group="price" data-val="mid"    onclick="pickChip(this)" data-i18n="price_mid">600k – 1M</div>
-    <div class="chip"        data-group="price" data-val="high1"  onclick="pickChip(this)" data-i18n="price_high1">1M – 2M</div>
-    <div class="chip"        data-group="price" data-val="high2"  onclick="pickChip(this)" data-i18n="price_high2">&gt; 2M RON</div>
+    <div class="chip active" data-group="price" data-val="Any"   onclick="pickChip(this)" data-i18n="opt_any">Any</div>
+    <div class="chip"        data-group="price" data-val="p1"    onclick="pickChip(this)" data-i18n="price_p1">&lt; 500k</div>
+    <div class="chip"        data-group="price" data-val="p2"    onclick="pickChip(this)" data-i18n="price_p2">500k – 2M</div>
+    <div class="chip"        data-group="price" data-val="p3"    onclick="pickChip(this)" data-i18n="price_p3">2M – 10M</div>
+    <div class="chip"        data-group="price" data-val="p4"    onclick="pickChip(this)" data-i18n="price_p4">10M – 30M</div>
+    <div class="chip"        data-group="price" data-val="p5"    onclick="pickChip(this)" data-i18n="price_p5">&gt; 30M RON</div>
   </div>
 </div>
 
@@ -697,10 +697,14 @@
       <div class="results-count" id="results-count"></div>
     </div>
     <select class="sort-select" onchange="renderCards()">
-      <option value="price-desc" data-i18n-opt="sort_phd">Price: High → Low</option>
-      <option value="price-asc"  data-i18n-opt="sort_pal">Price: Low → High</option>
-      <option value="sqm-desc"   data-i18n-opt="sort_sqm">Area: Large → Small</option>
-      <option value="recent"     data-i18n-opt="sort_rec">Most Recent</option>
+      <option value="price-desc"  data-i18n-opt="sort_phd">Price: High → Low</option>
+      <option value="price-asc"   data-i18n-opt="sort_pal">Price: Low → High</option>
+      <option value="psqm-desc"   data-i18n-opt="sort_psqm_d">Price/m²: High → Low</option>
+      <option value="psqm-asc"    data-i18n-opt="sort_psqm_a">Price/m²: Low → High</option>
+      <option value="sqm-desc"    data-i18n-opt="sort_sqm_d">Area: Large → Small</option>
+      <option value="sqm-asc"     data-i18n-opt="sort_sqm_a">Area: Small → Large</option>
+      <option value="recent"      data-i18n-opt="sort_rec">Most Recent</option>
+      <option value="oldest"      data-i18n-opt="sort_old">Oldest Sale</option>
     </select>
   </div>
   <div class="prop-grid" id="prop-grid"></div>
@@ -823,10 +827,12 @@
       lbl_hood:'Neighborhood', lbl_own:'Ownership', lbl_price:'Price',
       opt_all:'All', opt_any:'Any', opt_individual:'Individual',
       hood_all:'All Neighborhoods',
-      price_budget:'< 300k RON', price_low:'300k – 600k', price_mid:'600k – 1M',
-      price_high1:'1M – 2M RON', price_high2:'> 2M RON',
+      price_p1:'< 500k RON', price_p2:'500k – 2M', price_p3:'2M – 10M',
+      price_p4:'10M – 30M', price_p5:'> 30M RON',
       sort_phd:'Price: High → Low', sort_pal:'Price: Low → High',
-      sort_sqm:'Area: Large → Small', sort_rec:'Most Recent',
+      sort_psqm_d:'Price/m²: High → Low', sort_psqm_a:'Price/m²: Low → High',
+      sort_sqm_d:'Area: Large → Small', sort_sqm_a:'Area: Small → Large',
+      sort_rec:'Most Recent', sort_old:'Oldest Sale',
       res_title:'Property Listings',
       res_count_one:'Showing 1 property', res_count_many:'Showing {n} properties',
       chip_q1:'Median price in Centru?', chip_q2:'Top SRL owners?',
@@ -847,10 +853,12 @@
       lbl_hood:'Cartier', lbl_own:'Proprietar', lbl_price:'Preț',
       opt_all:'Toate', opt_any:'Orice', opt_individual:'Persoană fizică',
       hood_all:'Toate cartierele',
-      price_budget:'< 300k RON', price_low:'300k – 600k', price_mid:'600k – 1M',
-      price_high1:'1M – 2M RON', price_high2:'> 2M RON',
+      price_p1:'< 500k RON', price_p2:'500k – 2M', price_p3:'2M – 10M',
+      price_p4:'10M – 30M', price_p5:'> 30M RON',
       sort_phd:'Preț: Mare → Mic', sort_pal:'Preț: Mic → Mare',
-      sort_sqm:'Suprafață: Mare → Mică', sort_rec:'Cele mai recente',
+      sort_psqm_d:'Preț/m²: Mare → Mic', sort_psqm_a:'Preț/m²: Mic → Mare',
+      sort_sqm_d:'Suprafață: Mare → Mică', sort_sqm_a:'Suprafață: Mică → Mare',
+      sort_rec:'Cele mai recente', sort_old:'Cele mai vechi',
       res_title:'Anunțuri Imobiliare',
       res_count_one:'Se afișează 1 proprietate', res_count_many:'Se afișează {n} proprietăți',
       chip_q1:'Prețul median în Centru?', chip_q2:'Top proprietari SRL?',
@@ -871,10 +879,12 @@
       lbl_hood:'Negyed', lbl_own:'Tulajdonos', lbl_price:'Ár',
       opt_all:'Összes', opt_any:'Bármely', opt_individual:'Magánszemély',
       hood_all:'Összes negyed',
-      price_budget:'< 300e RON', price_low:'300e – 600e', price_mid:'600e – 1M',
-      price_high1:'1M – 2M RON', price_high2:'> 2M RON',
+      price_p1:'< 500e RON', price_p2:'500e – 2M', price_p3:'2M – 10M',
+      price_p4:'10M – 30M', price_p5:'> 30M RON',
       sort_phd:'Ár: Magas → Alacsony', sort_pal:'Ár: Alacsony → Magas',
-      sort_sqm:'Terület: Nagy → Kis', sort_rec:'Legújabb',
+      sort_psqm_d:'Ár/m²: Magas → Alacsony', sort_psqm_a:'Ár/m²: Alacsony → Magas',
+      sort_sqm_d:'Terület: Nagy → Kicsi', sort_sqm_a:'Terület: Kicsi → Nagy',
+      sort_rec:'Legújabb', sort_old:'Legrégebbi',
       res_title:'Ingatlanhirdetések',
       res_count_one:'1 ingatlan megjelenítve', res_count_many:'{n} ingatlan megjelenítve',
       chip_q1:'Medián ár Centrumban?', chip_q2:'Top KFT tulajdonosok?',
@@ -969,20 +979,26 @@
     applyFilters();
   }
 
+  // Price band boundaries matching real data distribution
+  const PRICE_BANDS = {
+    p1: [0,        500000],
+    p2: [500000,  2000000],
+    p3: [2000000, 10000000],
+    p4: [10000000,30000000],
+    p5: [30000000, Infinity],
+  };
+
   function applyFilters() {
     const q          = document.getElementById('main-search').value.toLowerCase().trim();
     const activeHood = document.getElementById('filter-hood').value;
     const activeOwn  = document.querySelector('.chip[data-group="own"].active')?.dataset.val   ?? 'All';
     const activePrice= document.querySelector('.chip[data-group="price"].active')?.dataset.val ?? 'Any';
+    const band       = PRICE_BANDS[activePrice];
 
     visible = PROPERTIES.filter(p => {
-      if (activeHood  !== 'All' && p.hood  !== activeHood)                          return false;
-      if (activeOwn   !== 'All' && p.owner !== activeOwn)                           return false;
-      if (activePrice === 'budget' && p.price >= 300000)                            return false;
-      if (activePrice === 'low'  && (p.price < 300000  || p.price > 600000))        return false;
-      if (activePrice === 'mid'  && (p.price < 600000  || p.price > 1000000))       return false;
-      if (activePrice === 'high1'&& (p.price < 1000000 || p.price > 2000000))       return false;
-      if (activePrice === 'high2'&& p.price <= 2000000)                             return false;
+      if (activeHood !== 'All' && p.hood  !== activeHood) return false;
+      if (activeOwn  !== 'All' && p.owner !== activeOwn)  return false;
+      if (band && (p.price < band[0] || p.price >= band[1])) return false;
       if (q && !p.addr.toLowerCase().includes(q) &&
                !p.hood.toLowerCase().includes(q) &&
                !p.owner.toLowerCase().includes(q)) return false;
@@ -999,10 +1015,17 @@
     const sort = document.querySelector('.sort-select').value;
     const lang = currentLang;
     const list = [...visible];
-    if (sort === 'price-desc') list.sort((a,b) => b.price - a.price);
-    if (sort === 'price-asc')  list.sort((a,b) => a.price - b.price);
-    if (sort === 'sqm-desc')   list.sort((a,b) => b.sqm - a.sqm);
-    if (sort === 'recent')     list.sort((a,b) => b.date.localeCompare(a.date));
+    const ppm  = p => p.sqm > 0 ? p.price / p.sqm : 0;
+    switch (sort) {
+      case 'price-desc':  list.sort((a,b) => b.price - a.price); break;
+      case 'price-asc':   list.sort((a,b) => a.price - b.price); break;
+      case 'psqm-desc':   list.sort((a,b) => ppm(b) - ppm(a)); break;
+      case 'psqm-asc':    list.sort((a,b) => ppm(a) - ppm(b)); break;
+      case 'sqm-desc':    list.sort((a,b) => b.sqm - a.sqm); break;
+      case 'sqm-asc':     list.sort((a,b) => a.sqm - b.sqm); break;
+      case 'recent':      list.sort((a,b) => b.date.localeCompare(a.date)); break;
+      case 'oldest':      list.sort((a,b) => a.date.localeCompare(b.date)); break;
+    }
 
     const n = list.length;
     const tpl = n === 1 ? T[lang].res_count_one : T[lang].res_count_many;
