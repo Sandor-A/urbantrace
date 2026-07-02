@@ -17,6 +17,35 @@ from agent import PropertyAssistant
 
 load_dotenv()
 
+# Approximate centroids for Cluj-Napoca neighborhoods, used as a fallback
+# map location when a property hasn't been geocoded yet (real geocoding via
+# geocoder.py runs in the background and takes precedence once available).
+_BOROUGH_CENTROIDS: dict[str, tuple[float, float]] = {
+    "Centru":          (46.7712, 23.5905),
+    "Grigorescu":      (46.7810, 23.5620),
+    "Mărăști":         (46.7870, 23.6190),
+    "Mănăștur":        (46.7660, 23.5560),
+    "Zorilor":         (46.7480, 23.5820),
+    "Europa":          (46.7580, 23.5480),
+    "Gheorgheni":      (46.7550, 23.6200),
+    "Bună Ziua":       (46.7450, 23.6150),
+    "Iris":            (46.7944, 23.6061),
+    "Florești":        (46.7420, 23.4900),
+    "Someșeni":        (46.7830, 23.6650),
+    "Dâmbul Rotund":   (46.7950, 23.6350),
+}
+_CLUJ_CENTER = (46.7704, 23.5914)
+
+
+def _fallback_latlng(propkey: int, borough: str) -> tuple[float, float]:
+    """Deterministic jittered point near a borough's centroid, keyed by propkey
+    so the same property always lands on the same pin."""
+    base_lat, base_lng = _BOROUGH_CENTROIDS.get(borough, _CLUJ_CENTER)
+    # Small deterministic offset (~ +/-300m) so pins spread out instead of stacking.
+    jitter_lat = ((propkey * 2654435761) % 1000 / 1000 - 0.5) * 0.006
+    jitter_lng = ((propkey * 40503) % 1000 / 1000 - 0.5) * 0.006
+    return round(base_lat + jitter_lat, 6), round(base_lng + jitter_lng, 6)
+
 _data_store: PropertyDataStore | None = None
 _assistant: PropertyAssistant | None = None
 _lock = threading.Lock()
@@ -103,16 +132,22 @@ def properties_sample():
         pc = str(prop.get("property_class") or "").strip().lower()
         pc_key = pc[0] if pc else ""
         sale_date = best.get("sale_date")
+        borough = prop.get("borough", "")
+        lat, lng = prop.get("lat"), prop.get("lng")
+        if lat is None or lng is None:
+            lat, lng = _fallback_latlng(prop["propkey"], borough)
         result.append({
             "propkey":  prop["propkey"],
             "addr":     prop.get("address", ""),
-            "hood":     prop.get("borough", ""),
+            "hood":     borough,
             "price":    int(best["sale_price"]),
             "sqm":      int(sf),
             "owner":    "SRL" if owner.get("is_srl") else "Individual",
             "date":     sale_date.strftime("%Y-%m") if sale_date else "",
             "type":     _PC_TYPE.get(pc_key, "apartment"),
             "pc":       str(prop.get("property_class") or ""),
+            "lat":      lat,
+            "lng":      lng,
         })
 
     result.sort(key=lambda x: -x["price"])

@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/marked@4/marked.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -131,13 +133,21 @@
 
     /* ── Hero ───────────────────────────────────── */
     .hero {
-      background: linear-gradient(160deg, var(--navy) 0%, var(--blue) 100%);
+      background:
+        linear-gradient(160deg, rgba(12,35,64,.88) 0%, rgba(26,60,94,.75) 55%, rgba(12,35,64,.85) 100%),
+        url('img/hero-cluj.jpg') center 40% / cover no-repeat;
       color: #fff;
       padding: 64px 40px 56px;
       text-align: center;
       position: relative;
       overflow: hidden;
     }
+    .hero-credit {
+      position: absolute; bottom: 8px; right: 14px; z-index: 1;
+      font-size: 10.5px; color: rgba(255,255,255,.4);
+      text-decoration: none;
+    }
+    .hero-credit:hover { color: rgba(255,255,255,.7); }
     .hero-mesh {
       position: absolute; inset: 0; pointer-events: none;
     }
@@ -262,6 +272,20 @@
     }
     .results-title { font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
     .results-count { font-size: 13px; color: var(--g400); margin-top: 3px; }
+    .results-actions { display: flex; align-items: center; gap: 10px; }
+    .view-toggle {
+      display: flex; border: 1.5px solid var(--g200); border-radius: 10px;
+      overflow: hidden; flex-shrink: 0;
+    }
+    .view-toggle button {
+      border: none; background: #fff; color: var(--g600);
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      padding: 8px 16px; cursor: pointer; transition: background .15s, color .15s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .view-toggle button + button { border-left: 1.5px solid var(--g200); }
+    .view-toggle button.active { background: var(--accent); color: #fff; }
+    .view-toggle button:not(.active):hover { background: var(--g100); }
     .sort-select {
       border: 1.5px solid var(--g200); border-radius: 10px;
       padding: 8px 32px 8px 14px; font-size: 13px; font-family: inherit;
@@ -270,6 +294,41 @@
       appearance: none; -webkit-appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-position: right 11px center;
+    }
+
+    /* ── Map view ───────────────────────────────── */
+    .map-view {
+      display: flex; gap: 0; height: 640px;
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,.06), 0 4px 20px rgba(0,0,0,.04);
+    }
+    .map-sidebar {
+      width: 64px; flex-shrink: 0; background: var(--navy);
+      display: flex; flex-direction: column; align-items: center;
+      padding: 18px 0; gap: 6px;
+    }
+    .map-sidebar a {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.55); text-decoration: none; font-size: 19px;
+      transition: background .15s, color .15s;
+    }
+    .map-sidebar a:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .map-sidebar a.active { background: var(--accent); color: #fff; }
+    #leaflet-map { flex: 1; min-width: 0; background: var(--g100); }
+    .map-popup { font-family: 'Inter', sans-serif; min-width: 180px; }
+    .map-popup .mp-price { font-size: 15px; font-weight: 800; color: var(--g900); margin-bottom: 2px; }
+    .map-popup .mp-addr  { font-size: 12.5px; color: var(--g700); margin-bottom: 2px; }
+    .map-popup .mp-meta  { font-size: 11.5px; color: var(--g400); margin-bottom: 8px; }
+    .map-popup button {
+      width: 100%; background: var(--accent); color: #fff; border: none;
+      border-radius: 8px; padding: 7px 0; font-size: 12.5px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+    }
+    .map-popup button:hover { background: #1d4ed8; }
+    @media (max-width: 768px) {
+      .view-toggle { display: none; }
+      .map-view { display: none !important; }
     }
 
     /* ── Property grid ──────────────────────────── */
@@ -686,6 +745,7 @@
       <div id="ex-chips"></div>
     </div>
   </div>
+  <a class="hero-credit" href="https://commons.wikimedia.org/wiki/File:Romania-2387_-_Cluj-Napoca_Sunset_(7794319726).jpg" target="_blank" rel="noopener">Photo: Dennis G. Jarvis, CC BY-SA 2.0</a>
 </section>
 
 <!-- Filters -->
@@ -734,18 +794,33 @@
       <div class="results-title" data-i18n="res_title">Property Listings</div>
       <div class="results-count" id="results-count"></div>
     </div>
-    <select class="sort-select" id="sort-select">
-      <option value="price-desc"  data-i18n-opt="sort_phd">Price: High → Low</option>
-      <option value="price-asc"   data-i18n-opt="sort_pal">Price: Low → High</option>
-      <option value="psqm-desc"   data-i18n-opt="sort_psqm_d">Price/m²: High → Low</option>
-      <option value="psqm-asc"    data-i18n-opt="sort_psqm_a">Price/m²: Low → High</option>
-      <option value="sqm-desc"    data-i18n-opt="sort_sqm_d">Area: Large → Small</option>
-      <option value="sqm-asc"     data-i18n-opt="sort_sqm_a">Area: Small → Large</option>
-      <option value="recent"      data-i18n-opt="sort_rec">Most Recent</option>
-      <option value="oldest"      data-i18n-opt="sort_old">Oldest Sale</option>
-    </select>
+    <div class="results-actions">
+      <div class="view-toggle">
+        <button id="view-btn-grid" class="active" onclick="setView('grid')">▦ Grid</button>
+        <button id="view-btn-map" onclick="setView('map')">🗺 Map</button>
+      </div>
+      <select class="sort-select" id="sort-select">
+        <option value="price-desc"  data-i18n-opt="sort_phd">Price: High → Low</option>
+        <option value="price-asc"   data-i18n-opt="sort_pal">Price: Low → High</option>
+        <option value="psqm-desc"   data-i18n-opt="sort_psqm_d">Price/m²: High → Low</option>
+        <option value="psqm-asc"    data-i18n-opt="sort_psqm_a">Price/m²: Low → High</option>
+        <option value="sqm-desc"    data-i18n-opt="sort_sqm_d">Area: Large → Small</option>
+        <option value="sqm-asc"     data-i18n-opt="sort_sqm_a">Area: Small → Large</option>
+        <option value="recent"      data-i18n-opt="sort_rec">Most Recent</option>
+        <option value="oldest"      data-i18n-opt="sort_old">Oldest Sale</option>
+      </select>
+    </div>
   </div>
   <div class="prop-grid" id="prop-grid"></div>
+  <div class="map-view" id="map-view" style="display:none">
+    <div class="map-sidebar">
+      <a href="/" class="active" title="Home">🏠</a>
+      <a href="/" title="Map search">📍</a>
+      <a href="/stats" title="Market Statistics">📊</a>
+      <a href="/ownership" title="Ownership Registry">📋</a>
+    </div>
+    <div id="leaflet-map"></div>
+  </div>
   <div id="load-more-wrap" style="display:none; text-align:center; margin-top:28px">
     <button id="load-more-btn" class="load-more-btn" onclick="loadMore()"></button>
   </div>
@@ -1096,6 +1171,8 @@
     if (lmBtn) lmBtn.textContent = T[lang].load_more || 'Load more';
     if (lmWrap) lmWrap.style.display = shown < n ? 'block' : 'none';
 
+    renderMapMarkers();
+
     const grid = document.getElementById('prop-grid');
 
     if (!list.length) {
@@ -1148,6 +1225,59 @@
   function loadMore() {
     shownCount += PAGE_SIZE;
     renderCards(false);
+  }
+
+  /* ── Map view ───────────────────────────────── */
+  let currentView = 'grid';
+  let leafletMap = null;
+  let markerLayer = null;
+
+  function setView(view) {
+    if (view === 'map' && window.innerWidth <= 768) return; // map view disabled on mobile
+    currentView = view;
+    document.getElementById('view-btn-grid').classList.toggle('active', view === 'grid');
+    document.getElementById('view-btn-map').classList.toggle('active', view === 'map');
+    document.getElementById('prop-grid').style.display = view === 'grid' ? 'grid' : 'none';
+    document.getElementById('map-view').style.display = view === 'map' ? 'flex' : 'none';
+    if (view === 'map') {
+      initMap();
+      renderMapMarkers();
+      setTimeout(() => leafletMap.invalidateSize(), 50);
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    if (currentView === 'map' && window.innerWidth <= 768) setView('grid');
+  });
+
+  function initMap() {
+    if (leafletMap) return;
+    leafletMap = L.map('leaflet-map').setView([46.7704, 23.5914], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
+    }).addTo(leafletMap);
+    markerLayer = L.layerGroup().addTo(leafletMap);
+  }
+
+  function renderMapMarkers() {
+    if (!leafletMap || !markerLayer) return;
+    markerLayer.clearLayers();
+    const bounds = [];
+    _sortedList.forEach(p => {
+      if (p.lat == null || p.lng == null) return;
+      const marker = L.marker([p.lat, p.lng]).addTo(markerLayer);
+      marker.bindPopup(`
+        <div class="map-popup">
+          <div class="mp-price">${fmt(p.price)} RON</div>
+          <div class="mp-addr">${p.addr}</div>
+          <div class="mp-meta">${p.hood} · ${p.sqm} ${T[currentLang].area_unit} · ${psqm(p.price, p.sqm)}</div>
+          <button onclick='cardClick(${JSON.stringify(p.addr)}, ${JSON.stringify(p.hood)})'>Ask Brick 🧱</button>
+        </div>
+      `);
+      bounds.push([p.lat, p.lng]);
+    });
+    if (bounds.length) leafletMap.fitBounds(bounds, { padding: [30, 30], maxZoom: 15 });
   }
 
   function brickHop() {
