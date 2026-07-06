@@ -10,6 +10,7 @@ from statistics import median as _median
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from data_loader import load_data, PropertyDataStore
@@ -65,6 +66,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="UrbanTrace AI", lifespan=lifespan)
+app.mount("/img", StaticFiles(directory=_static / "img"), name="img")
 
 
 class ChatRequest(BaseModel):

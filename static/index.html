@@ -56,11 +56,11 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 17px;
     }
-    nav { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
-    nav a { color: rgba(255,255,255,.7); text-decoration: none; transition: color .15s; }
-    nav a:hover { color: #fff; }
-    nav a.active { color: #fff; }
-    nav a.nav-about { cursor: pointer; }
+    header nav { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
+    header nav a { color: rgba(255,255,255,.7); text-decoration: none; transition: color .15s; }
+    header nav a:hover { color: #fff; }
+    header nav a.active { color: #fff; }
+    header nav a.nav-about { cursor: pointer; }
 
     /* ── Language switcher ───────────────────────── */
     .lang-switcher { display: flex; align-items: center; gap: 4px; margin-left: 20px; }
@@ -135,7 +135,7 @@
     .hero {
       background:
         linear-gradient(160deg, rgba(12,35,64,.88) 0%, rgba(26,60,94,.75) 55%, rgba(12,35,64,.85) 100%),
-        url('img/hero-cluj.jpg') center 40% / cover no-repeat;
+        url('/img/hero-cluj.jpg') center 40% / cover no-repeat;
       color: #fff;
       padding: 64px 40px 56px;
       text-align: center;
@@ -327,8 +327,10 @@
     }
     .map-popup button:hover { background: #1d4ed8; }
     @media (max-width: 768px) {
-      .view-toggle { display: none; }
-      .map-view { display: none !important; }
+      .map-view { height: 480px; border-radius: 14px; }
+      .map-sidebar { width: 48px; padding: 12px 0; gap: 4px; }
+      .map-sidebar a { width: 34px; height: 34px; font-size: 15px; border-radius: 9px; }
+      .view-toggle button { padding: 8px 12px; font-size: 12px; }
     }
 
     /* ── Property grid ──────────────────────────── */
@@ -359,6 +361,7 @@
       font-size: 12.5px; color: var(--g400); margin-bottom: 14px;
       display: flex; align-items: center; gap: 4px;
     }
+    .prop-hood svg { width: 13px; height: 13px; flex-shrink: 0; }
     .prop-stats { display: flex; gap: 10px; }
     .prop-stat  {
       display: flex; align-items: center; gap: 5px;
@@ -637,7 +640,7 @@
         background: rgba(10,26,56,0.98);
       }
       body { padding-top: 64px; }
-      nav, .lang-switcher { display: none !important; }
+      header nav, .lang-switcher { display: none !important; }
       .hamburger { display: flex; }
 
       .hero { padding: 36px 20px 32px; }
@@ -697,6 +700,7 @@
   </a>
   <nav>
     <a href="/" class="active" data-i18n="nav_search">Search</a>
+    <a href="#" onclick="goToMapView();return false;" data-i18n="nav_map">Map</a>
     <a href="/stats" data-i18n="nav_stats">Market Stats</a>
     <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
     <a href="#" class="nav-about" onclick="openAbout();return false;" data-i18n="nav_about">About</a>
@@ -713,6 +717,7 @@
 
 <nav class="mobile-nav" id="mobile-nav">
   <a href="/" class="active" data-i18n="nav_search">Search</a>
+  <a href="#" onclick="goToMapView();closeMobileNav();return false;" data-i18n="nav_map">Map</a>
   <a href="/stats" data-i18n="nav_stats">Market Stats</a>
   <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
   <a href="#" onclick="openAbout();closeMobileNav();return false;" data-i18n="nav_about">About</a>
@@ -814,8 +819,8 @@
   <div class="prop-grid" id="prop-grid"></div>
   <div class="map-view" id="map-view" style="display:none">
     <div class="map-sidebar">
-      <a href="/" class="active" title="Home">🏠</a>
-      <a href="/" title="Map search">📍</a>
+      <a href="#" onclick="setView('grid');return false;" title="Home / Grid">🏠</a>
+      <a href="#" class="active" onclick="return false;" title="Map search">📍</a>
       <a href="/stats" title="Market Statistics">📊</a>
       <a href="/ownership" title="Ownership Registry">📋</a>
     </div>
@@ -847,6 +852,9 @@
       <span class="modal-tag">Chart.js</span>
       <span class="modal-tag">Nominatim / OSM</span>
       <span class="modal-tag">Cluj-Napoca data</span>
+    </div>
+    <div class="modal-copy" style="margin-top:14px">
+      Building photos: Jerzy Kociatkiewicz, Neoclassicism Enthusiast (CC BY-SA) via Wikimedia Commons.
     </div>
   </div>
 </div>
@@ -937,7 +945,7 @@
   /* ── Translations ───────────────────────────── */
   const T = {
     en: {
-      nav_search:'Search', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About', nav_language:'Language',
+      nav_search:'Search', nav_map:'Map', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About', nav_language:'Language',
       hero_title:'Explore Properties in Cluj-Napoca', hero_sub:'Search, filter, and analyze real estate data across all neighborhoods',
       search_ph:'Search by address, neighborhood, owner…', search_btn:'Search',
       lbl_hood:'Neighborhood', lbl_own:'Ownership', lbl_price:'Price',
@@ -964,7 +972,7 @@
       ask_ph:'Ask about properties…'
     },
     ro: {
-      nav_search:'Căutare', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre', nav_language:'Limbă',
+      nav_search:'Căutare', nav_map:'Hartă', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre', nav_language:'Limbă',
       hero_title:'Explorați Proprietăți în Cluj-Napoca', hero_sub:'Căutați, filtrați și analizați date imobiliare din toate cartierele',
       search_ph:'Căutați după adresă, cartier, proprietar…', search_btn:'Căutare',
       lbl_hood:'Cartier', lbl_own:'Proprietar', lbl_price:'Preț',
@@ -991,7 +999,7 @@
       ask_ph:'Întreabă despre proprietăți…'
     },
     hu: {
-      nav_search:'Keresés', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk', nav_language:'Nyelv',
+      nav_search:'Keresés', nav_map:'Térkép', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk', nav_language:'Nyelv',
       hero_title:'Fedezze fel Kolozsvár ingatlanait', hero_sub:'Keresse, szűrje és elemezze az ingatlanadatokat az összes városnegyedben',
       search_ph:'Keresés cím, negyed vagy tulajdonos alapján…', search_btn:'Keresés',
       lbl_hood:'Negyed', lbl_own:'Tulajdonos', lbl_price:'Ár',
@@ -1076,18 +1084,8 @@
 
   /* ── Building SVG illustrations ─────────────── */
   function buildingImg(type) {
-    const s = {
-      apartment: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#bfdbfe'/><stop offset='100%' stop-color='#eff6ff'/></linearGradient></defs><rect width='400' height='200' fill='url(#s)'/><rect y='172' width='400' height='28' fill='#bbf7d0'/><rect y='170' width='400' height='4' fill='#86efac'/><rect x='55' y='35' width='290' height='140' fill='#94a3b8'/><rect x='55' y='35' width='290' height='70' fill='#b0bec5'/><rect x='50' y='28' width='300' height='9' fill='#64748b' rx='1'/><rect x='75' y='46' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='113' y='46' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='151' y='46' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='189' y='46' width='26' height='19' fill='#dbeafe' rx='1'/><rect x='227' y='46' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='265' y='46' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='303' y='46' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='75' y='76' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='113' y='76' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='151' y='76' width='26' height='19' fill='#dbeafe' rx='1'/><rect x='189' y='76' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='227' y='76' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='265' y='76' width='26' height='19' fill='#dbeafe' rx='1'/><rect x='303' y='76' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='75' y='108' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='113' y='108' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='151' y='108' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='189' y='108' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='227' y='108' width='26' height='19' fill='#93c5fd' rx='1'/><rect x='265' y='108' width='26' height='19' fill='#bfdbfe' rx='1'/><rect x='303' y='108' width='26' height='19' fill='#dbeafe' rx='1'/><rect x='75' y='140' width='26' height='35' fill='#bfdbfe' rx='1'/><rect x='113' y='140' width='26' height='35' fill='#bfdbfe' rx='1'/><rect x='175' y='138' width='50' height='37' fill='#475569' rx='2'/><circle cx='222' cy='158' r='3' fill='#94a3b8'/><rect x='265' y='140' width='26' height='35' fill='#bfdbfe' rx='1'/><rect x='303' y='140' width='26' height='35' fill='#bfdbfe' rx='1'/><circle cx='30' cy='174' r='22' fill='#4ade80'/><rect x='28' y='166' width='5' height='12' fill='#6b7280'/><circle cx='372' cy='176' r='18' fill='#86efac'/></svg>`,
-
-      house: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#fef9c3'/><stop offset='100%' stop-color='#fefce8'/></linearGradient></defs><rect width='400' height='200' fill='url(#s)'/><rect y='168' width='400' height='32' fill='#d9f99d'/><rect y='166' width='400' height='4' fill='#a3e635'/><rect x='100' y='92' width='200' height='82' fill='#fde68a'/><polygon points='88,92 200,24 312,92' fill='#ef4444'/><rect x='244' y='36' width='20' height='36' fill='#b91c1c'/><rect x='240' y='28' width='28' height='10' fill='#991b1b' rx='1'/><rect x='118' y='108' width='48' height='38' fill='#93c5fd' rx='2'/><line x1='142' y1='108' x2='142' y2='146' stroke='#bfdbfe' stroke-width='2'/><line x1='118' y1='127' x2='166' y2='127' stroke='#bfdbfe' stroke-width='2'/><rect x='234' y='108' width='48' height='38' fill='#93c5fd' rx='2'/><line x1='258' y1='108' x2='258' y2='146' stroke='#bfdbfe' stroke-width='2'/><line x1='234' y1='127' x2='282' y2='127' stroke='#bfdbfe' stroke-width='2'/><rect x='178' y='132' width='44' height='42' fill='#92400e' rx='3'/><circle cx='218' cy='155' r='3.5' fill='#fbbf24'/><circle cx='45' cy='170' r='26' fill='#4ade80'/><circle cx='355' cy='173' r='20' fill='#86efac'/><circle cx='80' cy='50' r='14' fill='#fff' opacity='.8'/><circle cx='110' cy='42' r='20' fill='#fff' opacity='.7'/></svg>`,
-
-      villa: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#f3e8ff'/><stop offset='100%' stop-color='#faf5ff'/></linearGradient></defs><rect width='400' height='200' fill='url(#s)'/><rect y='170' width='400' height='30' fill='#bbf7d0'/><rect y='168' width='400' height='4' fill='#86efac'/><rect x='28' y='85' width='70' height='90' fill='#e2e8f0'/><rect x='302' y='85' width='70' height='90' fill='#e2e8f0'/><rect x='78' y='55' width='244' height='120' fill='#f1f5f9'/><rect x='78' y='55' width='244' height='55' fill='#e9d5ff'/><polygon points='68,55 200,12 332,55' fill='#7c3aed'/><polygon points='18,85 63,62 108,85' fill='#6d28d9'/><polygon points='292,85 337,62 382,85' fill='#6d28d9'/><rect x='88' y='62' width='30' height='22' fill='#ddd6fe' rx='2'/><rect x='128' y='62' width='30' height='22' fill='#c4b5fd' rx='2'/><rect x='242' y='62' width='30' height='22' fill='#ddd6fe' rx='2'/><rect x='282' y='62' width='30' height='22' fill='#c4b5fd' rx='2'/><rect x='100' y='118' width='8' height='57' fill='#f8fafc' rx='2'/><rect x='135' y='118' width='8' height='57' fill='#f8fafc' rx='2'/><rect x='257' y='118' width='8' height='57' fill='#f8fafc' rx='2'/><rect x='292' y='118' width='8' height='57' fill='#f8fafc' rx='2'/><rect x='38' y='92' width='32' height='24' fill='#ddd6fe' rx='2'/><rect x='330' y='92' width='32' height='24' fill='#ddd6fe' rx='2'/><rect x='38' y='124' width='32' height='24' fill='#ddd6fe' rx='2'/><rect x='330' y='124' width='32' height='24' fill='#ddd6fe' rx='2'/><rect x='168' y='128' width='64' height='47' fill='#4c1d95' rx='3'/><circle cx='198' cy='153' r='3.5' fill='#a78bfa'/></svg>`,
-
-      modern: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#e0f2fe'/><stop offset='100%' stop-color='#f0f9ff'/></linearGradient></defs><rect width='400' height='200' fill='url(#s)'/><rect y='172' width='400' height='28' fill='#d1fae5'/><rect y='170' width='400' height='4' fill='#6ee7b7'/><rect x='38' y='80' width='88' height='95' fill='#1e3a5f'/><rect x='274' y='92' width='88' height='83' fill='#1e293b'/><rect x='130' y='18' width='140' height='157' fill='#334155'/><rect x='125' y='12' width='150' height='8' fill='#0f172a' rx='1'/><rect x='138' y='24' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='176' y='24' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='214' y='24' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='138' y='40' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='176' y='40' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='214' y='40' width='30' height='10' fill='#38bdf8' rx='1'/><rect x='138' y='56' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='176' y='56' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='214' y='56' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='138' y='72' width='30' height='10' fill='#38bdf8' rx='1'/><rect x='176' y='72' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='214' y='72' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='138' y='88' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='176' y='88' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='214' y='88' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='138' y='104' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='176' y='104' width='30' height='10' fill='#38bdf8' rx='1'/><rect x='214' y='104' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='138' y='120' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='176' y='120' width='30' height='10' fill='#bae6fd' rx='1'/><rect x='214' y='120' width='30' height='10' fill='#7dd3fc' rx='1'/><rect x='150' y='152' width='100' height='8' fill='#475569' rx='1'/><rect x='168' y='158' width='64' height='7' fill='#0ea5e9' rx='1'/><rect x='48' y='88' width='24' height='10' fill='#7dd3fc' rx='1'/><rect x='80' y='88' width='24' height='10' fill='#bae6fd' rx='1'/><rect x='48' y='106' width='24' height='10' fill='#38bdf8' rx='1'/><rect x='80' y='106' width='24' height='10' fill='#7dd3fc' rx='1'/><rect x='284' y='100' width='24' height='10' fill='#7dd3fc' rx='1'/><rect x='316' y='100' width='24' height='10' fill='#bae6fd' rx='1'/><rect x='284' y='118' width='24' height='10' fill='#38bdf8' rx='1'/><rect x='316' y='118' width='24' height='10' fill='#7dd3fc' rx='1'/></svg>`,
-
-      townhouse: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#fce7f3'/><stop offset='100%' stop-color='#fdf2f8'/></linearGradient></defs><rect width='400' height='200' fill='url(#s)'/><rect y='170' width='400' height='30' fill='#d1fae5'/><rect y='168' width='400' height='4' fill='#6ee7b7'/><rect x='18' y='75' width='108' height='100' fill='#f8fafc'/><polygon points='10,75 72,30 134,75' fill='#dc2626'/><rect x='30' y='90' width='30' height='24' fill='#bfdbfe' rx='1'/><rect x='70' y='90' width='30' height='24' fill='#bfdbfe' rx='1'/><rect x='30' y='125' width='30' height='24' fill='#dbeafe' rx='1'/><rect x='70' y='125' width='30' height='24' fill='#dbeafe' rx='1'/><rect x='54' y='140' width='38' height='35' fill='#92400e' rx='2'/><rect x='146' y='65' width='108' height='110' fill='#f1f5f9'/><polygon points='138,65 200,18 262,65' fill='#b91c1c'/><rect x='158' y='80' width='30' height='24' fill='#c4b5fd' rx='1'/><rect x='198' y='80' width='30' height='24' fill='#c4b5fd' rx='1'/><rect x='158' y='115' width='30' height='24' fill='#ddd6fe' rx='1'/><rect x='198' y='115' width='30' height='24' fill='#ddd6fe' rx='1'/><rect x='182' y='130' width='38' height='45' fill='#4c1d95' rx='2'/><rect x='274' y='75' width='108' height='100' fill='#fafafa'/><polygon points='266,75 328,30 390,75' fill='#ef4444'/><rect x='286' y='90' width='30' height='24' fill='#bbf7d0' rx='1'/><rect x='326' y='90' width='30' height='24' fill='#bbf7d0' rx='1'/><rect x='286' y='125' width='30' height='24' fill='#d1fae5' rx='1'/><rect x='326' y='125' width='30' height='24' fill='#d1fae5' rx='1'/><rect x='310' y='140' width='38' height='35' fill='#065f46' rx='2'/><circle cx='15' cy='172' r='18' fill='#4ade80'/><circle cx='385' cy='172' r='18' fill='#4ade80'/></svg>`
-    };
-    return `data:image/svg+xml,${encodeURIComponent(s[type] || s.apartment)}`;
+    const files = { apartment: 'apartment.jpg', house: 'house.jpg', villa: 'house.jpg', modern: 'modern.jpg', townhouse: 'townhouse.jpg' };
+    return `/img/buildings/${files[type] || files.apartment}`;
   }
 
   /* ── Property data (loaded from API) ─────────── */
@@ -1233,7 +1231,6 @@
   let markerLayer = null;
 
   function setView(view) {
-    if (view === 'map' && window.innerWidth <= 768) return; // map view disabled on mobile
     currentView = view;
     document.getElementById('view-btn-grid').classList.toggle('active', view === 'grid');
     document.getElementById('view-btn-map').classList.toggle('active', view === 'map');
@@ -1243,12 +1240,17 @@
       initMap();
       renderMapMarkers();
       setTimeout(() => leafletMap.invalidateSize(), 50);
+      document.getElementById('map-view').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
-  window.addEventListener('resize', () => {
-    if (currentView === 'map' && window.innerWidth <= 768) setView('grid');
-  });
+  function goToMapView() {
+    if (location.pathname !== '/') {
+      location.href = '/?view=map';
+      return;
+    }
+    setView('map');
+  }
 
   function initMap() {
     if (leafletMap) return;
@@ -1469,8 +1471,10 @@
     if (e.key === 'Escape' && _mnNav.classList.contains('open')) closeMobileNav();
   });
 
+  /* Only close the menu on tap/click — do NOT preventDefault() on touchend here:
+     that suppresses the link's own click (navigation or onclick), which is why
+     mobile nav links/actions previously appeared dead on iOS Safari. */
   _mnNav.querySelectorAll('a').forEach(function(a) {
-    a.addEventListener('touchend', function(e) { e.preventDefault(); closeMobileNav(); });
     a.addEventListener('click', closeMobileNav);
   });
 
@@ -1535,6 +1539,7 @@
       PROPERTIES = data;
       buildExChips(data);
       applyFilters();
+      if (new URLSearchParams(location.search).get('view') === 'map') setView('map');
     })
     .catch(() => {
       applyFilters();

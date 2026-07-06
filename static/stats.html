@@ -43,11 +43,11 @@
     }
     .logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; text-decoration: none; color: #fff; letter-spacing: -.01em; }
     .logo-icon { width: 34px; height: 34px; background: rgba(255,255,255,.15); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
-    nav { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
-    nav a { color: rgba(255,255,255,.7); text-decoration: none; transition: color .15s; }
-    nav a:hover { color: #fff; }
-    nav a.active { color: #fff; border-bottom: 2px solid rgba(255,255,255,.5); padding-bottom: 2px; }
-    nav a.nav-about { cursor: pointer; }
+    header nav { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
+    header nav a { color: rgba(255,255,255,.7); text-decoration: none; transition: color .15s; }
+    header nav a:hover { color: #fff; }
+    header nav a.active { color: #fff; border-bottom: 2px solid rgba(255,255,255,.5); padding-bottom: 2px; }
+    header nav a.nav-about { cursor: pointer; }
 
     /* ── Language switcher ───────────────────────── */
     .lang-switcher { display: flex; align-items: center; gap: 4px; margin-left: 20px; }
@@ -260,7 +260,7 @@
         background: rgba(10,26,56,0.98);
       }
       body { padding-top: 64px; }
-      nav, .lang-switcher { display: none !important; }
+      header nav, .lang-switcher { display: none !important; }
       .hamburger { display: flex; }
 
       .page-bar { padding: 14px 16px; }
@@ -992,8 +992,10 @@
     if (e.key === 'Escape' && _mnNav.classList.contains('open')) closeMobileNav();
   });
 
+  /* Only close the menu on tap/click — do NOT preventDefault() on touchend here:
+     that suppresses the link's own click (navigation or onclick), which is why
+     mobile nav links/actions previously appeared dead on iOS Safari. */
   _mnNav.querySelectorAll('a').forEach(function(a) {
-    a.addEventListener('touchend', function(e) { e.preventDefault(); closeMobileNav(); });
     a.addEventListener('click', closeMobileNav);
   });
 
