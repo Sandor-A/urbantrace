@@ -4,3 +4,5 @@ rich>=13.7.0
 fastapi>=0.111.0
 uvicorn>=0.30.0
 geopy>=2.4.0
+bcrypt>=4.1.0
+itsdangerous>=2.2.0

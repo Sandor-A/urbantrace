@@ -3,3 +3,6 @@
 __pycache__/
 *.pyc
 data/geocache.json
+data/urbantrace.db
+data/urbantrace.db-wal
+data/urbantrace.db-shm

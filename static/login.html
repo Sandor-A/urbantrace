@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UrbanTrace — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #0c2340; --blue: #1a3c5e; --accent: #2563eb;
+      --g50: #f8fafc; --g100: #f1f5f9; --g200: #e2e8f0; --g400: #94a3b8;
+      --g600: #475569; --g700: #334155; --g900: #0f172a; --red: #ef4444;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(160deg, var(--navy) 0%, var(--blue) 100%);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .card {
+      background: #fff; border-radius: 20px; padding: 40px 36px;
+      max-width: 380px; width: 100%; box-shadow: 0 24px 64px rgba(0,0,0,.3);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; color: var(--g900); text-decoration: none; margin-bottom: 24px; }
+    .logo-icon { width: 36px; height: 36px; background: var(--navy); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    h1 { font-size: 22px; font-weight: 800; color: var(--g900); margin-bottom: 6px; }
+    .sub { font-size: 13.5px; color: var(--g400); margin-bottom: 24px; }
+    label { display: block; font-size: 12.5px; font-weight: 600; color: var(--g700); margin-bottom: 6px; }
+    .field { margin-bottom: 16px; }
+    input {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--g200); border-radius: 10px;
+      font-size: 14px; font-family: inherit; outline: none; transition: border-color .15s;
+    }
+    input:focus { border-color: var(--accent); }
+    .submit-btn {
+      width: 100%; background: var(--accent); color: #fff; border: none;
+      border-radius: 10px; padding: 12px 0; font-size: 14.5px; font-weight: 700;
+      font-family: inherit; cursor: pointer; margin-top: 4px; transition: background .15s;
+    }
+    .submit-btn:hover { background: #1d4ed8; }
+    .submit-btn:disabled { opacity: .6; cursor: not-allowed; }
+    .error { background: #fef2f2; color: var(--red); border: 1px solid #fecaca; border-radius: 10px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: none; }
+    .toggle-row { text-align: center; margin-top: 20px; font-size: 13.5px; color: var(--g600); }
+    .toggle-row a { color: var(--accent); text-decoration: none; font-weight: 600; cursor: pointer; }
+    .toggle-row a:hover { text-decoration: underline; }
+    .guest-row { text-align: center; margin-top: 12px; }
+    .guest-row a { font-size: 13px; color: var(--g400); text-decoration: none; }
+    .guest-row a:hover { color: var(--g700); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a href="/" class="logo"><div class="logo-icon">🏙️</div>UrbanTrace</a>
+    <h1 id="form-title">Sign in</h1>
+    <p class="sub" id="form-sub">Access your saved chat history.</p>
+    <div class="error" id="error-box"></div>
+    <form id="auth-form">
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" autocomplete="username" required />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="submit-btn" id="submit-btn">Sign in</button>
+    </form>
+    <div class="toggle-row">
+      <span id="toggle-label">Don't have an account?</span>
+      <a id="toggle-link" onclick="toggleMode()">Create one</a>
+    </div>
+    <div class="guest-row"><a href="/">Continue as guest →</a></div>
+  </div>
+
+  <script>
+    let mode = 'login'; // 'login' | 'register'
+
+    function toggleMode() {
+      mode = mode === 'login' ? 'register' : 'login';
+      document.getElementById('form-title').textContent = mode === 'login' ? 'Sign in' : 'Create an account';
+      document.getElementById('form-sub').textContent = mode === 'login'
+        ? 'Access your saved chat history.'
+        : 'Save your Brick conversations across visits.';
+      document.getElementById('submit-btn').textContent = mode === 'login' ? 'Sign in' : 'Create account';
+      document.getElementById('toggle-label').textContent = mode === 'login' ? "Don't have an account?" : 'Already have an account?';
+      document.getElementById('toggle-link').textContent = mode === 'login' ? 'Create one' : 'Sign in';
+      document.getElementById('error-box').style.display = 'none';
+    }
+
+    document.getElementById('auth-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errBox = document.getElementById('error-box');
+      const btn = document.getElementById('submit-btn');
+      errBox.style.display = 'none';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(mode === 'login' ? '/auth/login' : '/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          errBox.textContent = data.detail || 'Something went wrong.';
+          errBox.style.display = 'block';
+          btn.disabled = false;
+          return;
+        }
+        location.href = data.role === 'admin' ? '/admin' : '/my-chats';
+      } catch (err) {
+        errBox.textContent = 'Network error — please try again.';
+        errBox.style.display = 'block';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
