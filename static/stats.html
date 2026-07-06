@@ -86,15 +86,22 @@
     .modal-stack { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
     .modal-tag { padding: 4px 11px; border-radius: 20px; background: var(--g100); border: 1px solid var(--g200); font-size: 12px; font-weight: 500; color: var(--g600); }
 
-    /* ── Page bar ── */
-    .page-bar { background: #fff; border-bottom: 1px solid var(--g200); padding: 18px 40px; }
-    .page-bar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-    .breadcrumb { font-size: 12px; color: var(--g400); display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
-    .breadcrumb a { color: var(--g400); text-decoration: none; }
-    .breadcrumb a:hover { color: var(--accent); }
-    .page-title { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
-    .page-sub { font-size: 13px; color: var(--g400); margin-top: 2px; }
-    .data-badge { background: #dbeafe; color: #1e40af; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    /* ── Page bar (photo hero) ── */
+    .page-bar {
+      background:
+        linear-gradient(160deg, rgba(12,35,64,.80) 0%, rgba(26,60,94,.62) 55%, rgba(12,35,64,.78) 100%),
+        url('/img/hero-cluj.jpg') center 40% / cover no-repeat;
+      padding: 40px 40px 32px; position: relative; overflow: hidden;
+    }
+    .page-bar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; }
+    .breadcrumb { font-size: 12px; color: rgba(255,255,255,.55); display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .breadcrumb a { color: rgba(255,255,255,.55); text-decoration: none; }
+    .breadcrumb a:hover { color: #fff; }
+    .page-title { font-size: 26px; font-weight: 800; letter-spacing: -.01em; color: #fff; }
+    .page-sub { font-size: 13px; color: rgba(255,255,255,.7); margin-top: 2px; }
+    .data-badge { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .page-bar .hero-credit { position: absolute; bottom: 6px; right: 14px; z-index: 1; font-size: 10px; color: rgba(255,255,255,.4); text-decoration: none; }
+    .page-bar .hero-credit:hover { color: rgba(255,255,255,.7); }
 
     /* ── Main ── */
     .main { max-width: 1280px; margin: 0 auto; padding: 28px 40px 100px; }
@@ -334,6 +341,7 @@
     </div>
     <div class="data-badge" id="data-badge">Loading…</div>
   </div>
+  <a class="hero-credit" href="https://commons.wikimedia.org/wiki/File:Romania-2387_-_Cluj-Napoca_Sunset_(7794319726).jpg" target="_blank" rel="noopener">Photo: Dennis G. Jarvis, CC BY-SA 2.0</a>
 </div>
 
 <main class="main">

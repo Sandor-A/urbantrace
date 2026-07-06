@@ -94,10 +94,17 @@
 
     /* ── Hero ───────────────────────────────────── */
     .hero {
-      background: linear-gradient(160deg, var(--navy) 0%, var(--blue) 100%);
-      color: #fff; padding: 56px 40px 48px; text-align: center;
+      background:
+        linear-gradient(160deg, rgba(12,35,64,.72) 0%, rgba(26,60,94,.56) 55%, rgba(12,35,64,.70) 100%),
+        url('/img/hero-cluj.jpg') center 40% / cover no-repeat;
+      color: #fff; padding: 44px 40px 40px; text-align: center;
       position: relative; overflow: hidden;
     }
+    .hero-credit {
+      position: absolute; bottom: 8px; right: 14px; z-index: 1;
+      font-size: 10.5px; color: rgba(255,255,255,.4); text-decoration: none;
+    }
+    .hero-credit:hover { color: rgba(255,255,255,.7); }
     .hero-mesh { position: absolute; inset: 0; pointer-events: none; }
     .hero-mesh::before {
       content: ''; position: absolute; top: -80px; left: -100px;
@@ -114,6 +121,9 @@
     .hero-content { position: relative; z-index: 1; }
     .hero h1 { font-size: 38px; font-weight: 800; letter-spacing: -.025em; margin-bottom: 10px; }
     .hero p  { font-size: 16px; color: rgba(255,255,255,.62); margin-bottom: 30px; font-weight: 400; }
+    .hero-breadcrumb { font-size: 12px; color: rgba(255,255,255,.5); margin-bottom: 10px; }
+    .hero-breadcrumb a { color: rgba(255,255,255,.5); text-decoration: none; }
+    .hero-breadcrumb a:hover { color: #fff; }
     .search-box {
       max-width: 660px; margin: 0 auto;
       background: #fff; border-radius: 18px; display: flex; overflow: hidden;
@@ -425,6 +435,7 @@
 <section class="hero">
   <div class="hero-mesh"></div>
   <div class="hero-content">
+    <div class="hero-breadcrumb"><a href="/">Home</a> › <span data-i18n="nav_ownership">Ownership</span></div>
     <h1 data-i18n="own_title">Ownership Registry</h1>
     <p data-i18n="own_sub">Search who owns any property in Cluj-Napoca</p>
     <div class="search-box">
@@ -437,6 +448,7 @@
       </button>
     </div>
   </div>
+  <a class="hero-credit" href="https://commons.wikimedia.org/wiki/File:Romania-2387_-_Cluj-Napoca_Sunset_(7794319726).jpg" target="_blank" rel="noopener">Photo: Dennis G. Jarvis, CC BY-SA 2.0</a>
 </section>
 
 <!-- Filter tabs -->

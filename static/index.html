@@ -134,10 +134,10 @@
     /* ── Hero ───────────────────────────────────── */
     .hero {
       background:
-        linear-gradient(160deg, rgba(12,35,64,.88) 0%, rgba(26,60,94,.75) 55%, rgba(12,35,64,.85) 100%),
+        linear-gradient(160deg, rgba(12,35,64,.72) 0%, rgba(26,60,94,.56) 55%, rgba(12,35,64,.70) 100%),
         url('/img/hero-cluj.jpg') center 40% / cover no-repeat;
       color: #fff;
-      padding: 64px 40px 56px;
+      padding: 48px 40px 40px;
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -297,7 +297,14 @@
     }
 
     /* ── Map view ───────────────────────────────── */
-    .map-view {
+    .map-back-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: #fff; border: 1.5px solid var(--g200); color: var(--g700);
+      border-radius: 10px; padding: 8px 16px; font-size: 13px; font-weight: 600;
+      font-family: inherit; cursor: pointer; margin-bottom: 12px; transition: all .15s;
+    }
+    .map-back-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .map-view-body {
       display: flex; gap: 0; height: 640px;
       border-radius: 20px; overflow: hidden;
       box-shadow: 0 1px 6px rgba(0,0,0,.06), 0 4px 20px rgba(0,0,0,.04);
@@ -327,9 +334,9 @@
     }
     .map-popup button:hover { background: #1d4ed8; }
     @media (max-width: 768px) {
-      .map-view { height: 480px; border-radius: 14px; }
-      .map-sidebar { width: 48px; padding: 12px 0; gap: 4px; }
-      .map-sidebar a { width: 34px; height: 34px; font-size: 15px; border-radius: 9px; }
+      .map-view-body { height: 420px; border-radius: 14px; }
+      .map-sidebar { width: 44px; padding: 10px 0; gap: 4px; }
+      .map-sidebar a { width: 32px; height: 32px; font-size: 14px; border-radius: 9px; }
       .view-toggle button { padding: 8px 12px; font-size: 12px; }
     }
 
@@ -605,7 +612,7 @@
 
     /* ── Mobile nav ────────────────────────────── */
     .mobile-nav {
-      background: rgba(10,26,56,.97); border-top: 1px solid rgba(255,255,255,.08);
+      background: rgb(10,26,56); border-top: 1px solid rgba(255,255,255,.08);
       position: fixed; top: 64px; left: 0; right: 0; z-index: 9999;
       visibility: hidden; opacity: 0; transform: translateY(-8px);
       transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
@@ -643,12 +650,14 @@
       header nav, .lang-switcher { display: none !important; }
       .hamburger { display: flex; }
 
-      .hero { padding: 36px 20px 32px; }
-      .hero h1 { font-size: 26px; }
-      .hero p { font-size: 14px; margin-bottom: 22px; }
+      .hero { padding: 32px 16px 28px; }
+      .hero h1 { font-size: 24px; }
+      .hero p { font-size: 13.5px; margin-bottom: 20px; }
       .search-box { border-radius: 14px; }
       .search-box input { padding: 12px 16px; font-size: 14px; }
       .search-box button { padding: 0 16px; font-size: 13px; }
+      .ex-chip { max-width: 42vw; overflow: hidden; text-overflow: ellipsis; }
+      .hero-credit { font-size: 9px; max-width: 55vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
       .filters-bar {
         padding: 10px 14px;
@@ -656,9 +665,7 @@
         align-items: stretch;
         gap: 10px;
         overflow-x: visible;
-        position: sticky;
-        top: 64px;
-        z-index: 49;
+        position: static;
       }
       .filter-label { display: flex; margin-right: 4px; }
       .chip-sep { display: none; }
@@ -817,14 +824,17 @@
     </div>
   </div>
   <div class="prop-grid" id="prop-grid"></div>
-  <div class="map-view" id="map-view" style="display:none">
-    <div class="map-sidebar">
-      <a href="#" onclick="setView('grid');return false;" title="Home / Grid">🏠</a>
-      <a href="#" class="active" onclick="return false;" title="Map search">📍</a>
-      <a href="/stats" title="Market Statistics">📊</a>
-      <a href="/ownership" title="Ownership Registry">📋</a>
+  <div id="map-view" style="display:none">
+    <button class="map-back-btn" onclick="setView('grid')">← Back to results</button>
+    <div class="map-view-body">
+      <div class="map-sidebar">
+        <a href="#" onclick="setView('grid');return false;" title="Home / Grid">🏠</a>
+        <a href="#" class="active" onclick="return false;" title="Map search">📍</a>
+        <a href="/stats" title="Market Statistics">📊</a>
+        <a href="/ownership" title="Ownership Registry">📋</a>
+      </div>
+      <div id="leaflet-map"></div>
     </div>
-    <div id="leaflet-map"></div>
   </div>
   <div id="load-more-wrap" style="display:none; text-align:center; margin-top:28px">
     <button id="load-more-btn" class="load-more-btn" onclick="loadMore()"></button>
@@ -1230,17 +1240,34 @@
   let leafletMap = null;
   let markerLayer = null;
 
+  function stickyHeaderOffset() {
+    // Header is always sticky; filters-bar is only sticky on desktop widths —
+    // account for whichever is actually pinned so scrolling doesn't land
+    // content underneath the sticky chrome.
+    const header = document.querySelector('header');
+    const filters = document.querySelector('.filters-bar');
+    let offset = header ? header.offsetHeight : 0;
+    if (filters && getComputedStyle(filters).position === 'sticky') {
+      offset += filters.offsetHeight;
+    }
+    return offset + 12;
+  }
+
   function setView(view) {
     currentView = view;
     document.getElementById('view-btn-grid').classList.toggle('active', view === 'grid');
     document.getElementById('view-btn-map').classList.toggle('active', view === 'map');
     document.getElementById('prop-grid').style.display = view === 'grid' ? 'grid' : 'none';
-    document.getElementById('map-view').style.display = view === 'map' ? 'flex' : 'none';
+    document.getElementById('map-view').style.display = view === 'map' ? 'block' : 'none';
     if (view === 'map') {
       initMap();
       renderMapMarkers();
       setTimeout(() => leafletMap.invalidateSize(), 50);
-      document.getElementById('map-view').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => {
+        const btn = document.querySelector('.map-back-btn');
+        const targetY = btn.getBoundingClientRect().top + window.scrollY - stickyHeaderOffset();
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      }, 60);
     }
   }
 
