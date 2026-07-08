@@ -11,24 +11,142 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --navy: #0c2340; --blue: #1a3c5e; --accent: #2563eb;
-      --g50: #f8fafc; --g100: #f1f5f9; --g200: #e2e8f0; --g400: #94a3b8;
-      --g600: #475569; --g700: #334155; --g900: #0f172a;
+      --navy:   #0c2340;
+      --blue:   #1a3c5e;
+      --accent: #2563eb;
+      --g50:    #f8fafc;
+      --g100:   #f1f5f9;
+      --g200:   #e2e8f0;
+      --g400:   #94a3b8;
+      --g600:   #475569;
+      --g700:   #334155;
+      --g900:   #0f172a;
+      --green:  #10b981;
+      --red:    #ef4444;
     }
-    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--g100); color: var(--g900); min-height: 100vh; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--g100); color: var(--g900); min-height: 100vh;
+    }
+
+    /* ── Header ── */
     header {
-      background: var(--navy); color: #fff; padding: 0 40px; height: 64px;
-      display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100;
+      background: rgba(10,26,56,0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      color: #fff; padding: 0 40px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 24px rgba(0,0,0,.35);
+      position: sticky; top: 0; z-index: 100;
     }
-    .logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; }
+    .logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; text-decoration: none; color: #fff; letter-spacing: -.01em; }
     .logo-icon { width: 34px; height: 34px; background: rgba(255,255,255,.15); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
     .admin-badge { background: #7c3aed; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-left: 10px; text-transform: uppercase; letter-spacing: .04em; }
-    .header-actions { display: flex; align-items: center; gap: 14px; font-size: 13.5px; }
-    .header-actions a, .header-actions button {
-      color: rgba(255,255,255,.75); text-decoration: none; background: none; border: none;
-      font-family: inherit; font-size: 13.5px; cursor: pointer;
+    header nav { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
+    header nav a { color: rgba(255,255,255,.7); text-decoration: none; transition: color .15s; }
+    header nav a:hover { color: #fff; }
+    header nav a.active { color: #fff; }
+    header nav a.nav-about { cursor: pointer; }
+
+    /* ── Language switcher ───────────────────────── */
+    .lang-switcher { display: flex; align-items: center; gap: 4px; margin-left: 20px; }
+    .lang-btn {
+      background: transparent; border: 1.5px solid rgba(255,255,255,.22); color: rgba(255,255,255,.6);
+      border-radius: 8px; padding: 5px 8px; font-size: 18px; font-family: inherit;
+      cursor: pointer; transition: all .15s; line-height: 1;
     }
-    .header-actions a:hover, .header-actions button:hover { color: #fff; }
+    .lang-btn:hover { border-color: rgba(255,255,255,.5); color: rgba(255,255,255,.85); }
+    .lang-btn.active { background: #fff; border-color: #fff; color: var(--navy); }
+
+    /* ── Account area ── */
+    .account-area { display: flex; align-items: center; gap: 8px; margin-left: 14px; font-size: 12.5px; }
+    .account-area a, .account-area button, .account-area span {
+      background: transparent; border: 1.5px solid rgba(255,255,255,.22);
+      color: rgba(255,255,255,.75); border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; font-weight: 600; font-family: inherit; text-decoration: none;
+      cursor: pointer; transition: all .15s; white-space: nowrap;
+    }
+    .account-area span { cursor: default; border-color: transparent; }
+    .account-area a:hover, .account-area button:hover { border-color: rgba(255,255,255,.5); color: #fff; }
+
+    /* ── Contact dropdown ── */
+    .contact-dropdown {
+      position: fixed; top: 74px; right: 28px; z-index: 999;
+      width: 360px; max-width: calc(100vw - 24px);
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.22), 0 6px 20px rgba(0,0,0,.1);
+      transform-origin: top right;
+      transform: scale(.92) translateY(-8px);
+      opacity: 0; pointer-events: none;
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1), opacity .18s ease;
+      overflow: hidden;
+    }
+    .contact-dropdown.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+    .contact-dropdown-header {
+      background: linear-gradient(135deg, var(--navy), var(--blue)); color: #fff;
+      padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .contact-dropdown-header h2 { font-size: 15px; font-weight: 700; }
+    .contact-dropdown-header p { font-size: 11.5px; color: rgba(255,255,255,.6); margin-top: 1px; }
+    .contact-dropdown-close {
+      background: rgba(255,255,255,.1); border: none; color: #fff;
+      width: 26px; height: 26px; border-radius: 8px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+      transition: background .15s; flex-shrink: 0;
+    }
+    .contact-dropdown-close:hover { background: rgba(255,255,255,.22); }
+    .contact-form { display: flex; flex-direction: column; gap: 12px; padding: 18px; }
+    .contact-form label { font-size: 12px; font-weight: 600; color: var(--g700); margin-bottom: 4px; display: block; }
+    .contact-form input, .contact-form textarea {
+      width: 100%; padding: 10px 13px; border: 1.5px solid var(--g200);
+      background: var(--g50); border-radius: 10px; color: var(--g900);
+      font-size: 13.5px; font-family: inherit; outline: none; transition: border-color .15s; resize: vertical;
+    }
+    .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); }
+    .contact-form .honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+    .contact-submit-btn {
+      background: var(--accent); color: #fff; border: none; border-radius: 10px;
+      padding: 11px 0; font-size: 14px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: background .15s;
+    }
+    .contact-submit-btn:hover { background: #1d4ed8; }
+    .contact-submit-btn:disabled { opacity: .6; cursor: not-allowed; }
+    .contact-status { font-size: 13px; margin-top: 4px; display: none; }
+    .contact-status.success { color: #059669; }
+    .contact-status.error { color: var(--red); }
+    @media (max-width: 768px) {
+      .contact-dropdown { top: 64px; right: 8px; left: 8px; width: auto; max-width: none; }
+    }
+
+    /* ── About modal ── */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.5);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s ease;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: #fff; border-radius: 20px; padding: 36px 40px;
+      max-width: 480px; width: calc(100% - 48px);
+      box-shadow: 0 24px 64px rgba(0,0,0,.25);
+      transform: translateY(16px) scale(.97);
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1); position: relative;
+    }
+    .modal-backdrop.open .modal { transform: translateY(0) scale(1); }
+    .modal-close { position: absolute; top: 16px; right: 18px; background: var(--g100); border: none; border-radius: 8px; width: 28px; height: 28px; cursor: pointer; font-size: 15px; color: var(--g600); display: flex; align-items: center; justify-content: center; transition: background .15s; }
+    .modal-close:hover { background: var(--g200); }
+    .modal-logo { font-size: 36px; margin-bottom: 14px; }
+    .modal-title { font-size: 22px; font-weight: 800; letter-spacing: -.01em; margin-bottom: 6px; }
+    .modal-tagline { font-size: 14px; color: var(--g400); margin-bottom: 22px; line-height: 1.5; }
+    .modal-divider { border: none; border-top: 1px solid var(--g200); margin: 18px 0; }
+    .modal-author { font-size: 14px; color: var(--g700); margin-bottom: 4px; }
+    .modal-author strong { color: var(--g900); }
+    .modal-copy { font-size: 12.5px; color: var(--g400); }
+    .modal-stack { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+    .modal-tag { padding: 4px 11px; border-radius: 20px; background: var(--g100); border: 1px solid var(--g200); font-size: 12px; font-weight: 500; color: var(--g600); }
+
+    /* ── Admin content ── */
     .main { max-width: 900px; margin: 0 auto; padding: 32px 20px 100px; }
     h1 { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
     .sub { font-size: 13.5px; color: var(--g400); margin-bottom: 24px; }
@@ -49,27 +167,184 @@
     .msg-role { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--g400); margin-bottom: 4px; }
     .msg-body { background: #fff; border-radius: 12px; padding: 12px 16px; font-size: 14px; line-height: 1.55; }
     .msg.user .msg-body { background: var(--accent); color: #fff; }
+    .table-scroll { overflow-x: auto; }
+
+    /* ═══════════════════════════════════════════ */
+    /*  BRICK WIDGET                               */
+    /* ═══════════════════════════════════════════ */
+    #brick-widget { position: fixed; bottom: 28px; right: 28px; z-index: 1000; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; pointer-events: none; }
+    #chat-panel {
+      width: 355px; height: 490px; background: #fff; border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.22), 0 6px 20px rgba(0,0,0,.1);
+      display: flex; flex-direction: column; overflow: hidden;
+      transform-origin: bottom right; transform: scale(.85) translateY(18px);
+      opacity: 0; pointer-events: none;
+      transition: transform .28s cubic-bezier(.34,1.56,.64,1), opacity .2s ease;
+    }
+    #chat-panel.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+    .cp-header { background: linear-gradient(135deg, var(--navy), var(--blue)); color: #fff; padding: 13px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .cp-avatar { width: 34px; height: 34px; background: rgba(255,255,255,.15); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .cp-info { flex: 1; }
+    .cp-name { font-size: 14px; font-weight: 700; }
+    .cp-sub  { font-size: 11px; opacity: .6; display: flex; align-items: center; gap: 4px; margin-top: 1px; }
+    .cp-dot  { width: 5px; height: 5px; background: #4ade80; border-radius: 50%; }
+    .cp-close { background: rgba(255,255,255,.1); border: none; color: #fff; width: 26px; height: 26px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: background .15s; }
+    .cp-close:hover { background: rgba(255,255,255,.22); }
+    .cp-msgs { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 12px; background: var(--g50); }
+    .cp-msgs::-webkit-scrollbar { width: 4px; }
+    .cp-msgs::-webkit-scrollbar-thumb { background: var(--g200); border-radius: 2px; }
+    .cm-row { display: flex; gap: 7px; align-items: flex-end; animation: msgIn .18s ease both; }
+    .cm-row.user { flex-direction: row-reverse; }
+    @keyframes msgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    .cm-av { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+    .cm-av.assistant { background: linear-gradient(135deg, var(--navy), var(--accent)); color: #fff; font-size: 14px; }
+    .cm-av.user { background: var(--g200); color: var(--g700); }
+    .cm-bub { padding: 9px 12px; border-radius: 14px; font-size: 13px; line-height: 1.55; max-width: 80%; word-wrap: break-word; }
+    .cm-bub.assistant { background: #fff; color: var(--g900); border-bottom-left-radius: 3px; box-shadow: 0 1px 5px rgba(0,0,0,.07); }
+    .cm-bub.user { background: linear-gradient(135deg, var(--navy), var(--accent)); color: #fff; border-bottom-right-radius: 3px; }
+    .cm-bub.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; border-bottom-left-radius: 3px; }
+    .cm-bub.assistant p { margin-bottom: .4em; }
+    .cm-bub.assistant p:last-child { margin-bottom: 0; }
+    .cm-bub.assistant ul, .cm-bub.assistant ol { padding-left: 1.2em; margin-bottom: .4em; }
+    .cm-bub.assistant li { margin-bottom: .2em; }
+    .cm-bub.assistant strong { font-weight: 600; }
+    .cm-bub.assistant table { border-collapse: collapse; font-size: 12px; margin: .4em 0; width: 100%; }
+    .cm-bub.assistant th, .cm-bub.assistant td { border: 1px solid #e2e8f0; padding: 4px 8px; }
+    .cm-bub.assistant th { background: #f8fafc; font-weight: 600; }
+    .cm-bub.assistant code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: .84em; }
+    .cm-thinking { display: flex; align-items: center; gap: 4px; padding: 10px 12px; }
+    .cm-dot { width: 6px; height: 6px; background: var(--g200); border-radius: 50%; animation: dotPop 1.2s infinite ease-in-out; }
+    .cm-dot:nth-child(2) { animation-delay: .16s; }
+    .cm-dot:nth-child(3) { animation-delay: .32s; }
+    @keyframes dotPop { 0%,80%,100% { transform:scale(.6); opacity:.35; } 40% { transform:scale(1); opacity:1; } }
+    .cp-input-area { padding: 9px 11px; background: #fff; border-top: 1px solid var(--g200); flex-shrink: 0; }
+    .cp-input-wrap { display: flex; align-items: flex-end; background: var(--g50); border: 1.5px solid var(--g200); border-radius: 12px; padding: 5px 5px 5px 11px; transition: border-color .15s; }
+    .cp-input-wrap:focus-within { border-color: var(--accent); background: #fff; }
+    #cm-input { flex: 1; border: none; background: transparent; font-size: 13px; font-family: inherit; line-height: 1.5; resize: none; outline: none; max-height: 90px; overflow-y: auto; color: var(--g900); padding: 2px 6px 2px 0; }
+    #cm-input::placeholder { color: var(--g400); }
+    #cm-send { width: 30px; height: 30px; background: linear-gradient(135deg, var(--navy), var(--accent)); border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity .15s; box-shadow: 0 2px 6px rgba(37,99,235,.3); }
+    #cm-send:hover { opacity: .88; }
+    #cm-send:disabled { opacity: .35; cursor: not-allowed; }
+    #cm-send svg { width: 13px; height: 13px; fill: #fff; }
+    #brick-btn { width: 64px; height: 74px; position: relative; cursor: pointer; filter: drop-shadow(0 6px 18px rgba(232,93,38,.45)); transition: transform .22s cubic-bezier(.34,1.56,.64,1), filter .2s; user-select: none; flex-shrink: 0; pointer-events: auto; }
+    #brick-btn:hover { transform: scale(1.09) translateY(-2px); filter: drop-shadow(0 10px 26px rgba(232,93,38,.55)); }
+    #brick-btn:active { transform: scale(.95); }
+    #brick-btn.open { transform: scale(1.04) translateY(-2px); }
+    @keyframes hop {
+      0%   { transform: translateY(0) scaleY(1) scaleX(1); }
+      12%  { transform: translateY(0) scaleY(.82) scaleX(1.18); }
+      35%  { transform: translateY(-28px) scaleY(1.1) scaleX(.94) rotate(-5deg); }
+      58%  { transform: translateY(-14px) scaleY(1.02) scaleX(.99) rotate(3deg); }
+      78%  { transform: translateY(0) scaleY(.88) scaleX(1.12); }
+      100% { transform: translateY(0) scaleY(1) scaleX(1); }
+    }
+    #brick-btn.hopping { animation: hop .7s cubic-bezier(.36,.07,.19,.97) both; }
+    .brick-badge { position: absolute; top: -5px; right: -5px; width: 18px; height: 18px; background: #ef4444; border-radius: 50%; border: 2px solid var(--g100); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: #fff; opacity: 0; transform: scale(0); transition: opacity .18s, transform .25s cubic-bezier(.34,1.56,.64,1); }
+    .brick-badge.on { opacity: 1; transform: scale(1); }
+    .brick-tip { position: absolute; bottom: calc(100% + 10px); right: 0; background: var(--g900); color: #fff; padding: 6px 11px; border-radius: 8px; font-size: 11.5px; font-weight: 500; white-space: nowrap; pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s; }
+    .brick-tip::after { content: ''; position: absolute; top: 100%; right: 18px; border: 5px solid transparent; border-top-color: var(--g900); }
+    #brick-btn:hover .brick-tip { opacity: 1; transform: translateY(0); }
+    .cp-new { background: rgba(255,255,255,.1); border: none; color: rgba(255,255,255,.7); width: 26px; height: 26px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: background .15s; margin-right: 2px; }
+    .cp-new:hover { background: rgba(255,255,255,.22); color: #fff; }
+
+    /* ── Hamburger ─────────────────────────────── */
+    .hamburger { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px; background: none; border: none; cursor: pointer; min-width: 44px; min-height: 44px; padding: 0; flex-shrink: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+    .hamburger span { display: block; width: 22px; height: 2.5px; background: rgba(255,255,255,.85); border-radius: 2px; transition: all .25s; pointer-events: none; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* ── Mobile nav ────────────────────────────── */
+    .mobile-nav { background: rgb(10,26,56); border-top: 1px solid rgba(255,255,255,.08); position: fixed; top: 64px; left: 0; right: 0; z-index: 9999; visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s; pointer-events: none; }
+    .mobile-nav.open { visibility: visible; opacity: 1; transform: translateY(0); transition: opacity .22s ease, transform .22s ease, visibility 0s linear 0s; pointer-events: all; }
+    .mobile-nav a { display: block; padding: 14px 24px; color: rgba(255,255,255,.75); text-decoration: none; font-size: 15px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,.07); transition: all .15s; }
+    .mobile-nav a.active, .mobile-nav a:hover { color: #fff; background: rgba(255,255,255,.06); }
+    #mobile-account-area a, #mobile-account-area button {
+      display: block; width: 100%; text-align: left; background: none; border: none;
+      padding: 14px 24px; color: rgba(255,255,255,.75); text-decoration: none;
+      font-size: 15px; font-weight: 500; font-family: inherit; cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,.07); transition: all .15s; box-sizing: border-box;
+    }
+    #mobile-account-area a:hover, #mobile-account-area button:hover { color: #fff; background: rgba(255,255,255,.06); }
+    #mobile-account-area span {
+      display: block; padding: 10px 24px 2px; color: rgba(255,255,255,.4);
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+    }
+    .mobile-lang { display: flex; gap: 8px; padding: 12px 24px 16px; align-items: center; border-top: 1px solid rgba(255,255,255,.1); }
+    .mobile-lang-label { color: rgba(255,255,255,.35); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; flex-shrink: 0; margin-right: 4px; }
+    .mobile-lang .lang-btn { padding: 7px 12px; font-size: 13px; min-height: 38px; }
+
+    /* ── Responsive ────────────────────────────── */
+    @media (max-width: 768px) {
+      header {
+        padding: 0 16px; position: fixed; left: 0; right: 0;
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+        background: rgba(10,26,56,0.98);
+      }
+      body { padding-top: 64px; }
+      header nav, .lang-switcher, .account-area { display: none !important; }
+      .hamburger { display: flex; }
+      .main { padding: 20px 14px 90px; }
+      th, td { padding: 10px 12px; font-size: 12.5px; }
+      #brick-widget { bottom: 14px; right: 14px; }
+      #chat-panel { width: calc(100vw - 28px); max-width: 420px; height: min(72vh, 520px); }
+    }
   </style>
 </head>
 <body>
+
 <header>
-  <a href="/" class="logo"><div class="logo-icon">🏙️</div>UrbanTrace<span class="admin-badge">Admin</span></a>
-  <div class="header-actions">
-    <a href="/">Search</a>
-    <button onclick="signOut()">Sign out</button>
+  <a href="/" class="logo">
+    <div class="logo-icon">🏙️</div>
+    UrbanTrace<span class="admin-badge">Admin</span>
+  </a>
+  <nav>
+    <a href="/" data-i18n="nav_search">Search</a>
+    <a href="#" onclick="location.href='/?view=map';return false;" data-i18n="nav_map">Map</a>
+    <a href="/stats" data-i18n="nav_stats">Market Stats</a>
+    <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
+    <a href="#" class="nav-about" onclick="openAbout();return false;" data-i18n="nav_about">About</a>
+    <a href="#" onclick="toggleContact();return false;" data-i18n="nav_contact">Contact</a>
+  </nav>
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
+    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴 Română</button>
+    <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺 Magyar</button>
   </div>
+  <div class="account-area" id="account-area"></div>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="/" data-i18n="nav_search">Search</a>
+  <a href="#" onclick="location.href='/?view=map';closeMobileNav();return false;" data-i18n="nav_map">Map</a>
+  <a href="/stats" data-i18n="nav_stats">Market Stats</a>
+  <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
+  <a href="#" onclick="openAbout();closeMobileNav();return false;" data-i18n="nav_about">About</a>
+  <a href="#" onclick="toggleContact();closeMobileNav();return false;" data-i18n="nav_contact">Contact</a>
+  <div id="mobile-account-area"></div>
+  <div class="mobile-lang">
+    <span class="mobile-lang-label" data-i18n="nav_language">Language</span>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧 EN</button>
+    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">🇷🇴 RO</button>
+    <button class="lang-btn" data-lang="hu" onclick="setLang('hu')">🇭🇺 HU</button>
+  </div>
+</nav>
 
 <main class="main">
   <div id="list-view">
     <h1>All Chat Sessions</h1>
     <div class="sub">Every conversation across all users and guests.</div>
-    <table id="session-table" style="display:none">
-      <thead>
-        <tr><th>User</th><th>Preview</th><th>Messages</th><th>Last active</th></tr>
-      </thead>
-      <tbody id="session-tbody"></tbody>
-    </table>
+    <div class="table-scroll">
+      <table id="session-table" style="display:none">
+        <thead>
+          <tr><th>User</th><th>Preview</th><th>Messages</th><th>Last active</th></tr>
+        </thead>
+        <tbody id="session-tbody"></tbody>
+      </table>
+    </div>
     <div class="empty" id="empty-msg" style="display:none">No chat sessions yet.</div>
   </div>
 
@@ -79,11 +354,358 @@
   </div>
 </main>
 
-<script>
-  marked.setOptions({ breaks: true, gfm: true });
+<div class="contact-dropdown" id="contact-dropdown">
+  <div class="contact-dropdown-header">
+    <div>
+      <h2 data-i18n="contact_title">Get in touch</h2>
+      <p data-i18n="contact_sub">Questions or feedback? Send a message.</p>
+    </div>
+    <button class="contact-dropdown-close" onclick="toggleContact(false)">✕</button>
+  </div>
+  <form class="contact-form" id="contact-form">
+    <input type="text" name="company" class="honeypot" tabindex="-1" autocomplete="off" />
+    <div>
+      <label for="contact-name" data-i18n="contact_name">Name</label>
+      <input type="text" id="contact-name" data-i18n-ph="contact_name_ph" placeholder="Your name" required />
+    </div>
+    <div>
+      <label for="contact-email" data-i18n="contact_email">Email</label>
+      <input type="email" id="contact-email" placeholder="you@example.com" required />
+    </div>
+    <div>
+      <label for="contact-message" data-i18n="contact_message">Message</label>
+      <textarea id="contact-message" rows="4" data-i18n-ph="contact_message_ph" placeholder="What's on your mind?" required></textarea>
+    </div>
+    <button type="submit" class="contact-submit-btn" id="contact-submit-btn" data-i18n="contact_submit">Send message</button>
+    <div class="contact-status" id="contact-status"></div>
+  </form>
+</div>
 
+<!-- About modal -->
+<div class="modal-backdrop" id="about-modal" onclick="if(event.target===this)closeAbout()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAbout()">✕</button>
+    <div class="modal-logo">🧱</div>
+    <div class="modal-title">Urbantrace</div>
+    <div class="modal-tagline" data-i18n="about_tag">
+      An AI-powered research assistant for exploring structured Cluj-Napoca property data through natural language.
+    </div>
+    <hr class="modal-divider" />
+    <div class="modal-author"><span data-i18n="about_by">Designed and built by</span> <strong>Sándor Attila Nagy</strong></div>
+    <div class="modal-copy" data-i18n="about_copy">© 2025 Sándor Attila Nagy. All rights reserved.</div>
+    <div class="modal-stack">
+      <span class="modal-tag">Python</span>
+      <span class="modal-tag">FastAPI</span>
+      <span class="modal-tag">OpenAI</span>
+      <span class="modal-tag">SQLite</span>
+      <span class="modal-tag">Cluj-Napoca data</span>
+    </div>
+  </div>
+</div>
+
+<!-- BRICK WIDGET -->
+<div id="brick-widget">
+  <div id="chat-panel">
+    <div class="cp-header">
+      <div class="cp-avatar">🧱</div>
+      <div class="cp-info">
+        <div class="cp-name">Brick — UrbanTrace AI</div>
+        <div class="cp-sub"><div class="cp-dot"></div>Cluj-Napoca Property Expert</div>
+      </div>
+      <button class="cp-new" onclick="clearChat()" title="New conversation">↺</button>
+      <button class="cp-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="cp-msgs" id="cp-msgs"></div>
+    <div class="cp-input-area">
+      <div class="cp-input-wrap">
+        <textarea id="cm-input" rows="1" data-i18n-ph="ask_ph" placeholder="Ask about properties…"></textarea>
+        <button id="cm-send">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="brick-btn" onclick="toggleChat()">
+    <div class="brick-badge" id="brick-badge">1</div>
+    <div class="brick-tip" id="brick-tip">Ask me anything! 😊</div>
+    <svg width="64" height="74" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="20" cy="12" rx="9" ry="5.5" fill="#c94e1e"/>
+      <ellipse cx="44" cy="12" rx="9" ry="5.5" fill="#c94e1e"/>
+      <ellipse cx="20" cy="10" rx="9" ry="5.5" fill="#f07040"/>
+      <ellipse cx="44" cy="10" rx="9" ry="5.5" fill="#f07040"/>
+      <rect x="3" y="15" width="58" height="54" rx="6" fill="#e85d26"/>
+      <rect x="3" y="15" width="58" height="54" rx="6" fill="url(#bg2)"/>
+      <line x1="3"  y1="42" x2="61" y2="42" stroke="#c94e1e" stroke-width="1.5" opacity=".45"/>
+      <line x1="32" y1="15" x2="32" y2="42" stroke="#c94e1e" stroke-width="1.5" opacity=".35"/>
+      <line x1="17" y1="42" x2="17" y2="69" stroke="#c94e1e" stroke-width="1.5" opacity=".35"/>
+      <line x1="47" y1="42" x2="47" y2="69" stroke="#c94e1e" stroke-width="1.5" opacity=".35"/>
+      <circle cx="22" cy="32" r="5.5" fill="#fff" opacity=".95"/>
+      <circle cx="42" cy="32" r="5.5" fill="#fff" opacity=".95"/>
+      <circle cx="23" cy="33" r="2.8" fill="#1a1a2e"/>
+      <circle cx="43" cy="33" r="2.8" fill="#1a1a2e"/>
+      <circle cx="24.2" cy="31.5" r="1.1" fill="#fff"/>
+      <circle cx="44.2" cy="31.5" r="1.1" fill="#fff"/>
+      <path d="M19 48 Q32 60 45 48" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity=".95"/>
+      <ellipse cx="14" cy="46" rx="5" ry="3" fill="#ff7043" opacity=".3"/>
+      <ellipse cx="50" cy="46" rx="5" ry="3" fill="#ff7043" opacity=".3"/>
+      <defs>
+        <linearGradient id="bg2" x1="3" y1="15" x2="61" y2="69" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#fff" stop-opacity=".1"/>
+          <stop offset="100%" stop-color="#000" stop-opacity=".07"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+<script>
+  /* ── Translations (shared chrome only — admin table stays English) ── */
+  const T = {
+    en: {
+      nav_search:'Search', nav_map:'Map', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About', nav_contact:'Contact', nav_language:'Language',
+      contact_title:'Get in touch', contact_sub:'Questions or feedback? Send a message.',
+      contact_name:'Name', contact_name_ph:'Your name', contact_email:'Email', contact_message:'Message',
+      contact_message_ph:"What's on your mind?", contact_submit:'Send message',
+      contact_sent:'Message sent — thanks!', contact_error:'Something went wrong.', contact_network_error:'Network error — please try again.',
+      about_by:'Designed and built by', about_copy:'© 2025 Sándor Attila Nagy. All rights reserved.',
+      about_tag:'An AI-powered research assistant for exploring structured Cluj-Napoca property data through natural language.',
+      ask_ph:'Ask about properties…', brick_tip:'Ask me anything! 😊', you_label:'You',
+      brick_hi:"Hi! I'm **Brick** 🧱 — your Cluj-Napoca property assistant!\n\nAsk me anything about properties, owners, or market trends.",
+    },
+    ro: {
+      nav_search:'Căutare', nav_map:'Hartă', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre', nav_contact:'Contact', nav_language:'Limbă',
+      contact_title:'Contactați-ne', contact_sub:'Întrebări sau feedback? Trimiteți un mesaj.',
+      contact_name:'Nume', contact_name_ph:'Numele tău', contact_email:'Email', contact_message:'Mesaj',
+      contact_message_ph:'Ce ai pe suflet?', contact_submit:'Trimite mesajul',
+      contact_sent:'Mesaj trimis — mulțumim!', contact_error:'A apărut o problemă.', contact_network_error:'Eroare de rețea — încearcă din nou.',
+      about_by:'Conceput și realizat de', about_copy:'© 2025 Sándor Attila Nagy. Toate drepturile rezervate.',
+      about_tag:'Asistent de cercetare AI pentru date imobiliare structurate din Cluj-Napoca prin limbaj natural.',
+      ask_ph:'Întreabă despre proprietăți…', brick_tip:'Întreabă-mă orice! 😊', you_label:'Tu',
+      brick_hi:"Salut! Sunt **Brick** 🧱 — asistentul tău imobiliar!\n\nÎntreabă-mă orice despre proprietăți, proprietari sau tendințele pieței.",
+    },
+    hu: {
+      nav_search:'Keresés', nav_map:'Térkép', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk', nav_contact:'Kapcsolat', nav_language:'Nyelv',
+      contact_title:'Lépjen kapcsolatba', contact_sub:'Kérdése vagy visszajelzése van? Küldjön üzenetet.',
+      contact_name:'Név', contact_name_ph:'Az Ön neve', contact_email:'Email', contact_message:'Üzenet',
+      contact_message_ph:'Miben segíthetünk?', contact_submit:'Üzenet küldése',
+      contact_sent:'Üzenet elküldve — köszönjük!', contact_error:'Hiba történt.', contact_network_error:'Hálózati hiba — próbálja újra.',
+      about_by:'Tervezte és fejlesztette', about_copy:'© 2025 Sándor Attila Nagy. Minden jog fenntartva.',
+      about_tag:'Mesterséges intelligencia alapú kutatási asszisztens Kolozsvár ingatlanadatainak természetes nyelvű lekérdezéséhez.',
+      ask_ph:'Kérdezz az ingatlanokról…', brick_tip:'Kérdezz bármit! 😊', you_label:'Te',
+      brick_hi:"Szia! **Brick** vagyok 🧱 — kolozsvári ingatlan asszisztensed!\n\nKérdezz bármit ingatlanokról, tulajdonosokról vagy piaci trendekről.",
+    },
+  };
+
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    if (!T[lang]) lang = 'en';
+    currentLang = lang;
+    localStorage.setItem('ut_lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (T[lang][key] !== undefined) el.textContent = T[lang][key];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const key = el.dataset.i18nPh;
+      if (T[lang][key] !== undefined) el.placeholder = T[lang][key];
+    });
+    const tip = document.getElementById('brick-tip');
+    if (tip) tip.textContent = T[lang].brick_tip;
+    document.documentElement.lang = lang;
+
+    const _cp = document.getElementById('cp-msgs');
+    const _hi = T[lang] && T[lang].brick_hi;
+    if (_hi && _cp && _cp.children.length > 0 && !_cp.querySelector('.cm-row.user')) {
+      _cp.innerHTML = '';
+      addMsg('assistant', _hi, true);
+    }
+  }
+
+  /* ── Account area ─────────────────────────────── */
+  function renderAccountArea(me) {
+    const desktop = document.getElementById('account-area');
+    const mobile = document.getElementById('mobile-account-area');
+    let html;
+    if (!me.authenticated) {
+      html = `<a href="/login">Sign In</a>`;
+    } else {
+      const dest = me.role === 'admin' ? '/admin' : '/my-chats';
+      const label = me.role === 'admin' ? 'Admin' : 'My Chats';
+      html = `<span>${me.username}</span><a href="${dest}">${label}</a><button onclick="accountSignOut()">Sign Out</button>`;
+    }
+    if (desktop) desktop.innerHTML = html;
+    if (mobile) mobile.innerHTML = html.replace(/<a /g, '<a onclick="closeMobileNav()" ');
+  }
+
+  async function accountSignOut() {
+    await fetch('/auth/logout', { method: 'POST' });
+    location.href = '/';
+  }
+
+  /* ── Contact dropdown ─────────────────────────── */
+  function toggleContact(force) {
+    const el = document.getElementById('contact-dropdown');
+    const open = typeof force === 'boolean' ? force : !el.classList.contains('open');
+    el.classList.toggle('open', open);
+  }
+
+  document.addEventListener('click', (e) => {
+    const dd = document.getElementById('contact-dropdown');
+    if (!dd || !dd.classList.contains('open')) return;
+    const trigger = e.target.closest('[onclick*="toggleContact"]');
+    if (!dd.contains(e.target) && !trigger) toggleContact(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { toggleContact(false); closeAbout(); }
+  });
+
+  document.getElementById('contact-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('contact-submit-btn');
+    const status = document.getElementById('contact-status');
+    const lang = T[currentLang];
+    btn.disabled = true;
+    status.style.display = 'none';
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('contact-name').value,
+          email: document.getElementById('contact-email').value,
+          message: document.getElementById('contact-message').value,
+          company: document.querySelector('#contact-form .honeypot').value,
+        }),
+      });
+      const data = await res.json();
+      status.className = 'contact-status ' + (res.ok ? 'success' : 'error');
+      status.textContent = res.ok ? lang.contact_sent : (data.detail || lang.contact_error);
+      status.style.display = 'block';
+      if (res.ok) document.getElementById('contact-form').reset();
+    } catch (err) {
+      status.className = 'contact-status error';
+      status.textContent = lang.contact_network_error;
+      status.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  function openAbout()  { document.getElementById('about-modal').classList.add('open'); }
+  function closeAbout() { document.getElementById('about-modal').classList.remove('open'); }
+
+  /* ── Brick chat ────────────────────────────────── */
+  marked.setOptions({ breaks: true, gfm: true });
+  let chatOpen = false;
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chat-panel').classList.toggle('open', chatOpen);
+    document.getElementById('brick-btn').classList.toggle('open', chatOpen);
+    if (chatOpen) { hideBadge(); document.getElementById('cm-input').focus(); }
+  }
+  function showBadge() { document.getElementById('brick-badge').classList.add('on'); }
+  function hideBadge() { document.getElementById('brick-badge').classList.remove('on'); }
+  function brickHop() {
+    if (chatOpen) return;
+    const btn = document.getElementById('brick-btn');
+    btn.classList.add('hopping');
+    btn.addEventListener('animationend', () => btn.classList.remove('hopping'), { once: true });
+  }
+  setTimeout(() => { brickHop(); showBadge(); }, 4000);
+  setInterval(() => { if (!chatOpen) { brickHop(); showBadge(); } }, 20000);
+
+  function cpScroll() { const m = document.getElementById('cp-msgs'); m.scrollTop = m.scrollHeight; }
+  function makeRow(role) {
+    const row = document.createElement('div'); row.className = `cm-row ${role}`;
+    const av = document.createElement('div'); av.className = `cm-av ${role}`;
+    av.textContent = role === 'assistant' ? '🧱' : (T[currentLang]?.you_label || 'You');
+    row.appendChild(av); return row;
+  }
+  function addMsg(role, text, markdown = false) {
+    const row = makeRow(role);
+    const bub = document.createElement('div'); bub.className = `cm-bub ${role}`;
+    if (markdown) bub.innerHTML = marked.parse(text); else bub.textContent = text;
+    row.appendChild(bub); document.getElementById('cp-msgs').appendChild(row); cpScroll();
+  }
+  function addThinking() {
+    const row = makeRow('assistant');
+    const bub = document.createElement('div'); bub.className = 'cm-bub assistant';
+    bub.innerHTML = '<div class="cm-thinking"><div class="cm-dot"></div><div class="cm-dot"></div><div class="cm-dot"></div></div>';
+    row.appendChild(bub); document.getElementById('cp-msgs').appendChild(row); cpScroll(); return row;
+  }
+  async function cmSend() {
+    const inp = document.getElementById('cm-input'), btn = document.getElementById('cm-send');
+    const text = inp.value.trim();
+    if (!text || btn.disabled) return;
+    inp.value = ''; inp.style.height = 'auto'; btn.disabled = true;
+    addMsg('user', text);
+    const thinking = addThinking();
+    try {
+      const res = await fetch('/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text }) });
+      thinking.remove();
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({}));
+        const r = makeRow('assistant'); const b = document.createElement('div'); b.className = 'cm-bub error'; b.textContent = e.detail || `Error ${res.status}`; r.appendChild(b); document.getElementById('cp-msgs').appendChild(r); cpScroll();
+      } else {
+        const data = await res.json(); addMsg('assistant', data.response, true);
+      }
+    } catch {
+      thinking.remove();
+      const r = makeRow('assistant'); const b = document.createElement('div'); b.className = 'cm-bub error'; b.textContent = 'Could not reach the server.'; r.appendChild(b); document.getElementById('cp-msgs').appendChild(r); cpScroll();
+    }
+    btn.disabled = false; inp.focus();
+  }
+  document.getElementById('cm-send').addEventListener('click', cmSend);
+  document.getElementById('cm-input').addEventListener('keydown', e => { if (e.key==='Enter'&&!e.shiftKey){e.preventDefault();cmSend();} });
+  document.getElementById('cm-input').addEventListener('input', function() { this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,90)+'px'; });
+
+  function clearChat() {
+    document.getElementById('cp-msgs').innerHTML = '';
+    addMsg('assistant', T[currentLang].brick_hi, true);
+  }
+
+  /* ── Mobile nav ────────────────────────────────── */
+  var _mnBtn = document.getElementById('hamburger');
+  var _mnNav = document.getElementById('mobile-nav');
+
+  function closeMobileNav() {
+    _mnNav.classList.remove('open');
+    _mnBtn.classList.remove('open');
+    _mnBtn.setAttribute('aria-expanded', 'false');
+  }
+  function openMobileNav() {
+    _mnNav.classList.add('open');
+    _mnBtn.classList.add('open');
+    _mnBtn.setAttribute('aria-expanded', 'true');
+  }
+  function toggleMobileNav() {
+    _mnNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  }
+  _mnBtn.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); toggleMobileNav(); });
+  _mnBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleMobileNav(); });
+  document.addEventListener('touchstart', function(e) {
+    if (_mnNav.classList.contains('open') && !_mnNav.contains(e.target) && !_mnBtn.contains(e.target)) closeMobileNav();
+  }, { passive: true });
+  document.addEventListener('click', function(e) {
+    if (_mnNav.classList.contains('open') && !_mnNav.contains(e.target)) closeMobileNav();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && _mnNav.classList.contains('open')) closeMobileNav();
+  });
+  _mnNav.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', closeMobileNav);
+  });
+
+  /* ── Admin page logic ──────────────────────────── */
   async function init() {
     const me = await fetch('/api/me').then(r => r.json());
+    renderAccountArea(me);
     if (!me.authenticated || me.role !== 'admin') { location.href = '/login'; return; }
 
     const res = await fetch('/api/admin/sessions');
@@ -152,11 +774,9 @@
     document.getElementById('list-view').style.display = 'block';
   }
 
-  async function signOut() {
-    await fetch('/auth/logout', { method: 'POST' });
-    location.href = '/';
-  }
-
+  /* ── Boot ──────────────────────────────────────── */
+  setLang(localStorage.getItem('ut_lang') || 'en');
+  addMsg('assistant', T[currentLang].brick_hi, true);
   init();
 </script>
 </body>

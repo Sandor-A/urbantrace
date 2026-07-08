@@ -395,31 +395,51 @@
     .empty-state svg { width: 52px; height: 52px; margin-bottom: 16px; opacity: .35; }
     .empty-state p { font-size: 15px; line-height: 1.6; }
 
-    /* ── Contact section ─────────────────────────── */
-    .contact-section { background: var(--navy); padding: 56px 40px; margin-top: 40px; }
-    .contact-inner { max-width: 560px; margin: 0 auto; text-align: center; }
-    .contact-inner h2 { color: #fff; font-size: 24px; font-weight: 800; margin-bottom: 8px; }
-    .contact-inner p { color: rgba(255,255,255,.6); font-size: 14px; margin-bottom: 28px; }
-    .contact-form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
-    .contact-form label { font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,.75); margin-bottom: 5px; display: block; }
-    .contact-form input, .contact-form textarea {
-      width: 100%; padding: 11px 14px; border: 1.5px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06); border-radius: 10px; color: #fff;
-      font-size: 14px; font-family: inherit; outline: none; transition: border-color .15s; resize: vertical;
+    /* ── Contact dropdown ────────────────────────── */
+    .contact-dropdown {
+      position: fixed; top: 74px; right: 28px; z-index: 999;
+      width: 360px; max-width: calc(100vw - 24px);
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.22), 0 6px 20px rgba(0,0,0,.1);
+      transform-origin: top right;
+      transform: scale(.92) translateY(-8px);
+      opacity: 0; pointer-events: none;
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1), opacity .18s ease;
+      overflow: hidden;
     }
-    .contact-form input::placeholder, .contact-form textarea::placeholder { color: rgba(255,255,255,.35); }
+    .contact-dropdown.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+    .contact-dropdown-header {
+      background: linear-gradient(135deg, var(--navy), var(--blue)); color: #fff;
+      padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .contact-dropdown-header h2 { font-size: 15px; font-weight: 700; }
+    .contact-dropdown-header p { font-size: 11.5px; color: rgba(255,255,255,.6); margin-top: 1px; }
+    .contact-dropdown-close {
+      background: rgba(255,255,255,.1); border: none; color: #fff;
+      width: 26px; height: 26px; border-radius: 8px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+      transition: background .15s; flex-shrink: 0;
+    }
+    .contact-dropdown-close:hover { background: rgba(255,255,255,.22); }
+    .contact-form { display: flex; flex-direction: column; gap: 12px; padding: 18px; }
+    .contact-form label { font-size: 12px; font-weight: 600; color: var(--g700); margin-bottom: 4px; display: block; }
+    .contact-form input, .contact-form textarea {
+      width: 100%; padding: 10px 13px; border: 1.5px solid var(--g200);
+      background: var(--g50); border-radius: 10px; color: var(--g900);
+      font-size: 13.5px; font-family: inherit; outline: none; transition: border-color .15s; resize: vertical;
+    }
     .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); }
     .contact-form .honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
     .contact-submit-btn {
       background: var(--accent); color: #fff; border: none; border-radius: 10px;
-      padding: 12px 0; font-size: 14.5px; font-weight: 700; font-family: inherit;
+      padding: 11px 0; font-size: 14px; font-weight: 700; font-family: inherit;
       cursor: pointer; transition: background .15s;
     }
     .contact-submit-btn:hover { background: #1d4ed8; }
     .contact-submit-btn:disabled { opacity: .6; cursor: not-allowed; }
     .contact-status { font-size: 13px; margin-top: 4px; display: none; }
-    .contact-status.success { color: #6ee7b7; }
-    .contact-status.error { color: #fca5a5; }
+    .contact-status.success { color: #059669; }
+    .contact-status.error { color: #dc2626; }
 
     /* ════════════════════════════════════════════ */
     /*  BRICK ASSISTANT WIDGET                      */
@@ -666,6 +686,17 @@
       border-bottom: 1px solid rgba(255,255,255,.07); transition: all .15s;
     }
     .mobile-nav a.active, .mobile-nav a:hover { color: #fff; background: rgba(255,255,255,.06); }
+    #mobile-account-area a, #mobile-account-area button {
+      display: block; width: 100%; text-align: left; background: none; border: none;
+      padding: 14px 24px; color: rgba(255,255,255,.75); text-decoration: none;
+      font-size: 15px; font-weight: 500; font-family: inherit; cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,.07); transition: all .15s; box-sizing: border-box;
+    }
+    #mobile-account-area a:hover, #mobile-account-area button:hover { color: #fff; background: rgba(255,255,255,.06); }
+    #mobile-account-area span {
+      display: block; padding: 10px 24px 2px; color: rgba(255,255,255,.4);
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+    }
     .mobile-lang { display: flex; gap: 8px; padding: 12px 24px 16px; align-items: center; border-top: 1px solid rgba(255,255,255,.1); }
     .mobile-lang-label { color: rgba(255,255,255,.35); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; flex-shrink: 0; margin-right: 4px; }
     .mobile-lang .lang-btn { padding: 7px 12px; font-size: 13px; min-height: 38px; }
@@ -727,6 +758,7 @@
         max-width: 420px;
         height: min(72vh, 520px);
       }
+      .contact-dropdown { top: 64px; right: 8px; left: 8px; width: auto; max-width: none; }
     }
     @media (max-width: 420px) {
       .hero h1 { font-size: 22px; }
@@ -748,6 +780,7 @@
     <a href="/stats" data-i18n="nav_stats">Market Stats</a>
     <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
     <a href="#" class="nav-about" onclick="openAbout();return false;" data-i18n="nav_about">About</a>
+    <a href="#" onclick="toggleContact();return false;" data-i18n="nav_contact">Contact</a>
   </nav>
   <div class="lang-switcher">
     <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
@@ -766,6 +799,7 @@
   <a href="/stats" data-i18n="nav_stats">Market Stats</a>
   <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
   <a href="#" onclick="openAbout();closeMobileNav();return false;" data-i18n="nav_about">About</a>
+  <a href="#" onclick="toggleContact();closeMobileNav();return false;" data-i18n="nav_contact">Contact</a>
   <div id="mobile-account-area"></div>
   <div class="mobile-lang">
     <span class="mobile-lang-label" data-i18n="nav_language">Language</span>
@@ -880,29 +914,32 @@
   </div>
 </main>
 
-<section class="contact-section" id="contact">
-  <div class="contact-inner">
-    <h2>Get in touch</h2>
-    <p>Questions, feedback, or interested in the data? Send a message.</p>
-    <form class="contact-form" id="contact-form">
-      <input type="text" name="company" class="honeypot" tabindex="-1" autocomplete="off" />
-      <div>
-        <label for="contact-name">Name</label>
-        <input type="text" id="contact-name" placeholder="Your name" required />
-      </div>
-      <div>
-        <label for="contact-email">Email</label>
-        <input type="email" id="contact-email" placeholder="you@example.com" required />
-      </div>
-      <div>
-        <label for="contact-message">Message</label>
-        <textarea id="contact-message" rows="4" placeholder="What's on your mind?" required></textarea>
-      </div>
-      <button type="submit" class="contact-submit-btn" id="contact-submit-btn">Send message</button>
-      <div class="contact-status" id="contact-status"></div>
-    </form>
+<div class="contact-dropdown" id="contact-dropdown">
+  <div class="contact-dropdown-header">
+    <div>
+      <h2 data-i18n="contact_title">Get in touch</h2>
+      <p data-i18n="contact_sub">Questions or feedback? Send a message.</p>
+    </div>
+    <button class="contact-dropdown-close" onclick="toggleContact(false)">✕</button>
   </div>
-</section>
+  <form class="contact-form" id="contact-form">
+    <input type="text" name="company" class="honeypot" tabindex="-1" autocomplete="off" />
+    <div>
+      <label for="contact-name" data-i18n="contact_name">Name</label>
+      <input type="text" id="contact-name" data-i18n-ph="contact_name_ph" placeholder="Your name" required />
+    </div>
+    <div>
+      <label for="contact-email" data-i18n="contact_email">Email</label>
+      <input type="email" id="contact-email" placeholder="you@example.com" required />
+    </div>
+    <div>
+      <label for="contact-message" data-i18n="contact_message">Message</label>
+      <textarea id="contact-message" rows="4" data-i18n-ph="contact_message_ph" placeholder="What's on your mind?" required></textarea>
+    </div>
+    <button type="submit" class="contact-submit-btn" id="contact-submit-btn" data-i18n="contact_submit">Send message</button>
+    <div class="contact-status" id="contact-status"></div>
+  </form>
+</div>
 
 
 <!-- About modal -->
@@ -1018,7 +1055,11 @@
   /* ── Translations ───────────────────────────── */
   const T = {
     en: {
-      nav_search:'Search', nav_map:'Map', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About', nav_language:'Language',
+      nav_search:'Search', nav_map:'Map', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About', nav_contact:'Contact', nav_language:'Language',
+      contact_title:'Get in touch', contact_sub:'Questions or feedback? Send a message.',
+      contact_name:'Name', contact_name_ph:'Your name', contact_email:'Email', contact_message:'Message',
+      contact_message_ph:"What's on your mind?", contact_submit:'Send message',
+      contact_sent:'Message sent — thanks!', contact_error:'Something went wrong.', contact_network_error:'Network error — please try again.',
       hero_title:'Explore Properties in Cluj-Napoca', hero_sub:'Search, filter, and analyze real estate data across all neighborhoods',
       search_ph:'Search by address, neighborhood, owner…', search_btn:'Search',
       lbl_hood:'Neighborhood', lbl_own:'Ownership', lbl_price:'Price',
@@ -1045,7 +1086,11 @@
       ask_ph:'Ask about properties…'
     },
     ro: {
-      nav_search:'Căutare', nav_map:'Hartă', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre', nav_language:'Limbă',
+      nav_search:'Căutare', nav_map:'Hartă', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre', nav_contact:'Contact', nav_language:'Limbă',
+      contact_title:'Contactați-ne', contact_sub:'Întrebări sau feedback? Trimiteți un mesaj.',
+      contact_name:'Nume', contact_name_ph:'Numele tău', contact_email:'Email', contact_message:'Mesaj',
+      contact_message_ph:'Ce ai pe suflet?', contact_submit:'Trimite mesajul',
+      contact_sent:'Mesaj trimis — mulțumim!', contact_error:'A apărut o problemă.', contact_network_error:'Eroare de rețea — încearcă din nou.',
       hero_title:'Explorați Proprietăți în Cluj-Napoca', hero_sub:'Căutați, filtrați și analizați date imobiliare din toate cartierele',
       search_ph:'Căutați după adresă, cartier, proprietar…', search_btn:'Căutare',
       lbl_hood:'Cartier', lbl_own:'Proprietar', lbl_price:'Preț',
@@ -1072,7 +1117,11 @@
       ask_ph:'Întreabă despre proprietăți…'
     },
     hu: {
-      nav_search:'Keresés', nav_map:'Térkép', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk', nav_language:'Nyelv',
+      nav_search:'Keresés', nav_map:'Térkép', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk', nav_contact:'Kapcsolat', nav_language:'Nyelv',
+      contact_title:'Lépjen kapcsolatba', contact_sub:'Kérdése vagy visszajelzése van? Küldjön üzenetet.',
+      contact_name:'Név', contact_name_ph:'Az Ön neve', contact_email:'Email', contact_message:'Üzenet',
+      contact_message_ph:'Miben segíthetünk?', contact_submit:'Üzenet küldése',
+      contact_sent:'Üzenet elküldve — köszönjük!', contact_error:'Hiba történt.', contact_network_error:'Hálózati hiba — próbálja újra.',
       hero_title:'Fedezze fel Kolozsvár ingatlanait', hero_sub:'Keresse, szűrje és elemezze az ingatlanadatokat az összes városnegyedben',
       search_ph:'Keresés cím, negyed vagy tulajdonos alapján…', search_btn:'Keresés',
       lbl_hood:'Negyed', lbl_own:'Tulajdonos', lbl_price:'Ár',
@@ -1645,11 +1694,29 @@
 
   fetch('/api/me').then(r => r.json()).then(renderAccountArea).catch(() => {});
 
-  /* ── Contact form ─────────────────────────────── */
+  /* ── Contact dropdown ─────────────────────────── */
+  function toggleContact(force) {
+    const el = document.getElementById('contact-dropdown');
+    const open = typeof force === 'boolean' ? force : !el.classList.contains('open');
+    el.classList.toggle('open', open);
+  }
+
+  document.addEventListener('click', (e) => {
+    const dd = document.getElementById('contact-dropdown');
+    if (!dd || !dd.classList.contains('open')) return;
+    const trigger = e.target.closest('[onclick*="toggleContact"]');
+    if (!dd.contains(e.target) && !trigger) toggleContact(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') toggleContact(false);
+  });
+
   document.getElementById('contact-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('contact-submit-btn');
     const status = document.getElementById('contact-status');
+    const lang = T[currentLang];
     btn.disabled = true;
     status.style.display = 'none';
     try {
@@ -1665,12 +1732,12 @@
       });
       const data = await res.json();
       status.className = 'contact-status ' + (res.ok ? 'success' : 'error');
-      status.textContent = res.ok ? 'Message sent — thanks!' : (data.detail || 'Something went wrong.');
+      status.textContent = res.ok ? lang.contact_sent : (data.detail || lang.contact_error);
       status.style.display = 'block';
       if (res.ok) document.getElementById('contact-form').reset();
     } catch (err) {
       status.className = 'contact-status error';
-      status.textContent = 'Network error — please try again.';
+      status.textContent = lang.contact_network_error;
       status.style.display = 'block';
     } finally {
       btn.disabled = false;
