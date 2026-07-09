@@ -414,10 +414,15 @@ def properties_sample():
 
 
 @app.get("/api/chart-data")
-def chart_data():
+def chart_data(
+    borough: str = Query(default="All", description="Neighborhood filter"),
+    property_class: str = Query(default="All", description="Property class filter"),
+    year_from: int | None = Query(default=None, description="Earliest sale year (inclusive)"),
+    year_to: int | None = Query(default=None, description="Latest sale year (inclusive)"),
+):
     if not _data_store:
         raise HTTPException(status_code=503, detail="Data not loaded.")
-    return _compute_chart_data(_data_store)
+    return _compute_chart_data(_data_store, borough, property_class, year_from, year_to)
 
 
 @app.get("/api/ownership-search")
@@ -478,11 +483,33 @@ def ownership_search(
     }
 
 
-def _compute_chart_data(store: PropertyDataStore) -> dict:
-    valid_txs = [
-        tx for tx in store.transactions
-        if tx.get("sale_price", 0) > 1000 and tx.get("sale_date")
-    ]
+def _compute_chart_data(
+    store: PropertyDataStore,
+    borough: str = "All",
+    property_class: str = "All",
+    year_from: int | None = None,
+    year_to: int | None = None,
+) -> dict:
+    def matches_filters(prop: dict) -> bool:
+        if borough != "All" and str(prop.get("borough", "")).strip() != borough:
+            return False
+        if property_class != "All" and str(prop.get("property_class", "")).strip() != property_class:
+            return False
+        return True
+
+    valid_txs = []
+    for tx in store.transactions:
+        if tx.get("sale_price", 0) <= 1000 or not tx.get("sale_date"):
+            continue
+        yr = tx["sale_date"].year
+        if year_from is not None and yr < year_from:
+            continue
+        if year_to is not None and yr > year_to:
+            continue
+        prop = store.properties_by_propkey.get(tx["propkey"])
+        if not prop or not matches_filters(prop):
+            continue
+        valid_txs.append(tx)
 
     all_years = sorted({tx["sale_date"].year for tx in valid_txs})
 
@@ -514,8 +541,9 @@ def _compute_chart_data(store: PropertyDataStore) -> dict:
 
     top_boroughs = sorted(borough_prices, key=lambda b: len(borough_prices[b]), reverse=True)[:8]
 
-    srl_count = sum(1 for o in store.ownership if o.get("is_srl"))
-    ind_count = len(store.ownership) - srl_count
+    filtered_ownership = [po for po in store.property_ownership if matches_filters(po)]
+    srl_count = sum(1 for po in filtered_ownership if po.get("is_srl"))
+    ind_count = len(filtered_ownership) - srl_count
 
     all_prices = [tx["sale_price"] for tx in valid_txs]
     all_psqm: list[float] = []
@@ -565,8 +593,8 @@ def _compute_chart_data(store: PropertyDataStore) -> dict:
             "total_transactions": len(valid_txs),
             "median_psqm":        round(_median(all_psqm)) if all_psqm else 0,
             "yoy_change":         yoy,
-            "total_properties":   len(store.properties),
-            "srl_pct":            round(srl_count / len(store.ownership) * 100, 1) if store.ownership else 0,
+            "total_properties":   sum(1 for p in store.properties if matches_filters(p)),
+            "srl_pct":            round(srl_count / len(filtered_ownership) * 100, 1) if filtered_ownership else 0,
         },
     }
 

@@ -155,7 +155,7 @@
     .hero {
       background:
         linear-gradient(160deg, rgba(12,35,64,.72) 0%, rgba(26,60,94,.56) 55%, rgba(12,35,64,.70) 100%),
-        url('/img/hero-cluj.jpg') center 40% / cover no-repeat;
+        url('/img/hero-cluj.jpg') center 12% / cover no-repeat;
       color: #fff; padding: 44px 40px 40px; text-align: center;
       position: relative; overflow: hidden;
     }
@@ -287,16 +287,9 @@
     }
     .own-ask-btn:hover { background: #eff6ff; border-color: var(--accent); }
 
-    /* ── Load more ───────────────────────────── */
+    /* ── Infinite scroll ─────────────────────── */
     .load-more-wrap { text-align: center; margin-top: 28px; }
-    .load-more-btn {
-      padding: 11px 32px; border-radius: 12px;
-      background: #fff; border: 1.5px solid var(--g200);
-      font-size: 14px; font-weight: 600; color: var(--g700); font-family: inherit;
-      cursor: pointer; transition: all .15s;
-    }
-    .load-more-btn:hover { border-color: var(--accent); color: var(--accent); background: #eff6ff; }
-    .load-more-btn:disabled { opacity: .4; cursor: not-allowed; }
+    #scroll-sentinel { height: 1px; }
 
     /* ── Empty / loading ──────────────────────── */
     .state-box {
@@ -425,6 +418,8 @@
 
     /* ── Responsive ────────────────────────────── */
     @media (max-width: 768px) {
+      /* iOS Safari zooms the viewport on focus if an input's font-size is under 16px */
+      #cm-input { font-size: 16px; }
       /* iOS Safari: backdrop-filter+sticky creates compositing layer that
          swallows child touch events. Switch to fixed + solid bg on mobile. */
       header {
@@ -474,6 +469,7 @@
   </a>
   <nav>
     <a href="/" data-i18n="nav_search">Search</a>
+    <a href="#" onclick="location.href='/?view=map';return false;" data-i18n="nav_map">Map</a>
     <a href="/stats" data-i18n="nav_stats">Market Stats</a>
     <a href="/ownership" class="active" data-i18n="nav_ownership">Ownership</a>
     <a href="#" class="nav-about" onclick="openAbout();return false;" data-i18n="nav_about">About</a>
@@ -492,6 +488,7 @@
 
 <nav class="mobile-nav" id="mobile-nav">
   <a href="/" data-i18n="nav_search">Search</a>
+  <a href="#" onclick="location.href='/?view=map';closeMobileNav();return false;" data-i18n="nav_map">Map</a>
   <a href="/stats" data-i18n="nav_stats">Market Stats</a>
   <a href="/ownership" class="active" data-i18n="nav_ownership">Ownership</a>
   <a href="#" onclick="openAbout();closeMobileNav();return false;" data-i18n="nav_about">About</a>
@@ -522,7 +519,7 @@
       </button>
     </div>
   </div>
-  <a class="hero-credit" href="https://commons.wikimedia.org/wiki/File:Romania-2387_-_Cluj-Napoca_Sunset_(7794319726).jpg" target="_blank" rel="noopener">Photo: Dennis G. Jarvis, CC BY-SA 2.0</a>
+  <a class="hero-credit" href="https://commons.wikimedia.org/wiki/File:Cluj_napoca_piata_unirii_(52069735705).jpg" target="_blank" rel="noopener">Photo: Lucian Nuță, CC BY-SA 2.0</a>
 </section>
 
 <!-- Filter tabs -->
@@ -555,8 +552,9 @@
     </div>
   </div>
   <div class="load-more-wrap" id="load-more-wrap" style="display:none;">
-    <button class="load-more-btn" id="load-more-btn" onclick="loadMore()">Load more</button>
+    <div class="spinner" id="scroll-spinner"></div>
   </div>
+  <div id="scroll-sentinel"></div>
 </main>
 
 <div class="contact-dropdown" id="contact-dropdown">
@@ -677,7 +675,7 @@
   /* ── Translations ───────────────────────────── */
   const T = {
     en: {
-      nav_search:'Search', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About', nav_contact:'Contact', nav_language:'Language',
+      nav_search:'Search', nav_map:'Map', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About', nav_contact:'Contact', nav_language:'Language',
       contact_title:'Get in touch', contact_sub:'Questions or feedback? Send a message.',
       contact_name:'Name', contact_name_ph:'Your name', contact_email:'Email', contact_message:'Message',
       contact_message_ph:"What's on your mind?", contact_submit:'Send message',
@@ -696,10 +694,9 @@
       stats_showing:'Showing', stats_of:'of', stats_total:'total',
       stats_srl:'SRL', stats_ind:'Individual',
       empty_title:'No results found', empty_sub:'Try a different search query or filter.',
-      load_more:'Load more',
     },
     ro: {
-      nav_search:'Căutare', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre', nav_contact:'Contact', nav_language:'Limbă',
+      nav_search:'Căutare', nav_map:'Hartă', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre', nav_contact:'Contact', nav_language:'Limbă',
       contact_title:'Contactați-ne', contact_sub:'Întrebări sau feedback? Trimiteți un mesaj.',
       contact_name:'Nume', contact_name_ph:'Numele tău', contact_email:'Email', contact_message:'Mesaj',
       contact_message_ph:'Ce ai pe suflet?', contact_submit:'Trimite mesajul',
@@ -718,10 +715,9 @@
       stats_showing:'Afișate', stats_of:'din', stats_total:'total',
       stats_srl:'SRL', stats_ind:'Persoană fizică',
       empty_title:'Niciun rezultat', empty_sub:'Încearcă o altă căutare sau filtru.',
-      load_more:'Încarcă mai multe',
     },
     hu: {
-      nav_search:'Keresés', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk', nav_contact:'Kapcsolat', nav_language:'Nyelv',
+      nav_search:'Keresés', nav_map:'Térkép', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk', nav_contact:'Kapcsolat', nav_language:'Nyelv',
       contact_title:'Lépjen kapcsolatba', contact_sub:'Kérdése vagy visszajelzése van? Küldjön üzenetet.',
       contact_name:'Név', contact_name_ph:'Az Ön neve', contact_email:'Email', contact_message:'Üzenet',
       contact_message_ph:'Miben segíthetünk?', contact_submit:'Üzenet küldése',
@@ -740,7 +736,6 @@
       stats_showing:'Megjelenítve', stats_of:'/', stats_total:'összesen',
       stats_srl:'KFT', stats_ind:'Magánszemély',
       empty_title:'Nincs találat', empty_sub:'Próbálj más keresési feltételt.',
-      load_more:'Továbbiak betöltése',
     },
   };
 
@@ -777,7 +772,6 @@
     document.documentElement.lang = lang;
 
     updateStatsBar();
-    document.getElementById('load-more-btn').textContent = T[lang].load_more;
 
     const _cp = document.getElementById('cp-msgs');
     const _hi = T[lang] && T[lang].brick_hi;
@@ -987,12 +981,12 @@
             </svg>
             <p><strong>${T[lang].empty_title}</strong><br>${T[lang].empty_sub}</p>
           </div>`;
+        hasMoreResults = false;
         document.getElementById('load-more-wrap').style.display = 'none';
       } else {
         grid.innerHTML = allCards.map(renderCard).join('');
-        const hasMore = allCards.length < totalCount;
-        document.getElementById('load-more-wrap').style.display = hasMore ? 'block' : 'none';
-        document.getElementById('load-more-btn').textContent = T[currentLang].load_more;
+        hasMoreResults = allCards.length < totalCount;
+        document.getElementById('load-more-wrap').style.display = hasMoreResults ? 'block' : 'none';
       }
 
       updateStatsBar();
@@ -1001,13 +995,21 @@
     }
   }
 
+  let hasMoreResults = false;
+  let isLoadingMore = false;
+
   async function loadMore() {
+    if (isLoadingMore || !hasMoreResults) return;
+    isLoadingMore = true;
     currentOffset += PAGE_SIZE;
-    const btn = document.getElementById('load-more-btn');
-    btn.disabled = true;
     await doSearch(false);
-    btn.disabled = false;
+    isLoadingMore = false;
   }
+
+  const scrollObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) loadMore();
+  }, { rootMargin: '400px' });
+  scrollObserver.observe(document.getElementById('scroll-sentinel'));
 
   function pickTab(el) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));

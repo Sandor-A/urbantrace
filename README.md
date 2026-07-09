@@ -15,10 +15,12 @@ All filtering, aggregation, and joins happen in Python. The LLM never invents pr
 ## Key Features
 
 - Natural-language property and ownership search
-- Market statistics and trend analysis
+- Market statistics and trend analysis, filterable by neighborhood, property class, and year range
+- Interactive Leaflet map view of listings
 - Tool/function-calling agent architecture
 - Real neighborhood matching via OSM Nominatim geocoding (with local cache)
-- Interactive web interface with three pages: property search, market stats, ownership
+- Accounts — register/login, persistent per-user chat history (`/my-chats`), admin panel (`/admin`) for reviewing all sessions
+- Contact form (emails the site owner via Resend)
 - Brick — an animated AI assistant widget embedded in every page
 - Language switcher: English / Romanian / Hungarian (persisted to localStorage)
 - Lightweight session memory for multi-turn follow-up queries
@@ -38,11 +40,16 @@ Urbantrace/
 ├── data_loader.py          # CSV ingestion, normalization, geocoder enrichment
 ├── geocoder.py             # Nominatim (OSM) geocoding with persistent cache
 ├── memory.py               # SessionMemory — tracks last tool, filters, results
+├── auth_db.py              # SQLite: users, chat sessions, chat messages, roles
 │
 ├── static/
-│   ├── index.html          # Property search page with Brick assistant widget
-│   ├── stats.html          # Market statistics page with Chart.js charts
-│   └── ownership.html      # Ownership search page with SRL/individual filters
+│   ├── index.html          # Property search page — grid + map view, Brick widget
+│   ├── stats.html          # Market statistics page — filterable Chart.js charts
+│   ├── ownership.html      # Ownership search page — SRL/individual, infinite scroll
+│   ├── login.html          # Register / sign in
+│   ├── my-chats.html       # Signed-in user's persisted chat history
+│   ├── admin.html          # Admin panel — browse all users' chat sessions
+│   └── img/hero-cluj.jpg   # Shared hero photo across index/stats/ownership
 │
 ├── data/
 │   ├── properties.csv      # 500 property records
@@ -56,6 +63,8 @@ Urbantrace/
 │
 ├── testquestions.txt       # Manual QA queries
 ├── requirements.txt        # Python dependencies
+├── render.yaml             # Render.com deployment config
+├── .env.example            # Required environment variables
 ├── CLAUDE.md               # Claude Code / AI development notes
 └── README.md
 ```
@@ -66,14 +75,17 @@ Urbantrace/
 
 ```bash
 pip install -r requirements.txt
-cp .env.example .env        # add OPENAI_API_KEY
+cp .env.example .env        # fill in the values below
 ```
 
-Override the model (default: `gpt-4o-mini`):
-
-```
-OPENAI_MODEL=gpt-4o-mini
-```
+| Variable | Required | Purpose |
+|---|---|---|
+| `OPENAI_API_KEY` | yes | Powers the Brick agent |
+| `OPENAI_MODEL` | no (default `gpt-4o-mini`) | Override the LLM model |
+| `ADMIN_USERNAME` / `ADMIN_PASSWORD` | yes | Seeded once at startup if the account doesn't already exist |
+| `SESSION_SECRET` | yes | Signs session cookies — any long random string |
+| `RESEND_API_KEY` / `CONTACT_EMAIL_TO` | no | Powers the contact form (resend.com free tier); form returns 503 if unset |
+| `ENV` | no (default `development`) | Set to `production` on deploy — enables secure (HTTPS-only) session cookies |
 
 **Run — web interface:**
 
@@ -83,9 +95,12 @@ python server.py
 
 | URL | Page |
 |---|---|
-| `http://127.0.0.1:8000` | Property search |
+| `http://127.0.0.1:8000` | Property search (grid + map view) |
 | `http://127.0.0.1:8000/stats` | Market statistics dashboard |
 | `http://127.0.0.1:8000/ownership` | Ownership search |
+| `http://127.0.0.1:8000/login` | Register / sign in |
+| `http://127.0.0.1:8000/my-chats` | Signed-in user's chat history |
+| `http://127.0.0.1:8000/admin` | Admin panel (requires `role=admin`) |
 
 **Run — CLI:**
 
@@ -97,7 +112,7 @@ python app.py
 
 ## Web Interface
 
-All three pages share a common design: glassmorphism sticky header with `backdrop-filter: blur`, Inter font, and the Brick assistant widget fixed in the bottom-right corner.
+All pages share a common design: glassmorphism sticky header with `backdrop-filter: blur`, Inter font, a full nav (Search · Map · Market Stats · Ownership · About · Contact) with a working hamburger menu on mobile, and the Brick assistant widget fixed in the bottom-right corner.
 
 ### Property Search (`/`)
 
@@ -107,19 +122,22 @@ All three pages share a common design: glassmorphism sticky header with `backdro
   - `< 500k RON` · `500k – 2M` · `2M – 10M` · `10M – 30M` · `> 30M RON`
 - Property cards — SVG building illustrations, price, area (mp), price/mp, owner badge; 24 cards per page with **Load more** pagination
 - **8 sort options**: Price high→low, Price low→high, Price/m² high→low, Price/m² low→high, Area large→small, Area small→large, Most recent sale, Oldest sale — sorting applies to the full filtered dataset and shows all results at once
+- **Map view** — toggle between grid and an embedded Leaflet map with a pin per listing (`view-btn-map` / `view-btn-grid`); the nav's "Map" link jumps here from any page via `/?view=map`
 - Filter bar **stays visible while scrolling** on mobile (sticky, z-index below the hamburger nav)
 - Clicking a card pre-fills the Brick assistant with a question about that property
 
 ### Market Statistics (`/stats`)
 
-Powered by the `/api/chart-data` endpoint which aggregates live from the CSV data.
+Powered by the `/api/chart-data` endpoint, which aggregates live from the CSV data and accepts `borough`, `property_class`, `year_from`, `year_to` query params.
+
+- **Filter bar** — Neighborhood, Property Class, and Year range (From/To, populated from the actual transaction years) selects, plus a Reset button. Changing any filter refetches and rebuilds every KPI/chart below.
 
 **KPI cards:**
 
 | Card | Value |
 |---|---|
-| Total Transactions | Count of arm's-length sales |
-| Median Sale Price | Overall median across all valid transactions |
+| Total Transactions | Count of arm's-length sales (within the active filter) |
+| Median Sale Price | Median across matching transactions |
 | Median RON/mp | Median price per square meter |
 | Year-over-Year Change | % change in median price vs. prior year |
 
@@ -141,11 +159,21 @@ Powered by the `/api/ownership-search` endpoint.
 - Tab filters — All / SRL / Individual
 - Ownership cards — type icon, address, owner name, type badge, registration date, assessed value, "Ask Brick" shortcut
 - Stats bar — total count / SRL count / individual count
-- Load-more pagination (24 records per page)
+- **Infinite scroll** — an `IntersectionObserver` on a bottom sentinel auto-loads the next page (24 records at a time) as the user scrolls, no button click needed
+
+### Accounts (`/login`, `/my-chats`, `/admin`)
+
+- **`/login`** — register or sign in (session-cookie auth, bcrypt-hashed passwords via `auth_db.py`); a guest can also continue without an account
+- **`/my-chats`** — a signed-in user's own past Brick conversations, persisted server-side in SQLite and listed by most-recently-active
+- **`/admin`** — visible only to the seeded admin account (`role=admin`); lists every user's chat sessions (including guest sessions) and can prune empty guest sessions
+
+### Contact Form
+
+Every page's header has a "Contact" link that opens a dropdown form (name, email, message + a hidden honeypot field against bots). Submissions are emailed to `CONTACT_EMAIL_TO` via the Resend API; the endpoint 503s if `RESEND_API_KEY`/`CONTACT_EMAIL_TO` aren't configured.
 
 ### Language Switcher
 
-All three pages include a `🇬🇧 EN / 🇷🇴 RO / 🇭🇺 HU` pill switcher in the header. The selected language is persisted to `localStorage('ut_lang')` and applied on page load via `data-i18n` attributes and a `TRANSLATIONS` object.
+All pages include a `🇬🇧 EN / 🇷🇴 RO / 🇭🇺 HU` pill switcher in the header (and login screen). The selected language is persisted to `localStorage('ut_lang')` and applied on page load via `data-i18n` / `data-i18n-opt` attributes and a per-page translation table.
 
 ### Brick — AI Assistant Widget
 
@@ -156,6 +184,44 @@ A building-brick mascot fixed in the bottom-right corner of every page.
 - **Connects to `/chat`** — same backend as the CLI
 - **Context-aware** — on the stats page, pre-loaded with market analysis prompts; on the search page, card clicks pre-fill the chat input
 - **Badge** — attention dot appears after 4 s idle
+
+---
+
+## Detailed Workflow
+
+### 1. Guest visitor — search & ask
+
+1. Lands on `/`; `index.html` calls `GET /api/properties-sample` and renders the property grid (24 cards) client-side.
+2. Adjusts Neighborhood / Ownership / Price filters or the sort dropdown — all filtering/sorting happens **client-side** against the already-fetched sample, so it's instant.
+3. Toggles **Map** — same dataset, rendered as Leaflet pins using each property's `lat`/`lng` (real geocoding takes priority; ungeocoded properties fall back to a deterministic jittered point near their borough's centroid so pins don't stack).
+4. Clicks a property card → the Brick panel opens with a pre-filled question about that property, or opens it manually and types a question.
+5. Each message is `POST /chat`ed. `server.py` resolves a `chat_session_id` (creating a guest one via `SessionMiddleware` if none exists), fetches or creates a per-session `PropertyAssistant` (`agent.py`), and calls `assistant.ask(text)`.
+6. The agent sends the conversation to the OpenAI LLM with the four tool schemas from `tools.py`. The LLM never answers factual questions directly — it must call a tool (`search_properties`, `get_market_stats`, `lookup_owner`, or `describe_schema`); `_execute_tool()` runs it against the in-memory `PropertyDataStore` and updates `SessionMemory` so a follow-up like "what about Grigorescu?" can reuse the prior filters.
+7. Both the user's message and the assistant's reply are persisted to SQLite via `auth_db.add_message()` — guest sessions included, keyed only by the anonymous `chat_session_id`.
+
+### 2. Returning / signed-in user
+
+1. Visits `/login`, registers or signs in (`POST /auth/register` / `POST /auth/login`) — passwords are bcrypt-hashed, failed attempts are rate-limited per IP+username.
+2. On success the session cookie carries `user_id`, `username`, `role`, and a **fresh** chat session is started (a signed-in user never silently inherits an in-progress guest conversation).
+3. Chatting with Brick from any page now persists under that `user_id`. Visiting `/my-chats` calls `GET /api/my-chats` (list) and `GET /api/my-chats/{session_id}` (transcript) — both scoped to the caller, so one user can never read another's history.
+
+### 3. Admin oversight
+
+1. The account named in `ADMIN_USERNAME`/`ADMIN_PASSWORD` is seeded once at first server startup (`auth_db._seed_admin()`) with `role='admin'`.
+2. Signing in as that account and visiting `/admin` calls `GET /api/admin/sessions`, which — unlike `/api/my-chats` — returns **every** session, including anonymous guest ones, for support/debugging.
+3. `POST /api/admin/prune-guests` deletes guest sessions older than 7 days that never got a message, to keep the DB from accumulating abandoned sessions.
+
+### 4. Market Stats filtering
+
+1. `/stats` loads unfiltered (`GET /api/chart-data`) and populates the Year From/To selects from the response's actual `years` range.
+2. Picking a Neighborhood, Property Class, or Year bound calls `applyFilters()`, which rebuilds the query string and re-requests `/api/chart-data?borough=...&property_class=...&year_from=...&year_to=...`.
+3. The server re-filters `store.transactions` (and the joined `store.property_ownership` for the SRL/individual split) against the same predicate, so every KPI and chart — not just one — reflects the active filter. The frontend destroys and recreates each Chart.js instance rather than mutating in place, so filter changes never leave stale datasets overlapping the canvas.
+
+### 5. Deployment (Render)
+
+1. `render.yaml` defines a single free-tier web service running `uvicorn server:app`.
+2. Secrets (`OPENAI_API_KEY`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `RESEND_API_KEY`, `CONTACT_EMAIL_TO`) are marked `sync: false` and must be set in the Render dashboard; `SESSION_SECRET` is auto-generated; `ENV=production` flips session cookies to HTTPS-only.
+3. On first boot in a fresh environment, `lifespan()` loads the CSVs into memory, `auth_db.init_db()` creates the SQLite schema, and the admin account is seeded — no manual migration step.
 
 ---
 
@@ -184,14 +250,34 @@ geocoder.py — Nominatim (OSM) geocoding
 
 memory.py — SessionMemory tracks last_tool, filters, last_results across turns
 
+auth_db.py — SQLite (users, chat_sessions, chat_messages)
+  ├─ create_user() / authenticate_user() — bcrypt-hashed passwords
+  ├─ _seed_admin() — creates ADMIN_USERNAME/ADMIN_PASSWORD on first startup if missing
+  ├─ create_chat_session() / add_message() / get_messages() — persisted chat history
+  └─ get_sessions_for_user() / get_all_sessions() — used by /my-chats and /admin
+
 server.py — FastAPI
-  ├─ GET  /                    → index.html (property search)
-  ├─ GET  /stats               → stats.html (market dashboard)
-  ├─ GET  /ownership           → ownership.html (ownership search)
-  ├─ POST /chat                → PropertyAssistant.ask()
-  ├─ POST /reset               → new PropertyAssistant session
-  ├─ GET  /api/chart-data      → live aggregations for Chart.js
-  └─ GET  /api/ownership-search → paginated ownership search (q, type, limit, offset)
+  ├─ GET  /                       → index.html (property search + map view)
+  ├─ GET  /stats                  → stats.html (market dashboard)
+  ├─ GET  /ownership              → ownership.html (ownership search)
+  ├─ GET  /login                  → login.html
+  ├─ GET  /my-chats               → my-chats.html
+  ├─ GET  /admin                  → admin.html
+  ├─ GET  /api/me                 → current session identity/role
+  ├─ POST /auth/register          → create account, start session
+  ├─ POST /auth/login             → authenticate, start session (rate-limited)
+  ├─ POST /auth/logout            → clear session
+  ├─ POST /chat                   → PropertyAssistant.ask(), persists to auth_db
+  ├─ POST /reset                  → new chat session ("New Chat")
+  ├─ GET  /api/my-chats           → signed-in user's session list
+  ├─ GET  /api/my-chats/{id}      → one session's messages (owner-only)
+  ├─ GET  /api/admin/sessions     → all sessions (admin-only)
+  ├─ GET  /api/admin/sessions/{id}→ one session's messages (admin-only)
+  ├─ POST /api/admin/prune-guests → delete empty guest sessions (admin-only)
+  ├─ POST /api/contact            → sends an email via Resend (rate-limited, honeypot)
+  ├─ GET  /api/properties-sample  → property listings incl. map lat/lng
+  ├─ GET  /api/chart-data         → live aggregations for Chart.js (borough, property_class, year_from, year_to)
+  └─ GET  /api/ownership-search   → paginated ownership search (q, type, limit, offset)
 ```
 
 ### Key design decisions
@@ -215,7 +301,14 @@ server.py — FastAPI
 
 ### `GET /api/chart-data`
 
-Returns all chart data for the market statistics dashboard. Aggregates live from CSVs.
+Returns all chart data for the market statistics dashboard. Aggregates live from CSVs, re-filtered on every call.
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `borough` | string | `"All"` | Neighborhood filter |
+| `property_class` | string | `"All"` | Property class filter (exact match, e.g. `"D - Bloc Cu Lift"`) |
+| `year_from` | int | none | Earliest sale year (inclusive) |
+| `year_to` | int | none | Latest sale year (inclusive) |
 
 Response fields: `years`, `price_trend` (overall median + per-borough), `volume_by_year`, `borough_stats`, `ownership_split`, `kpis`.
 
@@ -228,7 +321,19 @@ Response fields: `years`, `price_trend` (overall median + per-borough), `volume_
 | `limit` | int | `24` | Max results (1–200) |
 | `offset` | int | `0` | Pagination offset |
 
-Response: `{ total, results, stats: { srl, individual } }`
+Response: `{ total, results, stats: { srl, individual } }`. The ownership page calls this repeatedly with increasing `offset` as the user scrolls (infinite scroll), not via a "Load more" click.
+
+### `GET /api/properties-sample`
+
+Returns every property's best (highest-price) transaction plus `lat`/`lng` (real geocoded coordinates when available, otherwise a deterministic per-borough fallback jitter). Powers both the property grid and the map view on `/`.
+
+### Auth & chat history
+
+`POST /auth/register`, `POST /auth/login`, `POST /auth/logout`, `GET /api/me` manage a session-cookie identity. `POST /chat` and `POST /reset` work for both guests and signed-in users; signed-in users additionally get `GET /api/my-chats` and `GET /api/my-chats/{session_id}` to retrieve their own persisted history. `GET/POST /api/admin/*` are gated on `role=admin` (seeded via `ADMIN_USERNAME`/`ADMIN_PASSWORD`) and expose every user's — including guests' — chat sessions.
+
+### `POST /api/contact`
+
+Rate-limited (per-IP), honeypot-protected contact form submission, relayed by email via the Resend API. Returns `503` if `RESEND_API_KEY`/`CONTACT_EMAIL_TO` are not set.
 
 ---
 
@@ -267,9 +372,9 @@ Returns field list, date range, available neighborhoods, geocoded count, and dat
 - Sale prices of `0 RON` indicate non-arm's-length transfers
 - `is_srl` is derived from owner name patterns, not a source field
 
-### Neighborhoods (15)
+### Neighborhoods (12)
 
-Baciu · Borhanci · Bună Ziua · Dâmbul Rotund · Europa · Florești · Gheorgheni · Grigorescu · Iris · Mănăștur · Mărăști · Someșeni · Sopor · Zorilor · Între Lacuri
+Bună Ziua · Centru · Dâmbul Rotund · Europa · Florești · Gheorgheni · Grigorescu · Iris · Mănăștur · Mărăști · Someșeni · Zorilor
 
 ---
 
@@ -282,6 +387,8 @@ rich>=13.7.0
 fastapi>=0.111.0
 uvicorn>=0.30.0
 geopy>=2.4.0       # OSM Nominatim geocoding (optional — app works without it)
+bcrypt>=4.1.0      # password hashing (auth_db.py)
+itsdangerous>=2.2.0 # signed session cookies (SessionMiddleware)
 ```
 
 ---

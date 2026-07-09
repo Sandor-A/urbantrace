@@ -147,7 +147,7 @@
     .hero {
       background:
         linear-gradient(160deg, rgba(12,35,64,.72) 0%, rgba(26,60,94,.56) 55%, rgba(12,35,64,.70) 100%),
-        url('/img/hero-cluj.jpg') center 40% / cover no-repeat;
+        url('/img/hero-cluj.jpg') center 12% / cover no-repeat;
       color: #fff;
       padding: 48px 40px 40px;
       text-align: center;
@@ -703,6 +703,8 @@
 
     /* ── Responsive breakpoints ────────────────── */
     @media (max-width: 768px) {
+      /* iOS Safari zooms the viewport on focus if an input's font-size is under 16px */
+      #cm-input { font-size: 16px; }
       /* iOS Safari: backdrop-filter+sticky creates compositing layer that
          swallows child touch events. Switch to fixed + solid bg on mobile. */
       header {
@@ -830,7 +832,7 @@
       <div id="ex-chips"></div>
     </div>
   </div>
-  <a class="hero-credit" href="https://commons.wikimedia.org/wiki/File:Romania-2387_-_Cluj-Napoca_Sunset_(7794319726).jpg" target="_blank" rel="noopener">Photo: Dennis G. Jarvis, CC BY-SA 2.0</a>
+  <a class="hero-credit" href="https://commons.wikimedia.org/wiki/File:Cluj_napoca_piata_unirii_(52069735705).jpg" target="_blank" rel="noopener">Photo: Lucian Nuță, CC BY-SA 2.0</a>
 </section>
 
 <!-- Filters -->

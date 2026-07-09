@@ -149,7 +149,7 @@
     .page-bar {
       background:
         linear-gradient(160deg, rgba(12,35,64,.80) 0%, rgba(26,60,94,.62) 55%, rgba(12,35,64,.78) 100%),
-        url('/img/hero-cluj.jpg') center 40% / cover no-repeat;
+        url('/img/hero-cluj.jpg') center 12% / cover no-repeat;
       padding: 40px 40px 32px; position: relative; overflow: hidden;
     }
     .page-bar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; }
@@ -161,6 +161,37 @@
     .data-badge { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
     .page-bar .hero-credit { position: absolute; bottom: 6px; right: 14px; z-index: 1; font-size: 10px; color: rgba(255,255,255,.4); text-decoration: none; }
     .page-bar .hero-credit:hover { color: rgba(255,255,255,.7); }
+
+    /* ── Filters ── */
+    .filters-bar {
+      background: #fff; border-bottom: 1px solid var(--g200);
+      padding: 12px 40px;
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 11px; font-weight: 700; color: var(--g400);
+      text-transform: uppercase; letter-spacing: .07em;
+      margin-right: 2px; white-space: nowrap;
+    }
+    .filter-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .filter-sep { width: 1px; height: 20px; background: var(--g200); margin: 0 4px; }
+    .filter-select {
+      padding: 5px 30px 5px 14px; border-radius: 20px;
+      border: 1.5px solid var(--g200); background: var(--g50);
+      font-size: 12.5px; font-weight: 500; color: var(--g700);
+      cursor: pointer; font-family: inherit; outline: none;
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 11px center;
+      white-space: nowrap; transition: border-color .15s;
+    }
+    .filter-select:hover, .filter-select:focus { border-color: var(--accent); color: var(--accent); }
+    .filter-reset {
+      padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--g200);
+      background: var(--g50); font-size: 12.5px; font-weight: 600; color: var(--g500);
+      cursor: pointer; font-family: inherit; transition: all .15s;
+    }
+    .filter-reset:hover { border-color: var(--accent); color: var(--accent); background: #eff6ff; }
 
     /* ── Main ── */
     .main { max-width: 1280px; margin: 0 auto; padding: 28px 40px 100px; }
@@ -325,6 +356,8 @@
 
     /* ── Responsive ────────────────────────────── */
     @media (max-width: 768px) {
+      /* iOS Safari zooms the viewport on focus if an input's font-size is under 16px */
+      #cm-input { font-size: 16px; }
       /* iOS Safari: backdrop-filter+sticky creates compositing layer that
          swallows child touch events. Switch to fixed + solid bg on mobile. */
       header {
@@ -343,6 +376,12 @@
       .page-bar { padding: 14px 16px; }
       .page-title { font-size: 18px; }
       .data-badge { font-size: 11px; padding: 4px 10px; }
+
+      .filters-bar { padding: 10px 14px; flex-direction: column; align-items: stretch; gap: 10px; }
+      .filter-label { display: flex; margin-right: 4px; }
+      .filter-sep { display: none; }
+      .filter-group { flex-wrap: wrap; gap: 6px; }
+      .filter-select { flex: 1; min-width: 0; min-height: 40px; }
 
       .main { padding: 16px 14px 80px; }
       .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -373,6 +412,7 @@
   </a>
   <nav>
     <a href="/" data-i18n="nav_search">Search</a>
+    <a href="#" onclick="location.href='/?view=map';return false;" data-i18n="nav_map">Map</a>
     <a href="/stats" class="active" data-i18n="nav_stats">Market Stats</a>
     <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
     <a href="#" class="nav-about" onclick="openAbout();return false;" data-i18n="nav_about">About</a>
@@ -391,6 +431,7 @@
 
 <nav class="mobile-nav" id="mobile-nav">
   <a href="/" data-i18n="nav_search">Search</a>
+  <a href="#" onclick="location.href='/?view=map';closeMobileNav();return false;" data-i18n="nav_map">Map</a>
   <a href="/stats" class="active" data-i18n="nav_stats">Market Stats</a>
   <a href="/ownership" data-i18n="nav_ownership">Ownership</a>
   <a href="#" onclick="openAbout();closeMobileNav();return false;" data-i18n="nav_about">About</a>
@@ -415,7 +456,56 @@
     </div>
     <div class="data-badge" id="data-badge">Loading…</div>
   </div>
-  <a class="hero-credit" href="https://commons.wikimedia.org/wiki/File:Romania-2387_-_Cluj-Napoca_Sunset_(7794319726).jpg" target="_blank" rel="noopener">Photo: Dennis G. Jarvis, CC BY-SA 2.0</a>
+  <a class="hero-credit" href="https://commons.wikimedia.org/wiki/File:Cluj_napoca_piata_unirii_(52069735705).jpg" target="_blank" rel="noopener">Photo: Lucian Nuță, CC BY-SA 2.0</a>
+</div>
+
+<!-- Filters -->
+<div class="filters-bar">
+  <div class="filter-group">
+    <span class="filter-label" data-i18n="lbl_hood">Neighborhood</span>
+    <select class="filter-select" id="filter-hood" onchange="applyFilters()">
+      <option value="All" data-i18n-opt="hood_all">All Neighborhoods</option>
+      <option value="Centru">Centru</option>
+      <option value="Grigorescu">Grigorescu</option>
+      <option value="Mărăști">Mărăști</option>
+      <option value="Mănăștur">Mănăștur</option>
+      <option value="Zorilor">Zorilor</option>
+      <option value="Europa">Europa</option>
+      <option value="Gheorgheni">Gheorgheni</option>
+      <option value="Bună Ziua">Bună Ziua</option>
+      <option value="Iris">Iris</option>
+      <option value="Florești">Florești</option>
+      <option value="Someșeni">Someșeni</option>
+      <option value="Dâmbul Rotund">Dâmbul Rotund</option>
+    </select>
+  </div>
+  <div class="filter-sep"></div>
+  <div class="filter-group">
+    <span class="filter-label" data-i18n="lbl_class">Property Class</span>
+    <select class="filter-select" id="filter-class" onchange="applyFilters()">
+      <option value="All" data-i18n-opt="class_all">All Classes</option>
+      <option value="A - Locuință Unifamilială">A - Locuință Unifamilială</option>
+      <option value="B - Locuință Bifamilială">B - Locuință Bifamilială</option>
+      <option value="C - Bloc Fără Lift">C - Bloc Fără Lift</option>
+      <option value="D - Bloc Cu Lift">D - Bloc Cu Lift</option>
+      <option value="E - Clădire Comercială">E - Clădire Comercială</option>
+      <option value="F - Spațiu de Birouri">F - Spațiu de Birouri</option>
+      <option value="G - Depozit / Industrial">G - Depozit / Industrial</option>
+      <option value="H - Teren Neamenajat">H - Teren Neamenajat</option>
+    </select>
+  </div>
+  <div class="filter-sep"></div>
+  <div class="filter-group">
+    <span class="filter-label" data-i18n="lbl_year">Year</span>
+    <select class="filter-select" id="filter-year-from" onchange="applyFilters()">
+      <option value="All" data-i18n-opt="year_from_all">From</option>
+    </select>
+    <select class="filter-select" id="filter-year-to" onchange="applyFilters()">
+      <option value="All" data-i18n-opt="year_to_all">To</option>
+    </select>
+  </div>
+  <div class="filter-sep"></div>
+  <button class="filter-reset" onclick="resetFilters()" data-i18n="filter_reset">Reset</button>
 </div>
 
 <main class="main">
@@ -616,7 +706,10 @@
   /* ── Translations ───────────────────────────── */
   const T = {
     en: {
-      nav_search:'Search', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About', nav_contact:'Contact', nav_language:'Language',
+      nav_search:'Search', nav_map:'Map', nav_stats:'Market Stats', nav_ownership:'Ownership', nav_about:'About', nav_contact:'Contact', nav_language:'Language',
+      lbl_hood:'Neighborhood', hood_all:'All Neighborhoods',
+      lbl_class:'Property Class', class_all:'All Classes',
+      lbl_year:'Year', year_from_all:'From', year_to_all:'To', filter_reset:'Reset',
       contact_title:'Get in touch', contact_sub:'Questions or feedback? Send a message.',
       contact_name:'Name', contact_name_ph:'Your name', contact_email:'Email', contact_message:'Message',
       contact_message_ph:"What's on your mind?", contact_submit:'Send message',
@@ -639,7 +732,10 @@
       brick_hi:"I'm **Brick** 🧱 — ask me to dig deeper into the charts!\n\n- *\"Which neighborhood had the highest price growth?\"*\n- *\"What % of Centru properties are SRL-owned?\"*\n- *\"Show recent transactions above 2M RON\"*",
     },
     ro: {
-      nav_search:'Căutare', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre', nav_contact:'Contact', nav_language:'Limbă',
+      nav_search:'Căutare', nav_map:'Hartă', nav_stats:'Statistici', nav_ownership:'Proprietate', nav_about:'Despre', nav_contact:'Contact', nav_language:'Limbă',
+      lbl_hood:'Cartier', hood_all:'Toate cartierele',
+      lbl_class:'Clasă imobil', class_all:'Toate clasele',
+      lbl_year:'An', year_from_all:'De la', year_to_all:'Până la', filter_reset:'Resetează',
       contact_title:'Contactați-ne', contact_sub:'Întrebări sau feedback? Trimiteți un mesaj.',
       contact_name:'Nume', contact_name_ph:'Numele tău', contact_email:'Email', contact_message:'Mesaj',
       contact_message_ph:'Ce ai pe suflet?', contact_submit:'Trimite mesajul',
@@ -662,7 +758,10 @@
       brick_hi:"Sunt **Brick** 🧱 — întreabă-mă să aprofundăm graficele!\n\n- *\"Ce cartier a avut cea mai mare creștere a prețurilor?\"*\n- *\"Ce % din proprietățile din Centru sunt SRL-uri?\"*\n- *\"Arată tranzacțiile recente peste 2M RON\"*",
     },
     hu: {
-      nav_search:'Keresés', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk', nav_contact:'Kapcsolat', nav_language:'Nyelv',
+      nav_search:'Keresés', nav_map:'Térkép', nav_stats:'Piaci Statisztika', nav_ownership:'Tulajdonjog', nav_about:'Rólunk', nav_contact:'Kapcsolat', nav_language:'Nyelv',
+      lbl_hood:'Negyed', hood_all:'Összes negyed',
+      lbl_class:'Ingatlan osztály', class_all:'Összes osztály',
+      lbl_year:'Év', year_from_all:'Ettől', year_to_all:'Eddig', filter_reset:'Visszaállítás',
       contact_title:'Lépjen kapcsolatba', contact_sub:'Kérdése vagy visszajelzése van? Küldjön üzenetet.',
       contact_name:'Név', contact_name_ph:'Az Ön neve', contact_email:'Email', contact_message:'Üzenet',
       contact_message_ph:'Miben segíthetünk?', contact_submit:'Üzenet küldése',
@@ -704,6 +803,10 @@
       const key = el.dataset.i18nPh;
       if (T[lang][key] !== undefined) el.placeholder = T[lang][key];
     });
+    document.querySelectorAll('[data-i18n-opt]').forEach(el => {
+      const key = el.dataset.i18nOpt;
+      if (T[lang][key] !== undefined) el.textContent = T[lang][key];
+    });
     document.querySelectorAll('[data-chip]').forEach(el => {
       const key = el.dataset.chip;
       if (T[lang][key]) el.textContent = T[lang][key];
@@ -724,6 +827,10 @@
   marked.setOptions({ breaks: true, gfm: true });
 
   const PALETTE = ['#2563eb','#0891b2','#7c3aed','#059669','#d97706','#dc2626','#db2777','#65a30d'];
+  const chartInstances = {};
+  function destroyChart(key) {
+    if (chartInstances[key]) { chartInstances[key].destroy(); delete chartInstances[key]; }
+  }
   const fmt  = n => n != null ? new Intl.NumberFormat('ro-RO').format(Math.round(n)) : '—';
   const fmtK = n => n != null ? (n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n >= 1e3 ? (n/1e3).toFixed(0)+'K' : String(n)) : '—';
 
@@ -816,16 +923,65 @@
     }
   });
 
-  async function loadData() {
+  async function loadData(qs = '') {
     try {
-      const res = await fetch('/api/chart-data');
+      const res = await fetch('/api/chart-data' + qs);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      document.getElementById('error-area').innerHTML = '';
       return await res.json();
     } catch (e) {
       document.getElementById('error-area').innerHTML =
         `<div class="error-banner">⚠️ Could not load chart data. Is the server running? (${e.message})</div>`;
       return null;
     }
+  }
+
+  function buildQueryString() {
+    const params = new URLSearchParams();
+    const hood  = document.getElementById('filter-hood').value;
+    const cls   = document.getElementById('filter-class').value;
+    const yFrom = document.getElementById('filter-year-from').value;
+    const yTo   = document.getElementById('filter-year-to').value;
+    if (hood !== 'All') params.set('borough', hood);
+    if (cls  !== 'All') params.set('property_class', cls);
+    if (yFrom !== 'All') params.set('year_from', yFrom);
+    if (yTo   !== 'All') params.set('year_to', yTo);
+    const s = params.toString();
+    return s ? '?' + s : '';
+  }
+
+  function populateYearOptions(years) {
+    const fromSel = document.getElementById('filter-year-from');
+    const toSel = document.getElementById('filter-year-to');
+    if (fromSel.options.length > 1) return; // already populated
+    years.forEach(y => {
+      fromSel.insertAdjacentHTML('beforeend', `<option value="${y}">${y}</option>`);
+      toSel.insertAdjacentHTML('beforeend', `<option value="${y}">${y}</option>`);
+    });
+  }
+
+  async function renderAll(qs) {
+    const d = await loadData(qs);
+    if (!d) return;
+    populateYearOptions(d.years);
+    setKPIs(d);
+    buildTrendChart(d);
+    buildVolumeChart(d);
+    buildBoroughChart(d);
+    buildOwnershipChart(d);
+    buildPsqmChart(d);
+  }
+
+  async function applyFilters() {
+    await renderAll(buildQueryString());
+  }
+
+  function resetFilters() {
+    document.getElementById('filter-hood').value = 'All';
+    document.getElementById('filter-class').value = 'All';
+    document.getElementById('filter-year-from').value = 'All';
+    document.getElementById('filter-year-to').value = 'All';
+    applyFilters();
   }
 
   function setKPIs(d) {
@@ -843,8 +999,9 @@
       yoyEl.textContent = 'N/A';
     }
 
-    document.getElementById('data-badge').textContent =
-      `${fmt(k.total_transactions)} transactions · ${d.years[0]}–${d.years[d.years.length-1]}`;
+    document.getElementById('data-badge').textContent = d.years.length
+      ? `${fmt(k.total_transactions)} transactions · ${d.years[0]}–${d.years[d.years.length-1]}`
+      : `${fmt(k.total_transactions)} transactions`;
   }
 
   function buildTrendChart(d) {
@@ -875,7 +1032,8 @@
       });
     });
 
-    new Chart(document.getElementById('chart-trend'), {
+    destroyChart('trend');
+    chartInstances.trend = new Chart(document.getElementById('chart-trend'), {
       type: 'line',
       data: { labels: d.years, datasets },
       options: {
@@ -896,7 +1054,8 @@
   }
 
   function buildVolumeChart(d) {
-    new Chart(document.getElementById('chart-volume'), {
+    destroyChart('volume');
+    chartInstances.volume = new Chart(document.getElementById('chart-volume'), {
       type: 'bar',
       data: {
         labels: d.years,
@@ -924,7 +1083,8 @@
 
   function buildBoroughChart(d) {
     const bs = d.borough_stats;
-    new Chart(document.getElementById('chart-borough'), {
+    destroyChart('borough');
+    chartInstances.borough = new Chart(document.getElementById('chart-borough'), {
       type: 'bar',
       data: {
         labels: bs.labels,
@@ -986,7 +1146,8 @@
     const srlPct = total ? Math.round(srl / total * 100) : 0;
     const indPct = 100 - srlPct;
 
-    new Chart(document.getElementById('chart-ownership'), {
+    destroyChart('ownership');
+    chartInstances.ownership = new Chart(document.getElementById('chart-ownership'), {
       type: 'doughnut',
       data: {
         labels: ['SRL (company)', 'Individual'],
@@ -1026,7 +1187,8 @@
   }
 
   function buildPsqmChart(d) {
-    new Chart(document.getElementById('chart-psqm'), {
+    destroyChart('psqm');
+    chartInstances.psqm = new Chart(document.getElementById('chart-psqm'), {
       type: 'line',
       data: {
         labels: d.years,
@@ -1062,14 +1224,7 @@
   }
 
   async function init() {
-    const d = await loadData();
-    if (!d) return;
-    setKPIs(d);
-    buildTrendChart(d);
-    buildVolumeChart(d);
-    buildBoroughChart(d);
-    buildOwnershipChart(d);
-    buildPsqmChart(d);
+    await renderAll('');
     setTimeout(() => brickHop(), 3000);
   }
 
