@@ -132,6 +132,11 @@ def _active_chat_session_id(request: Request) -> str:
     sid = request.session.get("chat_session_id")
     if not sid:
         user_id = request.session.get("user_id")
+        # Guard against stale session cookies pointing to a user that no longer
+        # exists in the DB (e.g. after a server restart with ephemeral storage).
+        if user_id and not auth_db.get_user(user_id):
+            request.session.clear()
+            user_id = None
         sid = auth_db.create_chat_session(user_id)
         request.session["chat_session_id"] = sid
     return sid
