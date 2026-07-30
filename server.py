@@ -130,10 +130,17 @@ def _active_chat_session_id(request: Request) -> str:
     """Lazily creates a chat_sessions DB row on first real use — never on a
     bare page load — so crawler/bot traffic doesn't grow the DB forever."""
     sid = request.session.get("chat_session_id")
+    # Validate the stored session still exists in the DB — it may have been
+    # wiped (e.g. Render ephemeral storage restart) while the cookie persists.
+    if sid:
+        try:
+            auth_db.get_session_owner(sid)
+        except ValueError:
+            sid = None
+            request.session.pop("chat_session_id", None)
     if not sid:
         user_id = request.session.get("user_id")
-        # Guard against stale session cookies pointing to a user that no longer
-        # exists in the DB (e.g. after a server restart with ephemeral storage).
+        # Same guard for stale user_id in cookie.
         if user_id and not auth_db.get_user(user_id):
             request.session.clear()
             user_id = None
